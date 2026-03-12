@@ -1,0 +1,1566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local Civil Registrar — Document Request System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Outfit:wght@300;400;500;600&family=Inconsolata:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+          --navy:      #0d1f3c;
+          --navy-mid:  #152d54;
+          --navy-lite: #1e3f74;
+          --gold:      #c8962a;
+          --gold-lt:   #e8c96a;
+          --gold-pale: #f9f2de;
+          --scarlet:   #9b2020;
+          --white:     #ffffff;
+          --off-white: #f7f5f0;
+          --paper:     #fdfbf7;
+          --ink:       #1a1612;
+          --slate:     #4a5568;
+          --border:    #dcd5c4;
+          --border-lt: #ede8dc;
+          --muted:     #7a6e5f;
+          --success:   #1a5c3a;
+          --processing:#1e4080;
+          --ready:     #6a3010;
+          --completed: #1a5c3a;
+          --shadow:    0 4px 24px rgba(13,31,60,0.10);
+          --shadow-lg: 0 12px 48px rgba(13,31,60,0.16);
+        }
+
+        * { margin:0; padding:0; box-sizing:border-box; }
+
+        body {
+          font-family: 'Outfit', sans-serif;
+          background: var(--off-white);
+          color: var(--ink);
+          min-height: 100vh;
+        }
+
+        /* ── BACKGROUND PATTERN ── */
+        body::before {
+          content:'';
+          position:fixed; inset:0;
+          background-image:
+            radial-gradient(circle at 15% 85%, rgba(200,150,42,0.04) 0%, transparent 50%),
+            radial-gradient(circle at 85% 15%, rgba(13,31,60,0.04) 0%, transparent 50%),
+            url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%230d1f3c' fill-opacity='0.025'%3E%3Cpath d='M30 30h1v1h-1z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+          pointer-events:none;
+          z-index:0;
+        }
+
+        /* ── HEADER BANNER ── */
+        .gov-banner {
+          background: var(--navy);
+          color: rgba(255,255,255,0.55);
+          font-size: 0.68rem;
+          letter-spacing: 0.18em;
+          text-align: center;
+          padding: 7px 20px;
+          font-family: 'Outfit', sans-serif;
+          font-weight: 500;
+          text-transform: uppercase;
+          border-bottom: 1px solid rgba(200,150,42,0.3);
+        }
+
+        header {
+          background: var(--navy);
+          position: relative;
+          z-index: 20;
+          overflow: hidden;
+        }
+
+        header::after {
+          content:'';
+          position:absolute;
+          bottom:0; left:0; right:0;
+          height:3px;
+          background: linear-gradient(90deg, transparent 0%, var(--gold) 20%, var(--gold-lt) 50%, var(--gold) 80%, transparent 100%);
+        }
+
+        .header-body {
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 18px 36px;
+          display: flex;
+          align-items: center;
+          gap: 24px;
+        }
+
+        /* Seal */
+        .seal {
+          width: 68px;
+          height: 68px;
+          flex-shrink: 0;
+          position: relative;
+        }
+
+        .seal-svg {
+          width: 100%;
+          height: 100%;
+        }
+
+        .header-title {
+          flex: 1;
+        }
+
+        .header-title .office {
+          font-family: 'Outfit', sans-serif;
+          font-size: 0.65rem;
+          font-weight: 600;
+          letter-spacing: 0.22em;
+          color: var(--gold-lt);
+          text-transform: uppercase;
+          margin-bottom: 4px;
+        }
+
+        .header-title h1 {
+          font-family: 'Cormorant Garamond', serif;
+          font-size: 1.65rem;
+          font-weight: 700;
+          color: var(--white);
+          line-height: 1.1;
+          letter-spacing: 0.01em;
+        }
+
+        .header-title .tagline {
+          font-size: 0.72rem;
+          color: rgba(255,255,255,0.45);
+          margin-top: 3px;
+          font-weight: 300;
+          letter-spacing: 0.05em;
+        }
+
+        .header-nav {
+          display: flex;
+          align-items: center;
+          gap: 2px;
+          background: rgba(255,255,255,0.06);
+          padding: 5px;
+          border-radius: 10px;
+          border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .nav-btn {
+          padding: 9px 22px;
+          background: transparent;
+          border: none;
+          color: rgba(255,255,255,0.55);
+          font-family: 'Outfit', sans-serif;
+          font-size: 0.8rem;
+          font-weight: 500;
+          cursor: pointer;
+          border-radius: 7px;
+          transition: all 0.22s;
+          letter-spacing: 0.03em;
+          display: flex;
+          align-items: center;
+          gap: 7px;
+        }
+
+        .nav-btn .nav-icon { font-size: 0.95rem; }
+        .nav-btn:hover { color: rgba(255,255,255,0.85); background: rgba(255,255,255,0.07); }
+        .nav-btn.active { background: var(--gold); color: var(--navy); font-weight: 600; }
+
+        /* ── MAIN ── */
+        main {
+          position: relative;
+          z-index: 1;
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 44px 36px 60px;
+        }
+
+        .page { display:none; animation: fadeUp 0.32s ease; }
+        .page.active { display:block; }
+
+        @keyframes fadeUp {
+          from { opacity:0; transform:translateY(14px); }
+          to   { opacity:1; transform:translateY(0); }
+        }
+
+        /* ── SECTION HEADER ── */
+        .section-head {
+          display: flex;
+          align-items: flex-end;
+          justify-content: space-between;
+          margin-bottom: 32px;
+          padding-bottom: 20px;
+          border-bottom: 2px solid var(--border);
+          position: relative;
+        }
+
+        .section-head::after {
+          content:'';
+          position:absolute;
+          bottom:-2px; left:0;
+          width:80px; height:2px;
+          background: var(--gold);
+        }
+
+        .section-head-text {}
+
+        .section-label {
+          font-size: 0.65rem;
+          font-weight: 600;
+          letter-spacing: 0.22em;
+          text-transform: uppercase;
+          color: var(--gold);
+          margin-bottom: 5px;
+          font-family: 'Outfit', sans-serif;
+        }
+
+        .section-title {
+          font-family: 'Cormorant Garamond', serif;
+          font-size: 2rem;
+          font-weight: 700;
+          color: var(--navy);
+          line-height: 1.1;
+        }
+
+        .section-sub {
+          font-size: 0.84rem;
+          color: var(--muted);
+          margin-top: 4px;
+          font-weight: 300;
+        }
+
+        /* ── FORM CARD ── */
+        .form-wrap {
+          display: grid;
+          grid-template-columns: 1fr 340px;
+          gap: 28px;
+          align-items: start;
+        }
+
+        .form-card {
+          background: var(--white);
+          border: 1px solid var(--border);
+          border-radius: 14px;
+          padding: 40px;
+          box-shadow: var(--shadow);
+        }
+
+        .form-card-title {
+          font-family: 'Cormorant Garamond', serif;
+          font-size: 1.15rem;
+          font-weight: 600;
+          color: var(--navy);
+          margin-bottom: 24px;
+          padding-bottom: 14px;
+          border-bottom: 1px solid var(--border-lt);
+          display: flex;
+          align-items: center;
+          gap: 10px;
+        }
+
+        .form-card-title span { font-size:1.1rem; }
+
+        .form-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 18px;
+        }
+
+        .form-group { display:flex; flex-direction:column; gap:5px; }
+        .form-group.full { grid-column: 1 / -1; }
+
+        label {
+          font-size: 0.7rem;
+          font-weight: 600;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          color: var(--muted);
+        }
+
+        label .required { color: var(--scarlet); margin-left: 2px; }
+
+        input, select, textarea {
+          font-family: 'Outfit', sans-serif;
+          font-size: 0.88rem;
+          padding: 10px 13px;
+          border: 1.5px solid var(--border);
+          border-radius: 8px;
+          background: var(--paper);
+          color: var(--ink);
+          transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+          outline: none;
+          width: 100%;
+        }
+
+        input:focus, select:focus, textarea:focus {
+          border-color: var(--navy-lite);
+          box-shadow: 0 0 0 3px rgba(21,45,84,0.08);
+          background: var(--white);
+        }
+
+        input::placeholder, textarea::placeholder { color: #c0b8a8; }
+
+        select {
+          cursor:pointer; appearance:none;
+          background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='7' fill='none' viewBox='0 0 11 7'%3E%3Cpath d='M1 1l4.5 4.5L10 1' stroke='%237a6e5f' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+          background-repeat:no-repeat;
+          background-position:right 13px center;
+          padding-right:34px;
+        }
+
+        textarea { resize:vertical; min-height:88px; line-height:1.5; }
+
+        /* Copies needed */
+        .copies-row { display:flex; align-items:center; gap:12px; }
+        .copies-row input[type=number] { width:80px; text-align:center; }
+        .copies-label { font-size:0.82rem; color:var(--muted); }
+
+        .submit-row {
+          margin-top:28px;
+          display:flex;
+          align-items:center;
+          gap:16px;
+          flex-wrap:wrap;
+        }
+
+        .btn-submit {
+          padding: 12px 32px;
+          background: var(--navy);
+          color: var(--white);
+          border: none;
+          border-radius: 8px;
+          font-family: 'Outfit', sans-serif;
+          font-size: 0.85rem;
+          font-weight: 600;
+          cursor: pointer;
+          letter-spacing: 0.05em;
+          display:flex; align-items:center; gap:9px;
+          position:relative; overflow:hidden;
+          transition: transform 0.15s, box-shadow 0.15s;
+        }
+
+        .btn-submit::after {
+          content:'';
+          position:absolute; inset:0;
+          background:linear-gradient(135deg, var(--gold) 0%, var(--scarlet) 120%);
+          opacity:0; transition:opacity 0.2s;
+        }
+
+        .btn-submit:hover { transform:translateY(-1px); box-shadow:0 6px 20px rgba(13,31,60,0.22); }
+        .btn-submit:hover::after { opacity:1; }
+        .btn-submit > * { position:relative; z-index:1; }
+
+        .note-text {
+          font-size: 0.75rem;
+          color: var(--muted);
+          line-height: 1.5;
+        }
+
+        /* ── INFO SIDEBAR ── */
+        .info-sidebar {
+          display:flex; flex-direction:column; gap:18px;
+        }
+
+        .info-box {
+          background:var(--white);
+          border:1px solid var(--border);
+          border-radius:12px;
+          overflow:hidden;
+          box-shadow: 0 2px 12px rgba(13,31,60,0.06);
+        }
+
+        .info-box-head {
+          background:var(--navy);
+          color:var(--white);
+          padding:11px 18px;
+          font-size:0.72rem;
+          font-weight:600;
+          letter-spacing:0.14em;
+          text-transform:uppercase;
+          display:flex; align-items:center; gap:8px;
+        }
+
+        .info-box-body { padding:18px; }
+
+        .doc-list { list-style:none; }
+        .doc-list li {
+          padding:7px 0;
+          border-bottom:1px solid var(--border-lt);
+          font-size:0.83rem;
+          display:flex; align-items:center; gap:9px;
+          color:var(--ink);
+        }
+        .doc-list li:last-child { border:none; }
+        .doc-list li::before { content:'📄'; font-size:0.85rem; }
+
+        .hours-row { display:flex; justify-content:space-between; padding:5px 0; font-size:0.8rem; border-bottom:1px solid var(--border-lt); }
+        .hours-row:last-child { border:none; }
+        .hours-day { color:var(--muted); font-weight:500; }
+        .hours-time { color:var(--ink); font-family:'Inconsolata', monospace; }
+
+        .fee-row { display:flex; justify-content:space-between; padding:6px 0; font-size:0.82rem; border-bottom:1px solid var(--border-lt); }
+        .fee-row:last-child { border:none; font-weight:600; }
+        .fee-name { color:var(--muted); }
+        .fee-amt  { font-family:'Inconsolata', monospace; color:var(--navy); }
+
+        /* ── TRACK PAGE ── */
+        .track-layout {
+          display:grid;
+          grid-template-columns:480px 1fr;
+          gap:28px;
+          align-items:start;
+        }
+
+        .track-card {
+          background:var(--white);
+          border:1px solid var(--border);
+          border-radius:14px;
+          padding:36px;
+          box-shadow:var(--shadow);
+        }
+
+        .track-search-label {
+          font-family:'Cormorant Garamond', serif;
+          font-size:1.1rem;
+          font-weight:600;
+          color:var(--navy);
+          margin-bottom:16px;
+        }
+
+        .track-input-group {
+          display:flex;
+          gap:10px;
+          margin-bottom:24px;
+        }
+
+        .track-input-group input {
+          flex:1;
+          font-family:'Inconsolata', monospace;
+          font-size:1.05rem;
+          letter-spacing:0.1em;
+          text-transform:uppercase;
+          border-color:var(--navy-lite);
+        }
+
+        .btn-search {
+          padding:10px 20px;
+          background:var(--navy);
+          color:var(--white);
+          border:none; border-radius:8px;
+          font-family:'Outfit', sans-serif;
+          font-size:0.83rem; font-weight:600;
+          cursor:pointer;
+          transition:background 0.2s;
+          white-space:nowrap;
+        }
+        .btn-search:hover { background:var(--navy-lite); }
+
+        .result-card {
+          display:none;
+          border:1.5px solid var(--border);
+          border-radius:10px;
+          overflow:hidden;
+        }
+        .result-card.show { display:block; animation:fadeUp 0.3s ease; }
+
+        .result-top {
+          background: var(--navy);
+          padding:16px 20px;
+          display:flex;
+          align-items:center;
+          justify-content:space-between;
+        }
+
+        .result-top .rid {
+          font-family:'Inconsolata', monospace;
+          font-size:0.88rem;
+          color:var(--gold-lt);
+          letter-spacing:0.1em;
+        }
+
+        .result-body { padding:20px; }
+
+        .info-row {
+          display:flex;
+          justify-content:space-between;
+          padding:8px 0;
+          border-bottom:1px solid var(--border-lt);
+          font-size:0.84rem;
+          gap:12px;
+        }
+        .info-row:last-child { border:none; }
+        .info-k { color:var(--muted); font-weight:500; flex-shrink:0; }
+        .info-v { color:var(--ink); text-align:right; }
+
+        /* Status timeline */
+        .timeline-card {
+          background:var(--white);
+          border:1px solid var(--border);
+          border-radius:14px;
+          padding:32px;
+          box-shadow:var(--shadow);
+        }
+
+        .timeline-title {
+          font-family:'Cormorant Garamond', serif;
+          font-size:1.1rem;
+          font-weight:600;
+          color:var(--navy);
+          margin-bottom:24px;
+          padding-bottom:14px;
+          border-bottom:1px solid var(--border-lt);
+        }
+
+        .timeline { display:flex; flex-direction:column; gap:0; }
+
+        .tl-item {
+          display:flex;
+          gap:16px;
+          position:relative;
+        }
+
+        .tl-left {
+          display:flex;
+          flex-direction:column;
+          align-items:center;
+          gap:0;
+          flex-shrink:0;
+        }
+
+        .tl-dot {
+          width:32px; height:32px;
+          border-radius:50%;
+          border:2.5px solid var(--border);
+          background:var(--white);
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          font-size:0.9rem;
+          z-index:1;
+          transition:all 0.3s;
+        }
+
+        .tl-dot.done {
+          background:var(--navy);
+          border-color:var(--navy);
+          color:var(--white);
+        }
+
+        .tl-dot.current {
+          background:var(--gold);
+          border-color:var(--gold);
+          color:var(--navy);
+          box-shadow:0 0 0 4px rgba(200,150,42,0.2);
+        }
+
+        .tl-line {
+          width:2px;
+          flex:1;
+          min-height:28px;
+          background:var(--border-lt);
+        }
+
+        .tl-line.done { background:var(--navy); }
+
+        .tl-item:last-child .tl-line { display:none; }
+
+        .tl-content {
+          padding-bottom:24px;
+          padding-top:4px;
+        }
+
+        .tl-step-name {
+          font-size:0.88rem;
+          font-weight:600;
+          color:var(--ink);
+          margin-bottom:3px;
+        }
+
+        .tl-step-desc {
+          font-size:0.78rem;
+          color:var(--muted);
+          line-height:1.4;
+        }
+
+        /* ── ADMIN PAGE ── */
+        .admin-login-wrap {
+          max-width:420px;
+          margin:0 auto;
+        }
+
+        .login-card {
+          background:var(--white);
+          border:1px solid var(--border);
+          border-top:4px solid var(--navy);
+          border-radius:14px;
+          padding:48px 40px;
+          box-shadow:var(--shadow);
+          text-align:center;
+        }
+
+        .login-badge {
+          width:64px; height:64px;
+          background:var(--navy);
+          border-radius:50%;
+          display:flex; align-items:center; justify-content:center;
+          font-size:26px;
+          margin:0 auto 20px;
+        }
+
+        .login-card h2 {
+          font-family:'Cormorant Garamond', serif;
+          font-size:1.6rem; font-weight:700;
+          color:var(--navy); margin-bottom:6px;
+        }
+        .login-card p { color:var(--muted); font-size:0.84rem; margin-bottom:28px; }
+
+        .btn-login {
+          width:100%;
+          padding:12px;
+          background:var(--navy);
+          color:var(--white);
+          border:none; border-radius:8px;
+          font-family:'Outfit', sans-serif;
+          font-size:0.88rem; font-weight:600;
+          cursor:pointer;
+          transition:background 0.2s;
+          letter-spacing:0.04em;
+        }
+        .btn-login:hover { background:var(--navy-lite); }
+
+        .demo-hint {
+          margin-top:16px;
+          font-size:0.72rem;
+          color:var(--muted);
+          background:var(--paper);
+          padding:10px 14px;
+          border-radius:7px;
+          border:1px solid var(--border-lt);
+          font-family:'Inconsolata', monospace;
+          letter-spacing:0.05em;
+        }
+
+        /* Dashboard */
+        .admin-dash { display:none; }
+        .admin-dash.show { display:block; }
+
+        .dash-top {
+          display:flex;
+          justify-content:space-between;
+          align-items:flex-end;
+          margin-bottom:8px;
+        }
+
+        .btn-logout {
+          padding:8px 20px;
+          background:transparent;
+          border:1.5px solid var(--border);
+          border-radius:8px;
+          font-family:'Outfit', sans-serif;
+          font-size:0.78rem; font-weight:500;
+          color:var(--muted);
+          cursor:pointer;
+          transition:all 0.2s;
+          display:flex; align-items:center; gap:7px;
+        }
+        .btn-logout:hover { border-color:var(--scarlet); color:var(--scarlet); }
+
+        /* Stats */
+        .stats-grid {
+          display:grid;
+          grid-template-columns:repeat(5, 1fr);
+          gap:14px;
+          margin-bottom:28px;
+        }
+
+        .stat {
+          background:var(--white);
+          border:1px solid var(--border);
+          border-radius:10px;
+          padding:18px 16px;
+          position:relative;
+          overflow:hidden;
+          box-shadow:0 2px 8px rgba(13,31,60,0.06);
+        }
+
+        .stat::before {
+          content:'';
+          position:absolute;
+          top:0; left:0; right:0; height:3px;
+        }
+        .stat.c-all::before    { background:var(--navy); }
+        .stat.c-pend::before   { background:#d97706; }
+        .stat.c-proc::before   { background:#2563eb; }
+        .stat.c-ready::before  { background:#7c3aed; }
+        .stat.c-done::before   { background:#16a34a; }
+
+        .stat-n {
+          font-family:'Cormorant Garamond', serif;
+          font-size:2rem; font-weight:700;
+          color:var(--navy); line-height:1;
+          margin-bottom:4px;
+        }
+        .stat-l {
+          font-size:0.68rem; font-weight:600;
+          text-transform:uppercase; letter-spacing:0.1em;
+          color:var(--muted);
+        }
+
+        /* Table */
+        .table-head-row {
+          display:flex;
+          align-items:center;
+          justify-content:space-between;
+          margin-bottom:14px;
+          flex-wrap:wrap;
+          gap:12px;
+        }
+
+        .table-heading {
+          font-family:'Cormorant Garamond', serif;
+          font-size:1.2rem; font-weight:700;
+          color:var(--navy);
+        }
+
+        .filters { display:flex; gap:10px; flex-wrap:wrap; }
+
+        .flt {
+          padding:7px 12px;
+          border:1.5px solid var(--border);
+          border-radius:7px;
+          font-family:'Outfit', sans-serif;
+          font-size:0.78rem;
+          background:var(--white);
+          color:var(--ink);
+          cursor:pointer;
+          outline:none;
+          appearance:none;
+          background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%237a6e5f' stroke-width='1.3' stroke-linecap='round'/%3E%3C/svg%3E");
+          background-repeat:no-repeat;
+          background-position:right 10px center;
+          padding-right:26px;
+        }
+
+        .flt:focus { border-color:var(--navy); }
+
+        .tbl-wrap {
+          background:var(--white);
+          border:1px solid var(--border);
+          border-radius:12px;
+          overflow:hidden;
+          box-shadow:var(--shadow);
+        }
+
+        table { width:100%; border-collapse:collapse; }
+
+        thead th {
+          background:var(--navy);
+          color:rgba(255,255,255,0.9);
+          padding:12px 14px;
+          font-size:0.69rem;
+          font-weight:600;
+          text-transform:uppercase;
+          letter-spacing:0.1em;
+          text-align:left;
+          white-space:nowrap;
+        }
+
+        tbody tr { border-bottom:1px solid var(--border-lt); transition:background 0.15s; }
+        tbody tr:last-child { border:none; }
+        tbody tr:hover { background:var(--off-white); }
+
+        td {
+          padding:11px 14px;
+          font-size:0.82rem;
+          vertical-align:middle;
+        }
+
+        .mono { font-family:'Inconsolata', monospace; font-size:0.8rem; color:var(--muted); }
+
+        .status-sel {
+          padding:5px 10px;
+          font-size:0.76rem;
+          border-radius:6px;
+          border:1.5px solid var(--border);
+          font-family:'Outfit', sans-serif;
+          cursor:pointer;
+          background:var(--off-white);
+          min-width:152px;
+          outline:none;
+        }
+
+        .status-sel:focus { border-color:var(--navy); }
+
+        .empty-tbl {
+          text-align:center;
+          padding:52px 20px;
+          color:var(--muted);
+        }
+        .empty-tbl .eico { font-size:36px; margin-bottom:10px; }
+        .empty-tbl p { font-size:0.84rem; }
+
+        /* ── BADGES ── */
+        .badge {
+          display:inline-flex; align-items:center; gap:5px;
+          padding:3px 10px;
+          border-radius:20px;
+          font-size:0.71rem; font-weight:600;
+          letter-spacing:0.04em;
+          white-space:nowrap;
+        }
+        .badge::before { content:''; width:5px; height:5px; border-radius:50%; background:currentColor; opacity:0.7; }
+        .b-pending    { background:#fef3c7; color:#92400e; }
+        .b-processing { background:#dbeafe; color:#1e40af; }
+        .b-ready      { background:#ede9fe; color:#5b21b6; }
+        .b-completed  { background:#d1fae5; color:#065f46; }
+
+        /* ── SUCCESS MODAL ── */
+        .overlay {
+          position:fixed; inset:0;
+          background:rgba(13,31,60,0.55);
+          backdrop-filter:blur(5px);
+          z-index:100;
+          display:flex; align-items:center; justify-content:center;
+          opacity:0; pointer-events:none;
+          transition:opacity 0.3s;
+        }
+        .overlay.show { opacity:1; pointer-events:all; }
+
+        .modal {
+          background:var(--white);
+          border-radius:16px;
+          padding:0;
+          max-width:500px; width:92%;
+          box-shadow:var(--shadow-lg);
+          overflow:hidden;
+          transform:scale(0.92);
+          transition:transform 0.3s;
+        }
+        .overlay.show .modal { transform:scale(1); }
+
+        .modal-top {
+          background:var(--navy);
+          padding:28px 36px;
+          text-align:center;
+        }
+
+        .modal-seal {
+          width:56px; height:56px;
+          background:rgba(200,150,42,0.2);
+          border:2px solid var(--gold);
+          border-radius:50%;
+          display:flex; align-items:center; justify-content:center;
+          font-size:24px;
+          margin:0 auto 14px;
+        }
+
+        .modal-top h2 {
+          font-family:'Cormorant Garamond', serif;
+          font-size:1.5rem; color:var(--white); font-weight:700;
+          margin-bottom:4px;
+        }
+
+        .modal-top p { font-size:0.8rem; color:rgba(255,255,255,0.55); }
+
+        .modal-body { padding:32px 36px; text-align:center; }
+
+        .rid-box {
+          background:var(--gold-pale);
+          border:2px dashed var(--gold);
+          border-radius:10px;
+          padding:18px 28px;
+          font-family:'Inconsolata', monospace;
+          font-size:1.5rem; font-weight:600;
+          color:var(--navy);
+          letter-spacing:0.14em;
+          margin-bottom:16px;
+        }
+
+        .modal-note {
+          font-size:0.78rem; color:var(--muted);
+          line-height:1.55; margin-bottom:20px;
+        }
+
+        .modal-details {
+          background:var(--paper);
+          border:1px solid var(--border-lt);
+          border-radius:8px;
+          padding:14px 18px;
+          font-size:0.8rem;
+          color:var(--ink);
+          text-align:left;
+          margin-bottom:20px;
+          line-height:1.6;
+        }
+
+        .modal-details strong { color:var(--navy); }
+
+        .btn-modal-close {
+          padding:11px 32px;
+          background:var(--navy);
+          color:var(--white);
+          border:none; border-radius:8px;
+          font-family:'Outfit', sans-serif;
+          font-size:0.85rem; font-weight:600;
+          cursor:pointer;
+          transition:background 0.2s;
+        }
+        .btn-modal-close:hover { background:var(--navy-lite); }
+
+        /* ── TOAST ── */
+        .toasts {
+          position:fixed;
+          bottom:24px; right:24px;
+          z-index:200;
+          display:flex; flex-direction:column; gap:8px;
+        }
+
+        .toast {
+          background:var(--navy);
+          color:var(--white);
+          padding:11px 18px;
+          border-radius:8px;
+          font-size:0.81rem; font-weight:500;
+          border-left:3px solid var(--gold);
+          box-shadow:0 4px 20px rgba(0,0,0,0.2);
+          animation:slideIn 0.28s ease;
+          min-width:240px;
+          display:flex; align-items:center; gap:9px;
+        }
+
+        @keyframes slideIn {
+          from { opacity:0; transform:translateX(24px); }
+          to   { opacity:1; transform:translateX(0); }
+        }
+
+        /* ── RESPONSIVE ── */
+        @media(max-width:900px) {
+          .form-wrap { grid-template-columns:1fr; }
+          .track-layout { grid-template-columns:1fr; }
+          .stats-grid { grid-template-columns:repeat(3,1fr); }
+          .header-body { flex-wrap:wrap; gap:14px; }
+        }
+        @media(max-width:640px) {
+          main { padding:28px 18px 48px; }
+          .header-body { padding:14px 18px; }
+          .form-grid { grid-template-columns:1fr; }
+          .stats-grid { grid-template-columns:1fr 1fr; }
+          .section-title { font-size:1.6rem; }
+          td, thead th { padding:9px 10px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="gov-banner">Republic of the Philippines &nbsp;·&nbsp; Local Government Unit &nbsp;·&nbsp; Office of the Local Civil Registrar</div>
+
+<header>
+    <div class="header-body">
+        <svg class="seal" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="40" cy="40" r="38" fill="none" stroke="#c8962a" stroke-width="1.5"/>
+            <circle cx="40" cy="40" r="32" fill="none" stroke="rgba(200,150,42,0.4)" stroke-width="0.8"/>
+            <circle cx="40" cy="40" r="22" fill="rgba(200,150,42,0.08)" stroke="#c8962a" stroke-width="1"/>
+            <!-- Sun rays -->
+            <g stroke="#c8962a" stroke-width="1">
+                <line x1="40" y1="6" x2="40" y2="14"/>
+                <line x1="40" y1="66" x2="40" y2="74"/>
+                <line x1="6"  y1="40" x2="14" y2="40"/>
+                <line x1="66" y1="40" x2="74" y2="40"/>
+                <line x1="16.7" y1="16.7" x2="22.4" y2="22.4"/>
+                <line x1="57.6" y1="57.6" x2="63.3" y2="63.3"/>
+                <line x1="63.3" y1="16.7" x2="57.6" y2="22.4"/>
+                <line x1="22.4" y1="57.6" x2="16.7" y2="63.3"/>
+            </g>
+            <!-- Book icon -->
+            <rect x="28" y="32" width="10" height="14" rx="1" fill="none" stroke="#c8962a" stroke-width="1.2"/>
+            <rect x="42" y="32" width="10" height="14" rx="1" fill="none" stroke="#c8962a" stroke-width="1.2"/>
+            <line x1="38" y1="33" x2="38" y2="45" stroke="#c8962a" stroke-width="0.8"/>
+            <line x1="42" y1="33" x2="42" y2="45" stroke="#c8962a" stroke-width="0.8"/>
+            <!-- Stars -->
+            <circle cx="40" cy="28" r="1.5" fill="#c8962a"/>
+            <circle cx="33" cy="30" r="1"   fill="rgba(200,150,42,0.6)"/>
+            <circle cx="47" cy="30" r="1"   fill="rgba(200,150,42,0.6)"/>
+            <text x="40" y="56" text-anchor="middle" font-family="serif" font-size="4.5" fill="#c8962a" font-weight="600" letter-spacing="0.5">LCR</text>
+        </svg>
+
+        <div class="header-title">
+            <div class="office">Office of the Local Civil Registrar</div>
+            <h1>Document Request System</h1>
+            <div class="tagline">Online Civil Registry Document Request Portal</div>
+        </div>
+
+        <nav class="header-nav">
+            <button class="nav-btn active" onclick="showPage('request',this)">
+                <span class="nav-icon">📋</span> Request
+            </button>
+            <button class="nav-btn" onclick="showPage('track',this)">
+                <span class="nav-icon">🔍</span> Track
+            </button>
+            <button class="nav-btn" onclick="showPage('admin',this)">
+                <span class="nav-icon">🔒</span> Admin
+            </button>
+        </nav>
+    </div>
+</header>
+
+<main>
+
+    <!-- ══ REQUEST PAGE ══ -->
+    <div id="page-request" class="page active">
+        <div class="section-head">
+            <div class="section-head-text">
+                <div class="section-label">Civil Registry Services</div>
+                <div class="section-title">Submit a Document Request</div>
+                <div class="section-sub">Fill out all required fields to request your official civil registry document.</div>
+            </div>
+        </div>
+
+        <div class="form-wrap">
+            <div class="form-card">
+                <div class="form-card-title"><span>👤</span> Personal Information</div>
+                <div class="form-grid">
+                    <div class="form-group full">
+                        <label>Full Name (Last, First, Middle) <span class="required">*</span></label>
+                        <input type="text" id="f-name" placeholder="e.g. Dela Cruz, Juan Santos">
+                    </div>
+                    <div class="form-group">
+                        <label>Date of Birth <span class="required">*</span></label>
+                        <input type="date" id="f-dob">
+                    </div>
+                    <div class="form-group">
+                        <label>Place of Birth <span class="required">*</span></label>
+                        <input type="text" id="f-pob" placeholder="City/Municipality, Province">
+                    </div>
+                    <div class="form-group">
+                        <label>Contact Number <span class="required">*</span></label>
+                        <input type="tel" id="f-contact" placeholder="09XX-XXX-XXXX">
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" id="f-email" placeholder="optional">
+                    </div>
+                    <div class="form-group full">
+                        <label>Current Address <span class="required">*</span></label>
+                        <input type="text" id="f-address" placeholder="House No., Street, Barangay, City/Municipality">
+                    </div>
+                </div>
+
+                <div class="form-card-title" style="margin-top:28px;"><span>📄</span> Document Details</div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Document Type <span class="required">*</span></label>
+                        <select id="f-doctype">
+                            <option value="">— Select Document —</option>
+                            <optgroup label="Vital Records">
+                                <option>Birth Certificate (PSA)</option>
+                                <option>Birth Certificate (Local Copy)</option>
+                                <option>Marriage Certificate (PSA)</option>
+                                <option>Marriage Certificate (Local Copy)</option>
+                                <option>Death Certificate (PSA)</option>
+                                <option>Death Certificate (Local Copy)</option>
+                            </optgroup>
+                            <optgroup label="Certifications">
+                                <option>Certificate of No Marriage (CENOMAR)</option>
+                                <option>Certificate of No Birth Record</option>
+                                <option>Certificate of Late Registration</option>
+                                <option>Certificate of Foundling</option>
+                                <option>Transcription of Civil Registry Records</option>
+                            </optgroup>
+                            <optgroup label="Annotations">
+                                <option>Annotation of Marriage on Birth Certificate</option>
+                                <option>Annotation of Death on Birth Certificate</option>
+                                <option>Annotation of Legitimation</option>
+                                <option>Annotation of Correction (RA 9048/10172)</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Number of Copies <span class="required">*</span></label>
+                        <div class="copies-row">
+                            <input type="number" id="f-copies" value="1" min="1" max="10">
+                            <span class="copies-label">copy/copies</span>
+                        </div>
+                    </div>
+                    <div class="form-group full">
+                        <label>Purpose of Request <span class="required">*</span></label>
+                        <select id="f-purpose">
+                            <option value="">— Select Purpose —</option>
+                            <option>Employment (Local)</option>
+                            <option>Employment (Abroad / OFW)</option>
+                            <option>Passport Application</option>
+                            <option>School / Academic Requirement</option>
+                            <option>Social Security / PhilHealth / Pag-IBIG</option>
+                            <option>Court / Legal Proceeding</option>
+                            <option>Marriage License Application</option>
+                            <option>Claim of Benefits</option>
+                            <option>Personal Records</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group full">
+                        <label>Additional Remarks / Instructions</label>
+                        <textarea id="f-remarks" placeholder="Any special instructions or additional information…"></textarea>
+                    </div>
+                </div>
+
+                <div class="submit-row">
+                    <button class="btn-submit" onclick="submitRequest()">
+                        <span>📨</span>
+                        <span>Submit Request</span>
+                    </button>
+                    <p class="note-text">By submitting, you confirm that all<br>information provided is accurate and truthful.</p>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="info-sidebar">
+                <div class="info-box">
+                    <div class="info-box-head">📜 Available Documents</div>
+                    <div class="info-box-body">
+                        <ul class="doc-list">
+                            <li>Birth Certificate (PSA / Local)</li>
+                            <li>Marriage Certificate (PSA / Local)</li>
+                            <li>Death Certificate (PSA / Local)</li>
+                            <li>CENOMAR</li>
+                            <li>Certificate of No Birth Record</li>
+                            <li>Annotations &amp; Corrections</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-box-head">🕐 Office Hours</div>
+                    <div class="info-box-body">
+                        <div class="hours-row"><span class="hours-day">Mon – Fri</span><span class="hours-time">8:00 – 17:00</span></div>
+                        <div class="hours-row"><span class="hours-day">Saturday</span><span class="hours-time">8:00 – 12:00</span></div>
+                        <div class="hours-row"><span class="hours-day">Sunday</span><span class="hours-time">Closed</span></div>
+                        <div class="hours-row"><span class="hours-day">Holidays</span><span class="hours-time">Closed</span></div>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-box-head">💰 Filing Fees</div>
+                    <div class="info-box-body">
+                        <div class="fee-row"><span class="fee-name">Local Copy</span><span class="fee-amt">₱ 50.00</span></div>
+                        <div class="fee-row"><span class="fee-name">PSA Endorsed</span><span class="fee-amt">₱ 155.00</span></div>
+                        <div class="fee-row"><span class="fee-name">Certification</span><span class="fee-amt">₱ 50.00</span></div>
+                        <div class="fee-row"><span class="fee-name">RA 9048 Filing</span><span class="fee-amt">₱ 1,000.00</span></div>
+                        <div class="fee-row"><span class="fee-name">Payable at</span><span class="fee-amt">City Treasurer</span></div>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-box-head">📌 Requirements</div>
+                    <div class="info-box-body">
+                        <ul class="doc-list">
+                            <li>Valid government-issued ID</li>
+                            <li>Accomplished request form</li>
+                            <li>Official Receipt (City Treasurer)</li>
+                            <li>Authorization letter (if by representative)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ TRACK PAGE ══ -->
+    <div id="page-track" class="page">
+        <div class="section-head">
+            <div class="section-head-text">
+                <div class="section-label">Request Monitoring</div>
+                <div class="section-title">Track Your Request</div>
+                <div class="section-sub">Enter your Request Control Number to view real-time status.</div>
+            </div>
+        </div>
+
+        <div class="track-layout">
+            <div>
+                <div class="track-card">
+                    <div class="track-search-label">Enter Request Control Number</div>
+                    <div class="track-input-group">
+                        <input type="text" id="track-in" placeholder="LCR-XXXXXXXX" maxlength="12" oninput="this.value=this.value.toUpperCase()">
+                        <button class="btn-search" onclick="doTrack()">Search</button>
+                    </div>
+
+                    <div id="result-card" class="result-card">
+                        <div class="result-top">
+                            <span class="rid" id="res-rid">—</span>
+                            <span id="res-badge"></span>
+                        </div>
+                        <div class="result-body">
+                            <div class="info-row"><span class="info-k">Requestor</span><span class="info-v" id="res-name">—</span></div>
+                            <div class="info-row"><span class="info-k">Document</span><span class="info-v" id="res-doc">—</span></div>
+                            <div class="info-row"><span class="info-k">Copies</span><span class="info-v" id="res-copies">—</span></div>
+                            <div class="info-row"><span class="info-k">Purpose</span><span class="info-v" id="res-purpose">—</span></div>
+                            <div class="info-row"><span class="info-k">Date Filed</span><span class="info-v" id="res-date">—</span></div>
+                            <div class="info-row"><span class="info-k">Contact</span><span class="info-v" id="res-contact">—</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-card">
+                <div class="timeline-title">📊 Request Processing Timeline</div>
+                <div class="timeline" id="timeline">
+                    <!-- rendered by JS -->
+                </div>
+                <div id="tl-placeholder" style="color:var(--muted);font-size:0.84rem;text-align:center;padding:24px 0;">
+                    Search for a Request ID to view its timeline.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ ADMIN PAGE ══ -->
+    <div id="page-admin" class="page">
+        <div id="admin-login-view">
+            <div class="section-head">
+                <div class="section-head-text">
+                    <div class="section-label">Restricted Area</div>
+                    <div class="section-title">Administrator Access</div>
+                </div>
+            </div>
+            <div class="admin-login-wrap">
+                <div class="login-card">
+                    <div class="login-badge">🔐</div>
+                    <h2>LCR Admin Portal</h2>
+                    <p>Sign in with your administrator credentials to manage civil registry requests.</p>
+                    <div class="form-group" style="text-align:left;margin-bottom:16px;">
+                        <label>Username</label>
+                        <input type="text" id="a-user" value="admin" placeholder="admin">
+                    </div>
+                    <div class="form-group" style="text-align:left;margin-bottom:20px;">
+                        <label>Password</label>
+                        <input type="password" id="a-pass" placeholder="Enter password" onkeydown="if(event.key==='Enter')doLogin()">
+                    </div>
+                    <button class="btn-login" onclick="doLogin()">Sign In to Dashboard</button>
+                    <div class="demo-hint">Demo credentials &nbsp;→&nbsp; admin / admin123</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="admin-dash" class="admin-dash">
+            <div class="dash-top">
+                <div>
+                    <div class="section-label">LCR Admin Dashboard</div>
+                    <div class="section-title">Request Management</div>
+                    <div class="section-sub">Review, process, and update civil registry document requests.</div>
+                </div>
+                <button class="btn-logout" onclick="doLogout()">⎋ Sign Out</button>
+            </div>
+            <div class="section-head" style="margin-top:8px;"></div>
+
+            <div class="stats-grid" id="stats-grid"></div>
+
+            <div class="table-head-row">
+                <div class="table-heading">All Requests</div>
+                <div class="filters">
+                    <select class="flt" id="flt-status" onchange="renderTable()">
+                        <option value="">All Statuses</option>
+                        <option>Pending</option>
+                        <option>Processing</option>
+                        <option>Ready for Pickup</option>
+                        <option>Completed</option>
+                    </select>
+                    <select class="flt" id="flt-doc" onchange="renderTable()">
+                        <option value="">All Documents</option>
+                        <option>Birth Certificate (PSA)</option>
+                        <option>Birth Certificate (Local Copy)</option>
+                        <option>Marriage Certificate (PSA)</option>
+                        <option>Marriage Certificate (Local Copy)</option>
+                        <option>Death Certificate (PSA)</option>
+                        <option>Death Certificate (Local Copy)</option>
+                        <option>Certificate of No Marriage (CENOMAR)</option>
+                        <option>Certificate of No Birth Record</option>
+                        <option>Annotation of Correction (RA 9048/10172)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="tbl-wrap">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Control No.</th>
+                        <th>Requestor</th>
+                        <th>Document Type</th>
+                        <th>Purpose</th>
+                        <th>Copies</th>
+                        <th>Date Filed</th>
+                        <th>Contact</th>
+                        <th>Status</th>
+                    </tr>
+                    </thead>
+                    <tbody id="tbl-body"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<!-- ══ SUCCESS MODAL ══ -->
+<div class="overlay" id="modal-overlay">
+    <div class="modal">
+        <div class="modal-top">
+            <div class="modal-seal">✅</div>
+            <h2>Request Successfully Filed</h2>
+            <p>Your document request has been received by the LCR.</p>
+        </div>
+        <div class="modal-body">
+            <p style="font-size:0.78rem;color:var(--muted);margin-bottom:10px;">YOUR REQUEST CONTROL NUMBER</p>
+            <div class="rid-box" id="modal-rid">—</div>
+            <div class="modal-details" id="modal-details"></div>
+            <p class="modal-note">
+                📌 <strong>Save this Control Number.</strong> You will need it to track the status of your request.<br>
+                Present a valid ID and this number when claiming your document at the LCR office.
+            </p>
+            <button class="btn-modal-close" onclick="closeModal()">Acknowledged — Close</button>
+        </div>
+    </div>
+</div>
+
+<div class="toasts" id="toasts"></div>
+
+<script>
+    // ── STORE ──
+    let db = JSON.parse(localStorage.getItem('lcr_requests') || '[]');
+    let loggedIn = false;
+
+    function save() { localStorage.setItem('lcr_requests', JSON.stringify(db)); }
+
+    function genID() {
+      const a='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+      let s='LCR-';
+      for(let i=0;i<8;i++) s+=a[Math.floor(Math.random()*a.length)];
+      return s;
+    }
+
+    function fmtDate(iso) {
+      return new Date(iso).toLocaleDateString('en-PH',{year:'numeric',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
+    }
+
+    function fmtDateShort(iso) {
+      return new Date(iso).toLocaleDateString('en-PH',{year:'numeric',month:'short',day:'numeric'});
+    }
+
+    // ── NAVIGATION ──
+    function showPage(id, btn) {
+      document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+      document.getElementById('page-'+id).classList.add('active');
+      if(btn) btn.classList.add('active');
+      if(id==='admin' && loggedIn) renderDash();
+    }
+
+    // ── SUBMIT ──
+    function submitRequest() {
+      const name    = document.getElementById('f-name').value.trim();
+      const dob     = document.getElementById('f-dob').value;
+      const pob     = document.getElementById('f-pob').value.trim();
+      const contact = document.getElementById('f-contact').value.trim();
+      const email   = document.getElementById('f-email').value.trim();
+      const address = document.getElementById('f-address').value.trim();
+      const doctype = document.getElementById('f-doctype').value;
+      const copies  = document.getElementById('f-copies').value;
+      const purpose = document.getElementById('f-purpose').value;
+      const remarks = document.getElementById('f-remarks').value.trim();
+
+      if(!name||!dob||!pob||!contact||!address||!doctype||!purpose) {
+        toast('⚠️ Please fill in all required fields.');
+        return;
+      }
+
+      const req = {
+        id: genID(), name, dob, pob, contact, email, address,
+        doctype, copies: parseInt(copies)||1, purpose, remarks,
+        status:'Pending', date:new Date().toISOString()
+      };
+
+      db.unshift(req);
+      save();
+
+      document.getElementById('modal-rid').textContent = req.id;
+      document.getElementById('modal-details').innerHTML =
+        `<strong>Name:</strong> ${req.name}<br>
+         <strong>Document:</strong> ${req.doctype}<br>
+         <strong>Copies:</strong> ${req.copies}<br>
+         <strong>Purpose:</strong> ${req.purpose}<br>
+         <strong>Date Filed:</strong> ${fmtDate(req.date)}`;
+      document.getElementById('modal-overlay').classList.add('show');
+
+      // clear form
+      ['f-name','f-dob','f-pob','f-contact','f-email','f-address','f-remarks']
+        .forEach(x=>document.getElementById(x).value='');
+      document.getElementById('f-doctype').value='';
+      document.getElementById('f-purpose').value='';
+      document.getElementById('f-copies').value='1';
+    }
+
+    function closeModal() {
+      document.getElementById('modal-overlay').classList.remove('show');
+    }
+
+    // ── TRACK ──
+    const STATUSES = ['Pending','Processing','Ready for Pickup','Completed'];
+    const TL_INFO = [
+      { icon:'📥', name:'Request Filed',      desc:'Request submitted and assigned a control number.' },
+      { icon:'🔍', name:'Under Review',       desc:'LCR staff is verifying the request details.' },
+      { icon:'📦', name:'Ready for Pickup',   desc:'Document is prepared and available at the LCR window.' },
+      { icon:'✅', name:'Completed',          desc:'Document has been claimed by the requestor.' },
+    ];
+
+    function doTrack() {
+      const val = document.getElementById('track-in').value.trim().toUpperCase();
+      const rc = document.getElementById('result-card');
+      const tl = document.getElementById('timeline');
+      const tlp = document.getElementById('tl-placeholder');
+
+      if(!val){ toast('⚠️ Please enter a Control Number.'); return; }
+
+      const req = db.find(r=>r.id===val);
+      if(!req){
+        rc.classList.remove('show');
+        tl.innerHTML='';
+        tlp.style.display='block';
+        toast('❌ Control Number not found.');
+        return;
+      }
+
+      document.getElementById('res-rid').textContent     = req.id;
+      document.getElementById('res-name').textContent    = req.name;
+      document.getElementById('res-doc').textContent     = req.doctype;
+      document.getElementById('res-copies').textContent  = req.copies + ' copy/copies';
+      document.getElementById('res-purpose').textContent = req.purpose;
+      document.getElementById('res-date').textContent    = fmtDate(req.date);
+      document.getElementById('res-contact').textContent = req.contact;
+      document.getElementById('res-badge').innerHTML     = badge(req.status);
+      rc.classList.add('show');
+
+      // Timeline
+      const si = STATUSES.indexOf(req.status);
+      tlp.style.display='none';
+      tl.innerHTML = TL_INFO.map((t,i)=>{
+        const done    = i < si;
+        const current = i === si;
+        const cls     = done?'done':current?'current':'';
+        return `
+          <div class="tl-item">
+            <div class="tl-left">
+              <div class="tl-dot ${cls}">${done?'✓':current?t.icon:'○'}</div>
+              <div class="tl-line ${done?'done':''}"></div>
+            </div>
+            <div class="tl-content">
+              <div class="tl-step-name" style="color:${current?'var(--navy)':done?'var(--slate)':'var(--muted)'}">${t.name}</div>
+              <div class="tl-step-desc">${t.desc}</div>
+            </div>
+          </div>`;
+      }).join('');
+    }
+
+    // ── ADMIN ──
+    function doLogin() {
+      const u = document.getElementById('a-user').value;
+      const p = document.getElementById('a-pass').value;
+      if(u==='admin'&&p==='admin123'){
+        loggedIn=true;
+        document.getElementById('admin-login-view').style.display='none';
+        document.getElementById('admin-dash').classList.add('show');
+        renderDash();
+      } else { toast('❌ Invalid credentials.'); }
+    }
+
+    function doLogout() {
+      loggedIn=false;
+      document.getElementById('admin-login-view').style.display='block';
+      document.getElementById('admin-dash').classList.remove('show');
+      document.getElementById('a-pass').value='';
+    }
+
+    function renderDash() { renderStats(); renderTable(); }
+
+    function renderStats() {
+      const total = db.length;
+      const pend  = db.filter(r=>r.status==='Pending').length;
+      const proc  = db.filter(r=>r.status==='Processing').length;
+      const ready = db.filter(r=>r.status==='Ready for Pickup').length;
+      const done  = db.filter(r=>r.status==='Completed').length;
+
+      document.getElementById('stats-grid').innerHTML = `
+        <div class="stat c-all"><div class="stat-n">${total}</div><div class="stat-l">Total Requests</div></div>
+        <div class="stat c-pend"><div class="stat-n">${pend}</div><div class="stat-l">Pending</div></div>
+        <div class="stat c-proc"><div class="stat-n">${proc}</div><div class="stat-l">Processing</div></div>
+        <div class="stat c-ready"><div class="stat-n">${ready}</div><div class="stat-l">Ready for Pickup</div></div>
+        <div class="stat c-done"><div class="stat-n">${done}</div><div class="stat-l">Completed</div></div>
+      `;
+    }
+
+    function renderTable() {
+      const fs = document.getElementById('flt-status').value;
+      const fd = document.getElementById('flt-doc').value;
+      const tbody = document.getElementById('tbl-body');
+
+      let filtered = db;
+      if(fs) filtered = filtered.filter(r=>r.status===fs);
+      if(fd) filtered = filtered.filter(r=>r.doctype===fd);
+
+      if(!filtered.length){
+        tbody.innerHTML=`<tr><td colspan="8"><div class="empty-tbl"><div class="eico">📭</div><p>No requests found.</p></div></td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(r=>`
+        <tr>
+          <td><span class="mono">${r.id}</span></td>
+          <td>${r.name}</td>
+          <td>${r.doctype}</td>
+          <td>${r.purpose}</td>
+          <td style="text-align:center;">${r.copies}</td>
+          <td><span class="mono" style="font-size:0.75rem;">${fmtDateShort(r.date)}</span></td>
+          <td>${r.contact}</td>
+          <td>
+            <select class="status-sel" onchange="updateStatus('${r.id}',this.value)">
+              <option ${r.status==='Pending'?'selected':''}>Pending</option>
+              <option ${r.status==='Processing'?'selected':''}>Processing</option>
+              <option ${r.status==='Ready for Pickup'?'selected':''}>Ready for Pickup</option>
+              <option ${r.status==='Completed'?'selected':''}>Completed</option>
+            </select>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function updateStatus(id, newStatus) {
+      const req = db.find(r=>r.id===id);
+      if(req){ req.status=newStatus; save(); renderStats(); toast(`✅ ${id} updated → ${newStatus}`); }
+    }
+
+    // ── BADGE ──
+    function badge(s){
+      const m={'Pending':'b-pending','Processing':'b-processing','Ready for Pickup':'b-ready','Completed':'b-completed'};
+      return `<span class="badge ${m[s]||'b-pending'}">${s}</span>`;
+    }
+
+    // ── TOAST ──
+    function toast(msg){
+      const c=document.getElementById('toasts');
+      const t=document.createElement('div');
+      t.className='toast'; t.textContent=msg;
+      c.appendChild(t);
+      setTimeout(()=>{ t.style.opacity='0'; t.style.transition='opacity 0.3s'; setTimeout(()=>t.remove(),300); },3200);
+    }
+
+    // ── SEED DATA ──
+    if(!db.length){
+      const seeds=[
+        {name:'Santos, Maria Luisa A.', dob:'1990-03-12', pob:'Manila', contact:'09171234567', email:'', address:'123 Rizal St., Brgy. 1, Manila', doctype:'Birth Certificate (PSA)', copies:2, purpose:'Passport Application', remarks:'', status:'Ready for Pickup', date:new Date(Date.now()-3*864e5).toISOString()},
+        {name:'Reyes, Jose Manuel B.', dob:'1985-07-25', pob:'Quezon City', contact:'09281234567', email:'', address:'456 Mabini Ave., Brgy. 5, QC', doctype:'Marriage Certificate (PSA)', copies:1, purpose:'Employment (Abroad / OFW)', remarks:'Urgent', status:'Processing', date:new Date(Date.now()-2*864e5).toISOString()},
+        {name:'Cruz, Ana Beatriz C.', dob:'1995-11-08', pob:'Caloocan', contact:'09391234567', email:'', address:'789 Del Pilar St., Caloocan', doctype:'Certificate of No Marriage (CENOMAR)', copies:1, purpose:'Marriage License Application', remarks:'', status:'Completed', date:new Date(Date.now()-6*864e5).toISOString()},
+        {name:'Lim, Pedro Juan D.', dob:'1978-01-30', pob:'Pasay City', contact:'09501234567', email:'', address:'321 Taft Ave., Pasay', doctype:'Death Certificate (Local Copy)', copies:3, purpose:'Claim of Benefits', remarks:'For SSS claim', status:'Pending', date:new Date(Date.now()-1*864e5).toISOString()},
+        {name:'Gonzales, Rosa Mae E.', dob:'2000-06-14', pob:'Marikina', contact:'09611234567', email:'', address:'654 Marcos Hwy., Marikina', doctype:'Birth Certificate (Local Copy)', copies:1, purpose:'School / Academic Requirement', remarks:'', status:'Processing', date:new Date(Date.now()-4*864e5).toISOString()},
+      ];
+      seeds.forEach(s=>{ s.id=genID(); db.push(s); });
+      save();
+    }
+</script>
+</body>
+</html>
