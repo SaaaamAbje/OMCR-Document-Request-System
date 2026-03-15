@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OMCR Document Request System</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Outfit:wght@300;400;500;600&family=Inconsolata:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0d1f3c;--navy-mid:#152d54;--navy-lite:#1e3f74;
+  --gold:#c8962a;--gold-lt:#e8c96a;--gold-pale:#f9f2de;
+  --scarlet:#9b2020;--white:#ffffff;--off-white:#f7f5f0;
+  --paper:#fdfbf7;--ink:#1a1612;--slate:#4a5568;
+  --border:#dcd5c4;--border-lt:#ede8dc;--muted:#7a6e5f;
+  --shadow:0 4px 24px rgba(13,31,60,.10);
+  --shadow-lg:0 12px 48px rgba(13,31,60,.16);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Outfit',sans-serif;background:var(--off-white);color:var(--ink);min-height:100vh;display:flex;flex-direction:column;}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:radial-gradient(circle at 15% 85%,rgba(200,150,42,.04) 0%,transparent 50%),
+    radial-gradient(circle at 85% 15%,rgba(13,31,60,.04) 0%,transparent 50%),
+    url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%230d1f3c' fill-opacity='0.022'%3E%3Cpath d='M30 30h1v1h-1z'/%3E%3C/g%3E%3C/svg%3E");}
+
+.gov-banner{background:var(--navy);color:rgba(255,255,255,.5);font-size:.67rem;letter-spacing:.18em;text-align:center;padding:7px 20px;font-weight:500;text-transform:uppercase;border-bottom:1px solid rgba(200,150,42,.3);}
+header{background:var(--navy);position:relative;z-index:20;overflow:hidden;}
+header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent 0%,var(--gold) 20%,var(--gold-lt) 50%,var(--gold) 80%,transparent 100%);}
+.header-body{max-width:1200px;margin:0 auto;padding:18px 36px;display:flex;align-items:center;gap:24px;}
+.seal{width:68px;height:68px;flex-shrink:0;}
+.header-title{flex:1;}
+.header-title .office{font-size:.65rem;font-weight:600;letter-spacing:.22em;color:var(--gold-lt);text-transform:uppercase;margin-bottom:4px;}
+.header-title h1{font-family:'Cormorant Garamond',serif;font-size:1.65rem;font-weight:700;color:var(--white);line-height:1.1;}
+.header-title .tagline{font-size:.72rem;color:rgba(255,255,255,.4);margin-top:3px;font-weight:300;}
+.header-right{display:flex;flex-direction:column;align-items:flex-end;gap:10px;}
+
+/* ── LANGUAGE TOGGLE ── */
+.lang-toggle{display:flex;align-items:center;gap:0;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:8px;overflow:hidden;}
+.lang-btn{padding:6px 14px;background:transparent;border:none;color:rgba(255,255,255,.5);font-family:'Outfit',sans-serif;font-size:.72rem;font-weight:600;cursor:pointer;letter-spacing:.06em;transition:all .2s;}
+.lang-btn:hover{color:rgba(255,255,255,.85);}
+.lang-btn.active{background:var(--gold);color:var(--navy);}
+.lang-divider{width:1px;height:20px;background:rgba(255,255,255,.15);}
+
+.pub-nav{display:flex;align-items:center;gap:2px;background:rgba(255,255,255,.06);padding:5px;border-radius:10px;border:1px solid rgba(255,255,255,.08);}
+.nav-btn{padding:9px 20px;background:transparent;border:none;color:rgba(255,255,255,.55);font-family:'Outfit',sans-serif;font-size:.8rem;font-weight:500;cursor:pointer;border-radius:7px;transition:all .2s;display:flex;align-items:center;gap:7px;}
+.nav-btn:hover{color:rgba(255,255,255,.85);background:rgba(255,255,255,.07);}
+.nav-btn.active{background:var(--gold);color:var(--navy);font-weight:600;}
+
+main{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:44px 36px 60px;flex:1;width:100%;}
+.page{display:none;animation:fadeUp .32s ease;}
+.page.active{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+
+.section-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:32px;padding-bottom:20px;border-bottom:2px solid var(--border);position:relative;}
+.section-head::after{content:'';position:absolute;bottom:-2px;left:0;width:80px;height:2px;background:var(--gold);}
+.section-label{font-size:.65rem;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:5px;}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;color:var(--navy);line-height:1.1;}
+.section-sub{font-size:.84rem;color:var(--muted);margin-top:4px;font-weight:300;}
+
+.form-wrap{display:grid;grid-template-columns:1fr 340px;gap:28px;align-items:start;}
+.form-card{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:40px;box-shadow:var(--shadow);}
+.form-card-title{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:600;color:var(--navy);margin-bottom:24px;padding-bottom:14px;border-bottom:1px solid var(--border-lt);display:flex;align-items:center;gap:10px;}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+.form-group{display:flex;flex-direction:column;gap:5px;}
+.form-group.full{grid-column:1/-1;}
+label{font-size:.7rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);}
+label .req{color:#9b2020;margin-left:2px;}
+input,select,textarea{font-family:'Outfit',sans-serif;font-size:.88rem;padding:10px 13px;border:1.5px solid var(--border);border-radius:8px;background:var(--paper);color:var(--ink);outline:none;width:100%;transition:border-color .2s,box-shadow .2s,background .2s;}
+input:focus,select:focus,textarea:focus{border-color:var(--navy-lite);box-shadow:0 0 0 3px rgba(21,45,84,.08);background:var(--white);}
+input::placeholder,textarea::placeholder{color:#c0b8a8;}
+select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='7' fill='none' viewBox='0 0 11 7'%3E%3Cpath d='M1 1l4.5 4.5L10 1' stroke='%237a6e5f' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 13px center;padding-right:34px;}
+textarea{resize:vertical;min-height:88px;line-height:1.5;}
+.copies-row{display:flex;align-items:center;gap:12px;}
+.copies-row input[type=number]{width:80px;text-align:center;}
+.copies-lbl{font-size:.82rem;color:var(--muted);}
+.submit-row{margin-top:28px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
+.btn-submit{padding:12px 32px;background:var(--navy);color:var(--white);border:none;border-radius:8px;font-family:'Outfit',sans-serif;font-size:.85rem;font-weight:600;cursor:pointer;letter-spacing:.05em;display:flex;align-items:center;gap:9px;position:relative;overflow:hidden;transition:transform .15s,box-shadow .15s;}
+.btn-submit::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--gold) 0%,var(--scarlet) 120%);opacity:0;transition:opacity .2s;}
+.btn-submit:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(13,31,60,.22);}
+.btn-submit:hover::after{opacity:1;}
+.btn-submit>*{position:relative;z-index:1;}
+.note-text{font-size:.75rem;color:var(--muted);line-height:1.5;}
+
+.info-sidebar{display:flex;flex-direction:column;gap:18px;}
+.info-box{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;box-shadow:0 2px 12px rgba(13,31,60,.06);}
+.info-box-head{background:var(--navy);color:var(--white);padding:11px 18px;font-size:.72rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;display:flex;align-items:center;gap:8px;}
+.info-box-body{padding:18px;}
+.doc-list{list-style:none;}
+.doc-list li{padding:7px 0;border-bottom:1px solid var(--border-lt);font-size:.83rem;display:flex;align-items:center;gap:9px;}
+.doc-list li:last-child{border:none;}
+.doc-list li::before{content:'📄';font-size:.85rem;}
+.hours-row,.fee-row{display:flex;justify-content:space-between;padding:5px 0;font-size:.8rem;border-bottom:1px solid var(--border-lt);}
+.hours-row:last-child,.fee-row:last-child{border:none;}
+.hours-day,.fee-name{color:var(--muted);font-weight:500;}
+.hours-time,.fee-amt{font-family:'Inconsolata',monospace;color:var(--ink);}
+
+/* ── APPOINTMENT ── */
+.appt-layout{display:grid;grid-template-columns:1fr 340px;gap:28px;align-items:start;}
+.calendar-card{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:36px;box-shadow:var(--shadow);}
+.cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
+.cal-title{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:700;color:var(--navy);}
+.cal-nav{display:flex;gap:8px;}
+.cal-nav-btn{width:34px;height:34px;border:1.5px solid var(--border);border-radius:8px;background:var(--paper);color:var(--ink);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.cal-nav-btn:hover{border-color:var(--navy);background:var(--navy);color:var(--white);}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:24px;}
+.cal-day-label{text-align:center;font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:6px 0;}
+.cal-day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:8px;font-size:.82rem;cursor:pointer;transition:all .15s;border:1.5px solid transparent;font-weight:500;}
+.cal-day:hover:not(.empty):not(.past):not(.closed){background:var(--gold-pale);border-color:var(--gold);}
+.cal-day.empty{cursor:default;}.cal-day.past{color:#ccc;cursor:default;}.cal-day.closed{color:#e0d0c0;cursor:not-allowed;text-decoration:line-through;}
+.cal-day.today{font-weight:700;color:var(--navy);border-color:var(--navy-lite);}
+.cal-day.selected{background:var(--navy);color:var(--white);border-color:var(--navy);}
+.time-slots{margin-bottom:24px;}
+.time-slots-title{font-size:.75rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;}
+.slots-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+.slot{padding:9px 4px;border:1.5px solid var(--border);border-radius:8px;text-align:center;font-size:.78rem;font-weight:500;cursor:pointer;transition:all .15s;background:var(--paper);}
+.slot:hover:not(.slot-full){border-color:var(--gold);background:var(--gold-pale);}
+.slot.slot-selected{background:var(--navy);color:var(--white);border-color:var(--navy);}
+.slot.slot-full{background:#f5f5f5;color:#bbb;cursor:not-allowed;text-decoration:line-through;}
+.appt-form{margin-top:20px;border-top:1px solid var(--border-lt);padding-top:20px;}
+.appt-summary{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:24px;box-shadow:var(--shadow);}
+.appt-summary h3{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:700;color:var(--navy);margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border-lt);}
+.appt-row{display:flex;justify-content:space-between;padding:6px 0;font-size:.82rem;border-bottom:1px solid var(--border-lt);}
+.appt-row:last-child{border:none;}
+.appt-k{color:var(--muted);font-weight:500;}.appt-v{color:var(--ink);font-weight:600;text-align:right;}.appt-v.empty{color:#ccc;font-weight:400;font-style:italic;}
+.appt-instructions{margin-top:18px;background:var(--gold-pale);border:1px solid rgba(200,150,42,.3);border-radius:10px;padding:16px;}
+.appt-instructions p{font-size:.78rem;color:var(--ink);line-height:1.6;}
+.appt-instructions strong{color:var(--navy);}
+
+/* ── TRACK ── */
+.track-layout{display:grid;grid-template-columns:480px 1fr;gap:28px;align-items:start;}
+.track-card{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:36px;box-shadow:var(--shadow);}
+.track-search-label{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:var(--navy);margin-bottom:16px;}
+.track-input-group{display:flex;gap:10px;margin-bottom:24px;}
+.track-input-group input{flex:1;font-family:'Inconsolata',monospace;font-size:1.05rem;letter-spacing:.1em;text-transform:uppercase;}
+.btn-search{padding:10px 20px;background:var(--navy);color:var(--white);border:none;border-radius:8px;font-family:'Outfit',sans-serif;font-size:.83rem;font-weight:600;cursor:pointer;transition:background .2s;white-space:nowrap;}
+.btn-search:hover{background:var(--navy-lite);}
+.result-card{display:none;border:1.5px solid var(--border);border-radius:10px;overflow:hidden;}
+.result-card.show{display:block;animation:fadeUp .3s ease;}
+.result-top{background:var(--navy);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;}
+.result-top .rid{font-family:'Inconsolata',monospace;font-size:.88rem;color:var(--gold-lt);letter-spacing:.1em;}
+.result-body{padding:20px;}
+.info-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border-lt);font-size:.84rem;gap:12px;}
+.info-row:last-child{border:none;}
+.info-k{color:var(--muted);font-weight:500;flex-shrink:0;}.info-v{color:var(--ink);text-align:right;}
+.result-actions{padding:14px 20px;border-top:1px solid var(--border-lt);display:flex;gap:10px;flex-wrap:wrap;}
+.btn-print-slip{padding:9px 16px;background:var(--navy);color:var(--white);border:none;border-radius:8px;font-family:'Outfit',sans-serif;font-size:.78rem;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:7px;transition:background .2s;}
+.btn-print-slip:hover{background:var(--navy-lite);}
+.btn-cancel-req{padding:9px 16px;background:#fff0f0;color:var(--scarlet);border:1.5px solid #f0c0c0;border-radius:8px;font-family:'Outfit',sans-serif;font-size:.78rem;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:7px;transition:all .2s;}
+.btn-cancel-req:hover{background:#fde8e8;border-color:var(--scarlet);}
+.btn-cancel-req:disabled{opacity:.4;cursor:not-allowed;}
+
+.timeline-card{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:32px;box-shadow:var(--shadow);}
+.timeline-title{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:var(--navy);margin-bottom:24px;padding-bottom:14px;border-bottom:1px solid var(--border-lt);}
+.timeline{display:flex;flex-direction:column;}
+.tl-item{display:flex;gap:16px;}
+.tl-left{display:flex;flex-direction:column;align-items:center;flex-shrink:0;}
+.tl-dot{width:32px;height:32px;border-radius:50%;border:2.5px solid var(--border);background:var(--white);display:flex;align-items:center;justify-content:center;font-size:.9rem;z-index:1;transition:all .3s;}
+.tl-dot.done{background:var(--navy);border-color:var(--navy);color:var(--white);}
+.tl-dot.current{background:var(--gold);border-color:var(--gold);color:var(--navy);box-shadow:0 0 0 4px rgba(200,150,42,.2);}
+.tl-dot.cancelled{background:#9b2020;border-color:#9b2020;color:#fff;}
+.tl-line{width:2px;flex:1;min-height:28px;background:var(--border-lt);}
+.tl-line.done{background:var(--navy);}
+.tl-item:last-child .tl-line{display:none;}
+.tl-content{padding-bottom:24px;padding-top:4px;}
+.tl-step-name{font-size:.88rem;font-weight:600;margin-bottom:3px;}
+.tl-step-desc{font-size:.78rem;color:var(--muted);line-height:1.4;}
+
+.badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:.71rem;font-weight:600;letter-spacing:.04em;white-space:nowrap;}
+.badge::before{content:'';width:5px;height:5px;border-radius:50%;background:currentColor;opacity:.7;}
+.b-pending{background:#fef3c7;color:#92400e;}.b-processing{background:#dbeafe;color:#1e40af;}
+.b-ready{background:#ede9fe;color:#5b21b6;}.b-completed{background:#d1fae5;color:#065f46;}
+.b-cancelled{background:#fee2e2;color:#991b1b;}
+
+/* ── MODALS ── */
+.overlay{position:fixed;inset:0;background:rgba(13,31,60,.55);backdrop-filter:blur(5px);z-index:500;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;}
+.overlay.show{opacity:1;pointer-events:all;}
+.modal{background:var(--white);border-radius:16px;max-width:520px;width:92%;overflow:hidden;box-shadow:var(--shadow-lg);transform:scale(.92);transition:transform .3s;}
+.overlay.show .modal{transform:scale(1);}
+.modal-top{background:var(--navy);padding:28px 36px;text-align:center;}
+.modal-seal{width:56px;height:56px;background:rgba(200,150,42,.2);border:2px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 14px;}
+.modal-seal.red{background:rgba(155,32,32,.15);border-color:#c0392b;}
+.modal-top h2{font-family:'Cormorant Garamond',serif;font-size:1.5rem;color:var(--white);font-weight:700;margin-bottom:4px;}
+.modal-top p{font-size:.8rem;color:rgba(255,255,255,.55);}
+.modal-body{padding:28px 36px;text-align:center;}
+.rid-box{background:var(--gold-pale);border:2px dashed var(--gold);border-radius:10px;padding:16px 28px;font-family:'Inconsolata',monospace;font-size:1.5rem;font-weight:600;color:var(--navy);letter-spacing:.14em;margin-bottom:14px;}
+.modal-details{background:var(--paper);border:1px solid var(--border-lt);border-radius:8px;padding:14px 18px;font-size:.8rem;color:var(--ink);text-align:left;margin-bottom:16px;line-height:1.7;}
+.modal-details strong{color:var(--navy);}
+.modal-note{font-size:.75rem;color:var(--muted);line-height:1.55;margin-bottom:18px;}
+.modal-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.btn-modal-print{padding:11px 24px;background:var(--gold);color:var(--navy);border:none;border-radius:8px;font-family:'Outfit',sans-serif;font-size:.83rem;font-weight:700;cursor:pointer;transition:background .2s;}
+.btn-modal-print:hover{background:var(--gold-lt);}
+.btn-modal-close{padding:11px 24px;background:var(--navy);color:var(--white);border:none;border-radius:8px;font-family:'Outfit',sans-serif;font-size:.83rem;font-weight:600;cursor:pointer;transition:background .2s;}
+.btn-modal-close:hover{background:var(--navy-lite);}
+.btn-modal-danger{padding:11px 24px;background:var(--scarlet);color:var(--white);border:none;border-radius:8px;font-family:'Outfit',sans-serif;font-size:.83rem;font-weight:600;cursor:pointer;transition:background .2s;}
+.btn-modal-danger:hover{background:#7a1818;}
+.cancel-reason-wrap{text-align:left;margin-bottom:16px;}
+.cancel-reason-wrap label{font-size:.7rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:6px;}
+.cancel-reason-wrap select,.cancel-reason-wrap textarea{width:100%;font-family:'Outfit',sans-serif;font-size:.85rem;padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;background:var(--paper);color:var(--ink);outline:none;margin-bottom:10px;}
+.cancel-warning{background:#fee2e2;border:1px solid #fca5a5;border-radius:8px;padding:12px 16px;font-size:.78rem;color:#7f1d1d;margin-bottom:16px;text-align:left;line-height:1.5;}
+
+.toasts{position:fixed;bottom:24px;right:24px;z-index:600;display:flex;flex-direction:column;gap:8px;}
+.toast{background:var(--navy);color:var(--white);padding:11px 18px;border-radius:8px;font-size:.81rem;font-weight:500;border-left:3px solid var(--gold);box-shadow:0 4px 20px rgba(0,0,0,.2);animation:slideIn .28s ease;min-width:240px;}
+@keyframes slideIn{from{opacity:0;transform:translateX(24px);}to{opacity:1;transform:translateX(0);}}
+
+/* ── PRINT ── */
+@media print{body>*{display:none!important;}#print-area{display:block!important;}}
+#print-area{display:none;}
+.slip{max-width:520px;margin:40px auto;font-family:'Outfit',sans-serif;color:#1a1612;padding:40px;}
+.slip-header{text-align:center;border-bottom:2px solid #0d1f3c;padding-bottom:20px;margin-bottom:20px;}
+.slip-header h2{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:700;color:#0d1f3c;}
+.slip-header p{font-size:.75rem;color:#7a6e5f;margin-top:2px;}
+.slip-rid{background:#f9f2de;border:2px dashed #c8962a;border-radius:8px;padding:12px;text-align:center;font-family:'Inconsolata',monospace;font-size:1.3rem;font-weight:700;color:#0d1f3c;letter-spacing:.12em;margin:16px 0;}
+.slip-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #ede8dc;font-size:.83rem;}
+.slip-row:last-child{border:none;}
+.slip-key{color:#7a6e5f;font-weight:500;}.slip-val{font-weight:600;color:#1a1612;text-align:right;max-width:60%;}
+.slip-footer{margin-top:20px;border-top:1px solid #dcd5c4;padding-top:14px;font-size:.72rem;color:#7a6e5f;text-align:center;line-height:1.6;}
+
+@media(max-width:900px){.form-wrap,.appt-layout,.track-layout{grid-template-columns:1fr;}.header-body{flex-wrap:wrap;gap:14px;}}
+@media(max-width:640px){main{padding:28px 18px 48px;}.header-body{padding:14px 18px;}.form-grid{grid-template-columns:1fr;}.section-title{font-size:1.6rem;}.slots-grid{grid-template-columns:repeat(3,1fr);}}
+</style>
+</head>
+<body>
+
+<div class="gov-banner" data-i18n="banner">Republic of the Philippines &nbsp;·&nbsp; Local Government Unit &nbsp;·&nbsp; Office of the Municipal Civil Registrar (OMCR)</div>
+
+<header>
+  <div class="header-body">
+    <svg class="seal" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="40" cy="40" r="38" fill="none" stroke="#c8962a" stroke-width="1.5"/>
+      <circle cx="40" cy="40" r="32" fill="none" stroke="rgba(200,150,42,0.4)" stroke-width="0.8"/>
+      <circle cx="40" cy="40" r="22" fill="rgba(200,150,42,0.08)" stroke="#c8962a" stroke-width="1"/>
+      <g stroke="#c8962a" stroke-width="1"><line x1="40" y1="6" x2="40" y2="14"/><line x1="40" y1="66" x2="40" y2="74"/><line x1="6" y1="40" x2="14" y2="40"/><line x1="66" y1="40" x2="74" y2="40"/><line x1="16.7" y1="16.7" x2="22.4" y2="22.4"/><line x1="57.6" y1="57.6" x2="63.3" y2="63.3"/><line x1="63.3" y1="16.7" x2="57.6" y2="22.4"/><line x1="22.4" y1="57.6" x2="16.7" y2="63.3"/></g>
+      <rect x="28" y="32" width="10" height="14" rx="1" fill="none" stroke="#c8962a" stroke-width="1.2"/><rect x="42" y="32" width="10" height="14" rx="1" fill="none" stroke="#c8962a" stroke-width="1.2"/>
+      <line x1="38" y1="33" x2="38" y2="45" stroke="#c8962a" stroke-width="0.8"/><line x1="42" y1="33" x2="42" y2="45" stroke="#c8962a" stroke-width="0.8"/>
+      <circle cx="40" cy="28" r="1.5" fill="#c8962a"/><circle cx="33" cy="30" r="1" fill="rgba(200,150,42,0.6)"/><circle cx="47" cy="30" r="1" fill="rgba(200,150,42,0.6)"/>
+      <text x="40" y="56" text-anchor="middle" font-family="serif" font-size="4" fill="#c8962a" font-weight="600" letter-spacing="0.3">OMCR</text>
+    </svg>
+    <div class="header-title">
+      <div class="office" data-i18n="office">Office of the Municipal Civil Registrar (OMCR)</div>
+      <h1 data-i18n="sys_title">Document Request System</h1>
+      <div class="tagline" data-i18n="tagline">OMCR Online Document Request Portal</div>
+    </div>
+    <div class="header-right">
+      <div class="lang-toggle">
+        <button class="lang-btn active" onclick="setLang('en')">EN</button>
+        <div class="lang-divider"></div>
+        <button class="lang-btn" onclick="setLang('fil')">FIL</button>
+      </div>
+      <nav class="pub-nav">
+        <button class="nav-btn active" onclick="showPage('request',this)" data-i18n="nav_request">📋 Request</button>
+        <button class="nav-btn" onclick="showPage('appointment',this)" data-i18n="nav_appt">📅 Appointment</button>
+        <button class="nav-btn" onclick="showPage('track',this)" data-i18n="nav_track">🔍 Track</button>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- ══ REQUEST PAGE ══ -->
+<div id="page-request" class="page active">
+  <div class="section-head"><div>
+    <div class="section-label" data-i18n="req_label">OMCR Services</div>
+    <div class="section-title" data-i18n="req_title">Submit a Document Request</div>
+    <div class="section-sub" data-i18n="req_sub">Fill out all required fields to request your official OMCR document.</div>
+  </div></div>
+  <div class="form-wrap">
+    <div class="form-card">
+      <div class="form-card-title"><span>👤</span> <span data-i18n="personal_info">Personal Information</span></div>
+      <div class="form-grid">
+        <div class="form-group full"><label data-i18n="lbl_name">Full Name (Last, First, Middle) <span class="req">*</span></label><input type="text" id="f-name" data-i18n-ph="ph_name" placeholder="e.g. Dela Cruz, Juan Santos"></div>
+        <div class="form-group"><label data-i18n="lbl_dob">Date of Birth <span class="req">*</span></label><input type="date" id="f-dob"></div>
+        <div class="form-group"><label data-i18n="lbl_pob">Place of Birth <span class="req">*</span></label><input type="text" id="f-pob" data-i18n-ph="ph_pob" placeholder="City/Municipality, Province"></div>
+        <div class="form-group"><label data-i18n="lbl_contact">Contact Number <span class="req">*</span></label><input type="tel" id="f-contact" placeholder="09XX-XXX-XXXX"></div>
+        <div class="form-group"><label data-i18n="lbl_email">Email Address</label><input type="email" id="f-email" data-i18n-ph="ph_optional" placeholder="optional"></div>
+        <div class="form-group full"><label data-i18n="lbl_address">Current Address <span class="req">*</span></label><input type="text" id="f-address" data-i18n-ph="ph_address" placeholder="House No., Street, Barangay, City/Municipality"></div>
+      </div>
+      <div class="form-card-title" style="margin-top:28px;"><span>📄</span> <span data-i18n="doc_details">Document Details</span></div>
+      <div class="form-grid">
+        <div class="form-group"><label data-i18n="lbl_doctype">Document Type <span class="req">*</span></label>
+          <select id="f-doctype">
+            <option value="" data-i18n="sel_doc">— Select Document —</option>
+            <optgroup data-i18n-label="grp_vital" label="Vital Records">
+              <option>Birth Certificate (PSA)</option><option>Birth Certificate (Local Copy)</option>
+              <option>Marriage Certificate (PSA)</option><option>Marriage Certificate (Local Copy)</option>
+              <option>Death Certificate (PSA)</option><option>Death Certificate (Local Copy)</option>
+            </optgroup>
+            <optgroup data-i18n-label="grp_cert" label="Certifications">
+              <option>Certificate of No Marriage (CENOMAR)</option><option>Certificate of No Birth Record</option>
+              <option>Certificate of Late Registration</option><option>Certificate of Foundling</option>
+              <option>Transcription of Civil Registry Records</option>
+            </optgroup>
+            <optgroup data-i18n-label="grp_anno" label="Annotations">
+              <option>Annotation of Marriage on Birth Certificate</option><option>Annotation of Death on Birth Certificate</option>
+              <option>Annotation of Legitimation</option><option>Annotation of Correction (RA 9048/10172)</option>
+            </optgroup>
+          </select>
+        </div>
+        <div class="form-group"><label data-i18n="lbl_copies">Number of Copies <span class="req">*</span></label><div class="copies-row"><input type="number" id="f-copies" value="1" min="1" max="10"><span class="copies-lbl" data-i18n="copy_label">copy/copies</span></div></div>
+        <div class="form-group full"><label data-i18n="lbl_purpose">Purpose of Request <span class="req">*</span></label>
+          <select id="f-purpose">
+            <option value="" data-i18n="sel_purpose">— Select Purpose —</option>
+            <option data-i18n="pur_emp_local">Employment (Local)</option>
+            <option data-i18n="pur_emp_ofw">Employment (Abroad / OFW)</option>
+            <option data-i18n="pur_passport">Passport Application</option>
+            <option data-i18n="pur_school">School / Academic Requirement</option>
+            <option data-i18n="pur_sss">Social Security / PhilHealth / Pag-IBIG</option>
+            <option data-i18n="pur_court">Court / Legal Proceeding</option>
+            <option data-i18n="pur_marlic">Marriage License Application</option>
+            <option data-i18n="pur_benefits">Claim of Benefits</option>
+            <option data-i18n="pur_personal">Personal Records</option>
+            <option data-i18n="pur_other">Other</option>
+          </select>
+        </div>
+        <div class="form-group full"><label data-i18n="lbl_remarks">Additional Remarks</label><textarea id="f-remarks" data-i18n-ph="ph_remarks" placeholder="Any special instructions or additional information…"></textarea></div>
+      </div>
+      <div class="submit-row">
+        <button class="btn-submit" onclick="submitRequest()"><span>📨</span><span data-i18n="btn_submit">Submit Request</span></button>
+        <p class="note-text" data-i18n="submit_note">By submitting, you confirm that all<br>information provided is accurate and truthful.</p>
+      </div>
+    </div>
+    <div class="info-sidebar">
+      <div class="info-box"><div class="info-box-head" data-i18n="sidebar_docs">📜 Available Documents</div><div class="info-box-body"><ul class="doc-list"><li data-i18n="doc1">Birth Certificate (PSA / Local)</li><li data-i18n="doc2">Marriage Certificate (PSA / Local)</li><li data-i18n="doc3">Death Certificate (PSA / Local)</li><li>CENOMAR</li><li data-i18n="doc4">Certificate of No Birth Record</li><li data-i18n="doc5">Annotations &amp; Corrections</li></ul></div></div>
+      <div class="info-box"><div class="info-box-head" data-i18n="sidebar_hours">🕐 Office Hours</div><div class="info-box-body"><div class="hours-row"><span class="hours-day" data-i18n="day_mf">Mon – Fri</span><span class="hours-time">8:00 – 17:00</span></div><div class="hours-row"><span class="hours-day" data-i18n="day_sat">Saturday</span><span class="hours-time">8:00 – 12:00</span></div><div class="hours-row"><span class="hours-day" data-i18n="day_sun">Sunday</span><span class="hours-time" data-i18n="closed">Closed</span></div><div class="hours-row"><span class="hours-day" data-i18n="day_hol">Holidays</span><span class="hours-time" data-i18n="closed">Closed</span></div></div></div>
+      <div class="info-box"><div class="info-box-head" data-i18n="sidebar_fees">💰 Filing Fees</div><div class="info-box-body"><div class="fee-row"><span class="fee-name" data-i18n="fee1">Local Copy</span><span class="fee-amt">₱ 50.00</span></div><div class="fee-row"><span class="fee-name" data-i18n="fee2">PSA Endorsed</span><span class="fee-amt">₱ 155.00</span></div><div class="fee-row"><span class="fee-name" data-i18n="fee3">Certification</span><span class="fee-amt">₱ 50.00</span></div><div class="fee-row"><span class="fee-name" data-i18n="fee4">RA 9048 Filing</span><span class="fee-amt">₱ 1,000.00</span></div><div class="fee-row"><span class="fee-name" data-i18n="fee5">Payable at</span><span class="fee-amt" data-i18n="fee5v">City Treasurer</span></div></div></div>
+      <div class="info-box"><div class="info-box-head" data-i18n="sidebar_req">📌 Requirements</div><div class="info-box-body"><ul class="doc-list"><li data-i18n="req1">Valid government-issued ID</li><li data-i18n="req2">Accomplished request form</li><li data-i18n="req3">Official Receipt (City Treasurer)</li><li data-i18n="req4">Authorization letter (if by representative)</li></ul></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ APPOINTMENT PAGE ══ -->
+<div id="page-appointment" class="page">
+  <div class="section-head"><div>
+    <div class="section-label" data-i18n="appt_label">Schedule a Visit</div>
+    <div class="section-title" data-i18n="appt_title">Book an Appointment</div>
+    <div class="section-sub" data-i18n="appt_sub">Select a date and time slot to visit the OMCR office.</div>
+  </div></div>
+  <div class="appt-layout">
+    <div class="calendar-card">
+      <div class="cal-header">
+        <div class="cal-title" id="cal-month-title">—</div>
+        <div class="cal-nav"><button class="cal-nav-btn" onclick="changeMonth(-1)">‹</button><button class="cal-nav-btn" onclick="changeMonth(1)">›</button></div>
+      </div>
+      <div class="cal-grid" id="cal-grid"></div>
+      <div class="time-slots" id="time-slots-wrap" style="display:none;">
+        <div class="time-slots-title" data-i18n="slots_for">Available Time Slots for <span id="selected-date-label">—</span></div>
+        <div class="slots-grid" id="slots-grid"></div>
+      </div>
+      <div class="appt-form" id="appt-form" style="display:none;">
+        <div class="form-card-title" style="margin-bottom:18px;"><span>👤</span> <span data-i18n="your_details">Your Details</span></div>
+        <div class="form-grid" style="margin-bottom:18px;">
+          <div class="form-group full"><label data-i18n="lbl_name">Full Name <span class="req">*</span></label><input type="text" id="ap-name" data-i18n-ph="ph_name" placeholder="Last, First, Middle"></div>
+          <div class="form-group"><label data-i18n="lbl_contact">Contact Number <span class="req">*</span></label><input type="tel" id="ap-contact" placeholder="09XX-XXX-XXXX"></div>
+          <div class="form-group"><label data-i18n="lbl_doctype">Purpose / Document <span class="req">*</span></label>
+            <select id="ap-purpose"><option value="" data-i18n="sel_purpose">— Select —</option><option>Birth Certificate (PSA)</option><option>Birth Certificate (Local Copy)</option><option>Marriage Certificate (PSA)</option><option>Death Certificate (PSA)</option><option>Certificate of No Marriage (CENOMAR)</option><option>General Inquiry</option></select>
+          </div>
+        </div>
+        <button class="btn-submit" onclick="bookAppointment()"><span>📅</span><span data-i18n="btn_confirm_appt">Confirm Appointment</span></button>
+      </div>
+    </div>
+    <div>
+      <div class="appt-summary">
+        <h3 data-i18n="appt_summary">📋 Appointment Summary</h3>
+        <div class="appt-row"><span class="appt-k" data-i18n="lbl_date">Date</span><span class="appt-v empty" id="sum-date" data-i18n="not_selected">Not selected</span></div>
+        <div class="appt-row"><span class="appt-k" data-i18n="lbl_time">Time</span><span class="appt-v empty" id="sum-time" data-i18n="not_selected">Not selected</span></div>
+        <div class="appt-row"><span class="appt-k" data-i18n="lbl_office">Office</span><span class="appt-v" data-i18n="omcr_window">OMCR Window 1</span></div>
+        <div class="appt-row"><span class="appt-k" data-i18n="lbl_location">Location</span><span class="appt-v" data-i18n="mun_hall">Municipal Hall, Ground Floor</span></div>
+      </div>
+      <div class="appt-instructions" style="margin-top:18px;"><p data-i18n="appt_reminders"><strong>📌 Reminders:</strong><br>• Arrive 10 minutes before your scheduled time.<br>• Bring a valid government-issued ID.<br>• Slots are limited to 3 per time block.<br>• Walk-ins are accommodated on a first-come, first-served basis.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TRACK PAGE ══ -->
+<div id="page-track" class="page">
+  <div class="section-head"><div>
+    <div class="section-label" data-i18n="track_label">Request Monitoring</div>
+    <div class="section-title" data-i18n="track_title">Track Your Request</div>
+    <div class="section-sub" data-i18n="track_sub">Enter your Request Control Number to view real-time status.</div>
+  </div></div>
+  <div class="track-layout">
+    <div>
+      <div class="track-card">
+        <div class="track-search-label" data-i18n="enter_ctrl">Enter Request Control Number</div>
+        <div class="track-input-group">
+          <input type="text" id="track-in" placeholder="OMCR-XXXXXXXX" maxlength="13" oninput="this.value=this.value.toUpperCase()">
+          <button class="btn-search" onclick="doTrack()" data-i18n="btn_search">Search</button>
+        </div>
+        <div id="result-card" class="result-card">
+          <div class="result-top"><span class="rid" id="res-rid">—</span><span id="res-badge"></span></div>
+          <div class="result-body">
+            <div class="info-row"><span class="info-k" data-i18n="lbl_requestor">Requestor</span><span class="info-v" id="res-name">—</span></div>
+            <div class="info-row"><span class="info-k" data-i18n="lbl_document">Document</span><span class="info-v" id="res-doc">—</span></div>
+            <div class="info-row"><span class="info-k" data-i18n="lbl_copies">Copies</span><span class="info-v" id="res-copies">—</span></div>
+            <div class="info-row"><span class="info-k" data-i18n="lbl_purpose">Purpose</span><span class="info-v" id="res-purpose">—</span></div>
+            <div class="info-row"><span class="info-k" data-i18n="lbl_date_filed">Date Filed</span><span class="info-v" id="res-date">—</span></div>
+            <div class="info-row"><span class="info-k" data-i18n="lbl_contact">Contact</span><span class="info-v" id="res-contact">—</span></div>
+          </div>
+          <div class="result-actions">
+            <button class="btn-print-slip" onclick="printSlip()">🖨️ <span data-i18n="btn_print_slip">Print Request Slip</span></button>
+            <button class="btn-cancel-req" id="btn-cancel" onclick="openCancelModal()">✕ <span data-i18n="btn_cancel">Cancel Request</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="timeline-card">
+      <div class="timeline-title" data-i18n="timeline_title">📊 Request Processing Timeline</div>
+      <div class="timeline" id="timeline"></div>
+      <div id="tl-placeholder" style="color:var(--muted);font-size:.84rem;text-align:center;padding:24px 0;" data-i18n="tl_placeholder">Search for a Request ID to view its timeline.</div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<!-- ══ SUCCESS MODAL ══ -->
+<div class="overlay" id="modal-overlay">
+  <div class="modal">
+    <div class="modal-top"><div class="modal-seal">✅</div><h2 data-i18n="modal_success_title">Request Successfully Filed</h2><p data-i18n="modal_success_sub">Your document request has been received by the OMCR.</p></div>
+    <div class="modal-body">
+      <p style="font-size:.78rem;color:var(--muted);margin-bottom:8px;" data-i18n="your_ctrl_no">YOUR REQUEST CONTROL NUMBER</p>
+      <div class="rid-box" id="modal-rid">—</div>
+      <div class="modal-details" id="modal-details"></div>
+      <p class="modal-note" data-i18n="modal_save_note">📌 <strong>Save this Control Number.</strong> Present a valid ID and this number when claiming your document at the OMCR office.</p>
+      <div class="modal-actions">
+        <button class="btn-modal-print" onclick="printModalSlip()">🖨️ <span data-i18n="btn_print_slip">Print Request Slip</span></button>
+        <button class="btn-modal-close" onclick="closeModal()" data-i18n="btn_close">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ APPOINTMENT MODAL ══ -->
+<div class="overlay" id="appt-modal">
+  <div class="modal">
+    <div class="modal-top"><div class="modal-seal">📅</div><h2 data-i18n="appt_confirmed">Appointment Confirmed!</h2><p data-i18n="appt_confirmed_sub">Your visit has been scheduled at the OMCR office.</p></div>
+    <div class="modal-body">
+      <p style="font-size:.78rem;color:var(--muted);margin-bottom:8px;" data-i18n="appt_ref">APPOINTMENT REFERENCE</p>
+      <div class="rid-box" id="appt-modal-rid">—</div>
+      <div class="modal-details" id="appt-modal-details"></div>
+      <p class="modal-note" data-i18n="appt_note">📌 Please arrive 10 minutes early. Bring a valid government-issued ID and this reference number.</p>
+      <div class="modal-actions">
+        <button class="btn-modal-print" onclick="printApptSlip()">🖨️ <span data-i18n="btn_print_appt">Print Appointment Slip</span></button>
+        <button class="btn-modal-close" onclick="document.getElementById('appt-modal').classList.remove('show')" data-i18n="btn_close">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ CANCEL MODAL ══ -->
+<div class="overlay" id="cancel-modal">
+  <div class="modal">
+    <div class="modal-top" style="background:#7f1d1d;"><div class="modal-seal red">✕</div><h2 data-i18n="cancel_modal_title">Cancel Request</h2><p data-i18n="cancel_modal_sub">This action cannot be undone.</p></div>
+    <div class="modal-body">
+      <div class="cancel-warning" data-i18n="cancel_warning">⚠️ Cancelling your request will permanently remove it from the system. You will need to submit a new request if needed.</div>
+      <div class="cancel-reason-wrap">
+        <label data-i18n="cancel_reason_lbl">Reason for Cancellation <span class="req">*</span></label>
+        <select id="cancel-reason">
+          <option value="" data-i18n="sel_reason">— Select reason —</option>
+          <option data-i18n="cr1">Document no longer needed</option>
+          <option data-i18n="cr2">Submitted incorrect information</option>
+          <option data-i18n="cr3">Requested wrong document type</option>
+          <option data-i18n="cr4">Will resubmit with corrections</option>
+          <option data-i18n="cr5">Personal reasons</option>
+          <option data-i18n="cr6">Other</option>
+        </select>
+        <label data-i18n="cancel_notes_lbl">Additional Notes (optional)</label>
+        <textarea id="cancel-notes" rows="2" data-i18n-ph="ph_cancel_notes" placeholder="Any additional details…" style="min-height:60px;"></textarea>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-modal-danger" onclick="confirmCancel()" data-i18n="btn_confirm_cancel">Yes, Cancel Request</button>
+        <button class="btn-modal-close" onclick="document.getElementById('cancel-modal').classList.remove('show')" data-i18n="btn_keep">Keep Request</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="print-area"></div>
+<div class="toasts" id="toasts"></div>
+
+<script>
+/* ══════════════════════════════════════
+   TRANSLATIONS
+══════════════════════════════════════ */
+const T = {
+  en: {
+    banner:'Republic of the Philippines · Local Government Unit · Office of the Municipal Civil Registrar (OMCR)',
+    office:'Office of the Municipal Civil Registrar (OMCR)',
+    sys_title:'Document Request System',
+    tagline:'OMCR Online Document Request Portal',
+    nav_request:'📋 Request', nav_appt:'📅 Appointment', nav_track:'🔍 Track',
+    req_label:'OMCR Services', req_title:'Submit a Document Request',
+    req_sub:'Fill out all required fields to request your official OMCR document.',
+    personal_info:'Personal Information', doc_details:'Document Details',
+    lbl_name:'Full Name (Last, First, Middle)', lbl_dob:'Date of Birth',
+    lbl_pob:'Place of Birth', lbl_contact:'Contact Number',
+    lbl_email:'Email Address', lbl_address:'Current Address',
+    lbl_doctype:'Document Type', lbl_copies:'Number of Copies',
+    lbl_purpose:'Purpose of Request', lbl_remarks:'Additional Remarks',
+    lbl_requestor:'Requestor', lbl_document:'Document',
+    lbl_date_filed:'Date Filed', lbl_date:'Date', lbl_time:'Time',
+    lbl_office:'Office', lbl_location:'Location',
+    ph_name:'e.g. Dela Cruz, Juan Santos', ph_pob:'City/Municipality, Province',
+    ph_optional:'optional', ph_address:'House No., Street, Barangay, City/Municipality',
+    ph_remarks:'Any special instructions or additional information…',
+    ph_cancel_notes:'Any additional details…',
+    sel_doc:'— Select Document —', sel_purpose:'— Select Purpose —',
+    sel_reason:'— Select reason —',
+    grp_vital:'Vital Records', grp_cert:'Certifications', grp_anno:'Annotations',
+    pur_emp_local:'Employment (Local)', pur_emp_ofw:'Employment (Abroad / OFW)',
+    pur_passport:'Passport Application', pur_school:'School / Academic Requirement',
+    pur_sss:'Social Security / PhilHealth / Pag-IBIG',
+    pur_court:'Court / Legal Proceeding', pur_marlic:'Marriage License Application',
+    pur_benefits:'Claim of Benefits', pur_personal:'Personal Records', pur_other:'Other',
+    copy_label:'copy/copies',
+    btn_submit:'Submit Request', submit_note:'By submitting, you confirm that all information provided is accurate and truthful.',
+    sidebar_docs:'📜 Available Documents', sidebar_hours:'🕐 Office Hours',
+    sidebar_fees:'💰 Filing Fees', sidebar_req:'📌 Requirements',
+    doc1:'Birth Certificate (PSA / Local)', doc2:'Marriage Certificate (PSA / Local)',
+    doc3:'Death Certificate (PSA / Local)', doc4:'Certificate of No Birth Record', doc5:'Annotations & Corrections',
+    day_mf:'Mon – Fri', day_sat:'Saturday', day_sun:'Sunday', day_hol:'Holidays', closed:'Closed',
+    fee1:'Local Copy', fee2:'PSA Endorsed', fee3:'Certification', fee4:'RA 9048 Filing',
+    fee5:'Payable at', fee5v:'City Treasurer',
+    req1:'Valid government-issued ID', req2:'Accomplished request form',
+    req3:'Official Receipt (City Treasurer)', req4:'Authorization letter (if by representative)',
+    appt_label:'Schedule a Visit', appt_title:'Book an Appointment',
+    appt_sub:'Select a date and time slot to visit the OMCR office.',
+    slots_for:'Available Time Slots for', your_details:'Your Details',
+    btn_confirm_appt:'Confirm Appointment',
+    appt_summary:'📋 Appointment Summary', not_selected:'Not selected',
+    omcr_window:'OMCR Window 1', mun_hall:'Municipal Hall, Ground Floor',
+    appt_reminders:'<strong>📌 Reminders:</strong><br>• Arrive 10 minutes before your scheduled time.<br>• Bring a valid government-issued ID.<br>• Slots are limited to 3 per time block.<br>• Walk-ins are accommodated on a first-come, first-served basis.',
+    track_label:'Request Monitoring', track_title:'Track Your Request',
+    track_sub:'Enter your Request Control Number to view real-time status.',
+    enter_ctrl:'Enter Request Control Number', btn_search:'Search',
+    btn_print_slip:'Print Request Slip', btn_cancel:'Cancel Request',
+    btn_print_appt:'Print Appointment Slip',
+    timeline_title:'📊 Request Processing Timeline',
+    tl_placeholder:'Search for a Request ID to view its timeline.',
+    tl0_name:'Request Filed', tl0_desc:'Request submitted and assigned a control number.',
+    tl1_name:'Under Review', tl1_desc:'OMCR staff is verifying the request details.',
+    tl2_name:'Ready for Pickup', tl2_desc:'Document is prepared and available at the OMCR window.',
+    tl3_name:'Completed', tl3_desc:'Document has been claimed by the requestor.',
+    tl_cancelled:'Request Cancelled', tl_cancelled_desc:'This request has been cancelled.',
+    modal_success_title:'Request Successfully Filed',
+    modal_success_sub:'Your document request has been received by the OMCR.',
+    your_ctrl_no:'YOUR REQUEST CONTROL NUMBER',
+    modal_save_note:'📌 Save this Control Number. Present a valid ID and this number when claiming your document.',
+    btn_close:'Close',
+    appt_confirmed:'Appointment Confirmed!',
+    appt_confirmed_sub:'Your visit has been scheduled at the OMCR office.',
+    appt_ref:'APPOINTMENT REFERENCE',
+    appt_note:'📌 Please arrive 10 minutes early. Bring a valid government-issued ID and this reference number.',
+    cancel_modal_title:'Cancel Request', cancel_modal_sub:'This action cannot be undone.',
+    cancel_warning:'⚠️ Cancelling your request will permanently remove it from the system. You will need to submit a new request if needed.',
+    cancel_reason_lbl:'Reason for Cancellation',
+    cancel_notes_lbl:'Additional Notes (optional)',
+    cr1:'Document no longer needed', cr2:'Submitted incorrect information',
+    cr3:'Requested wrong document type', cr4:'Will resubmit with corrections',
+    cr5:'Personal reasons', cr6:'Other',
+    btn_confirm_cancel:'Yes, Cancel Request', btn_keep:'Keep Request',
+    cancelled_toast:'Request cancelled successfully.',
+    not_cancellable:'This request cannot be cancelled — it is already being processed or completed.',
+    months:['January','February','March','April','May','June','July','August','September','October','November','December'],
+    months_short:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+    days_short:['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],
+    status_pending:'Pending', status_processing:'Processing',
+    status_ready:'Ready for Pickup', status_completed:'Completed', status_cancelled:'Cancelled',
+  },
+  fil: {
+    banner:'Republika ng Pilipinas · Lokal na Pamahalaan · Tanggapan ng Municipal na Tagapag-ingat ng Kalikasan Sibil (OMCR)',
+    office:'Tanggapan ng Municipal na Civil Registrar (OMCR)',
+    sys_title:'Sistema ng Kahilingan ng Dokumento',
+    tagline:'OMCR Online na Portal ng Kahilingan ng Dokumento',
+    nav_request:'📋 Kahilingan', nav_appt:'📅 Appointment', nav_track:'🔍 Subaybayan',
+    req_label:'Mga Serbisyo ng OMCR', req_title:'Magsumite ng Kahilingan',
+    req_sub:'Punan ang lahat ng kinakailangang patlang para humiling ng opisyal na dokumento mula sa OMCR.',
+    personal_info:'Personal na Impormasyon', doc_details:'Detalye ng Dokumento',
+    lbl_name:'Buong Pangalan (Apelyido, Pangalan, Gitnang Pangalan)',
+    lbl_dob:'Petsa ng Kapanganakan', lbl_pob:'Lugar ng Kapanganakan',
+    lbl_contact:'Numero ng Telepono', lbl_email:'Email Address',
+    lbl_address:'Kasalukuyang Tirahan',
+    lbl_doctype:'Uri ng Dokumento', lbl_copies:'Bilang ng Kopya',
+    lbl_purpose:'Layunin ng Kahilingan', lbl_remarks:'Karagdagang Tala',
+    lbl_requestor:'Humihiling', lbl_document:'Dokumento',
+    lbl_date_filed:'Petsa ng Paghain', lbl_date:'Petsa', lbl_time:'Oras',
+    lbl_office:'Tanggapan', lbl_location:'Lokasyon',
+    ph_name:'hal. Dela Cruz, Juan Santos', ph_pob:'Lungsod/Munisipalidad, Lalawigan',
+    ph_optional:'opsyonal', ph_address:'Blg. ng Bahay, Kalye, Barangay, Lungsod/Munisipalidad',
+    ph_remarks:'Anumang espesyal na instruksyon o karagdagang impormasyon…',
+    ph_cancel_notes:'Anumang karagdagang detalye…',
+    sel_doc:'— Pumili ng Dokumento —', sel_purpose:'— Pumili ng Layunin —',
+    sel_reason:'— Pumili ng dahilan —',
+    grp_vital:'Mga Talaan ng Buhay', grp_cert:'Mga Sertipikasyon', grp_anno:'Mga Anotasyon',
+    pur_emp_local:'Trabaho (Lokal)', pur_emp_ofw:'Trabaho (Abroad / OFW)',
+    pur_passport:'Aplikasyon sa Pasaporte', pur_school:'Pangangailangan sa Paaralan',
+    pur_sss:'SSS / PhilHealth / Pag-IBIG',
+    pur_court:'Kaso sa Korte / Legal', pur_marlic:'Aplikasyon sa Lisensya ng Kasal',
+    pur_benefits:'Pag-angkin ng Benepisyo', pur_personal:'Personal na Rekord', pur_other:'Iba pa',
+    copy_label:'kopya',
+    btn_submit:'Isumite ang Kahilingan',
+    submit_note:'Sa pag-submit, kinukumpirma mo na ang lahat ng impormasyon ay tama at totoo.',
+    sidebar_docs:'📜 Mga Available na Dokumento', sidebar_hours:'🕐 Oras ng Tanggapan',
+    sidebar_fees:'💰 Bayad sa Pagsampa', sidebar_req:'📌 Mga Kinakailangan',
+    doc1:'Sertipiko ng Kapanganakan (PSA / Lokal)', doc2:'Sertipiko ng Kasal (PSA / Lokal)',
+    doc3:'Sertipiko ng Kamatayan (PSA / Lokal)', doc4:'Sertipiko ng Walang Rekord ng Kapanganakan',
+    doc5:'Mga Anotasyon at Koreksyon',
+    day_mf:'Lun – Biy', day_sat:'Sabado', day_sun:'Linggo', day_hol:'Pista Opisyal', closed:'Sarado',
+    fee1:'Lokal na Kopya', fee2:'Isinangguniing PSA', fee3:'Sertipikasyon', fee4:'Pagsampa ng RA 9048',
+    fee5:'Babayaran sa', fee5v:'Ingat-yaman ng Lungsod',
+    req1:'Valid na ID mula sa gobyerno', req2:'Natapos na form ng kahilingan',
+    req3:'Opisyal na Resibo (Ingat-yaman ng Lungsod)', req4:'Liham ng Awtorisasyon (kung kinatawan)',
+    appt_label:'Mag-iskedyul ng Pagbisita', appt_title:'Mag-book ng Appointment',
+    appt_sub:'Pumili ng petsa at oras para bisitahin ang tanggapan ng OMCR.',
+    slots_for:'Mga Available na Oras para sa', your_details:'Iyong Mga Detalye',
+    btn_confirm_appt:'Kumpirmahin ang Appointment',
+    appt_summary:'📋 Buod ng Appointment', not_selected:'Hindi pa napili',
+    omcr_window:'OMCR Bintana 1', mun_hall:'Municipal Hall, Ground Floor',
+    appt_reminders:'<strong>📌 Mga Paalala:</strong><br>• Dumating 10 minuto bago ang inyong oras.<br>• Magdala ng valid na ID mula sa gobyerno.<br>• Limitado sa 3 ang bawat time slot.<br>• Ang mga walk-in ay tatanggapin kung available ang puwesto.',
+    track_label:'Pagsubaybay sa Kahilingan', track_title:'Subaybayan ang Iyong Kahilingan',
+    track_sub:'Ilagay ang iyong Control Number para makita ang kasalukuyang katayuan.',
+    enter_ctrl:'Ilagay ang Control Number ng Kahilingan', btn_search:'Hanapin',
+    btn_print_slip:'I-print ang Slip', btn_cancel:'Kanselahin ang Kahilingan',
+    btn_print_appt:'I-print ang Slip ng Appointment',
+    timeline_title:'📊 Timeline ng Pagproseso ng Kahilingan',
+    tl_placeholder:'Maghanap ng Control Number para makita ang timeline.',
+    tl0_name:'Naihain na ang Kahilingan', tl0_desc:'Naihain ang kahilingan at nabigyan ng control number.',
+    tl1_name:'Sinusuri', tl1_desc:'Sinusuri ng kawani ng OMCR ang detalye ng kahilingan.',
+    tl2_name:'Handa na para Kunin', tl2_desc:'Handa na ang dokumento sa bintana ng OMCR.',
+    tl3_name:'Nakuha na', tl3_desc:'Nakuha na ng humihiling ang dokumento.',
+    tl_cancelled:'Kinansela ang Kahilingan', tl_cancelled_desc:'Ang kahilingang ito ay kinansela.',
+    modal_success_title:'Matagumpay na Naihain ang Kahilingan',
+    modal_success_sub:'Natanggap na ng OMCR ang iyong kahilingan.',
+    your_ctrl_no:'ANG IYONG CONTROL NUMBER',
+    modal_save_note:'📌 I-save ang Control Number na ito. Magdala ng valid na ID at ang numerong ito sa pagkuha ng dokumento.',
+    btn_close:'Isara',
+    appt_confirmed:'Nakumpirma ang Appointment!',
+    appt_confirmed_sub:'Naitakda na ang iyong pagbisita sa tanggapan ng OMCR.',
+    appt_ref:'REFERENCE NG APPOINTMENT',
+    appt_note:'📌 Dumating 10 minuto bago ang inyong oras. Magdala ng valid na ID at reference number na ito.',
+    cancel_modal_title:'Kanselahin ang Kahilingan', cancel_modal_sub:'Hindi na ito mababago.',
+    cancel_warning:'⚠️ Ang pagkansela ng iyong kahilingan ay permanenteng aalisin ito sa sistema. Kailangan kang magsumite muli kung kailangan.',
+    cancel_reason_lbl:'Dahilan ng Pagkansela',
+    cancel_notes_lbl:'Karagdagang Tala (opsyonal)',
+    cr1:'Hindi na kailangan ang dokumento', cr2:'Maling impormasyon ang isinumite',
+    cr3:'Maling uri ng dokumento ang hiniling', cr4:'Muling isusumite na may koreksyon',
+    cr5:'Personal na dahilan', cr6:'Iba pa',
+    btn_confirm_cancel:'Oo, Kanselahin ang Kahilingan', btn_keep:'Itago ang Kahilingan',
+    cancelled_toast:'Matagumpay na nakansela ang kahilingan.',
+    not_cancellable:'Hindi maaaring kanselahin ang kahilingang ito — ito ay pinoproseso na o natapos na.',
+    months:['Enero','Pebrero','Marso','Abril','Mayo','Hunyo','Hulyo','Agosto','Setyembre','Oktubre','Nobyembre','Disyembre'],
+    months_short:['Ene','Peb','Mar','Abr','Mayo','Hun','Hul','Ago','Set','Okt','Nob','Dis'],
+    days_short:['Lin','Lun','Mar','Miy','Huw','Biy','Sab'],
+    status_pending:'Nakabinbin', status_processing:'Pinoproseso',
+    status_ready:'Handa na para Kunin', status_completed:'Natapos na', status_cancelled:'Kinansela',
+  }
+};
+
+let lang = 'en';
+function t(key){ return T[lang][key] || T['en'][key] || key; }
+
+function setLang(l){
+  lang = l;
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector(`.lang-btn[onclick="setLang('${l}')"]`).classList.add('active');
+  applyTranslations();
+}
+
+function applyTranslations(){
+  // Text nodes
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const key = el.getAttribute('data-i18n');
+    const val = t(key);
+    if(val) el.innerHTML = val;
+  });
+  // Placeholders
+  document.querySelectorAll('[data-i18n-ph]').forEach(el=>{
+    const key = el.getAttribute('data-i18n-ph');
+    const val = t(key);
+    if(val) el.placeholder = val;
+  });
+  // Select optgroup labels
+  document.querySelectorAll('[data-i18n-label]').forEach(el=>{
+    const key = el.getAttribute('data-i18n-label');
+    const val = t(key);
+    if(val) el.label = val;
+  });
+  // Re-render calendar month name
+  if(calYear !== undefined) renderCal();
+  // Re-render timeline if visible
+  const rc = document.getElementById('result-card');
+  if(rc && rc.classList.contains('show') && currentTracked) renderTimeline(currentTracked);
+}
+
+/* ══════════════════════════════════════
+   DATA
+══════════════════════════════════════ */
+const DB_KEY='omcr_v2', APPT_KEY='omcr_appts';
+let db=JSON.parse(localStorage.getItem(DB_KEY)||'[]');
+let appts=JSON.parse(localStorage.getItem(APPT_KEY)||'[]');
+function save(){localStorage.setItem(DB_KEY,JSON.stringify(db));}
+function saveAppts(){localStorage.setItem(APPT_KEY,JSON.stringify(appts));}
+function genID(){const a='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let s='OMCR-';for(let i=0;i<8;i++)s+=a[Math.floor(Math.random()*a.length)];return s;}
+function genApptID(){const a='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let s='APPT-';for(let i=0;i<6;i++)s+=a[Math.floor(Math.random()*a.length)];return s;}
+function fmtDate(iso){return new Date(iso).toLocaleDateString('en-PH',{year:'numeric',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});}
+
+/* ══════════════════════════════════════
+   NAV
+══════════════════════════════════════ */
+function showPage(id,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  if(btn)btn.classList.add('active');
+}
+
+/* ══════════════════════════════════════
+   REQUEST SUBMIT
+══════════════════════════════════════ */
+let lastReq=null;
+function submitRequest(){
+  const name=document.getElementById('f-name').value.trim();
+  const dob=document.getElementById('f-dob').value;
+  const pob=document.getElementById('f-pob').value.trim();
+  const contact=document.getElementById('f-contact').value.trim();
+  const email=document.getElementById('f-email').value.trim();
+  const address=document.getElementById('f-address').value.trim();
+  const doctype=document.getElementById('f-doctype').value;
+  const copies=document.getElementById('f-copies').value;
+  const purpose=document.getElementById('f-purpose').value;
+  const remarks=document.getElementById('f-remarks').value.trim();
+  if(!name||!dob||!pob||!contact||!address||!doctype||!purpose){toast('⚠️ '+t('req_sub').split('.')[0]+'.');return;}
+  const req={id:genID(),name,dob,pob,contact,email,address,doctype,copies:parseInt(copies)||1,purpose,remarks,status:'Pending',date:new Date().toISOString()};
+  db.unshift(req);save();lastReq=req;
+  document.getElementById('modal-rid').textContent=req.id;
+  document.getElementById('modal-details').innerHTML=`<strong>${t('lbl_name')}:</strong> ${req.name}<br><strong>${t('lbl_doctype')}:</strong> ${req.doctype}<br><strong>${t('lbl_copies')}:</strong> ${req.copies}<br><strong>${t('lbl_purpose')}:</strong> ${req.purpose}<br><strong>${t('lbl_date_filed')}:</strong> ${fmtDate(req.date)}`;
+  document.getElementById('modal-overlay').classList.add('show');
+  ['f-name','f-dob','f-pob','f-contact','f-email','f-address','f-remarks'].forEach(x=>document.getElementById(x).value='');
+  document.getElementById('f-doctype').value='';document.getElementById('f-purpose').value='';document.getElementById('f-copies').value='1';
+}
+function closeModal(){document.getElementById('modal-overlay').classList.remove('show');}
+
+/* ══════════════════════════════════════
+   PRINT SLIP
+══════════════════════════════════════ */
+function buildSlipHTML(r){
+  const dt=new Date(r.date);
+  return `<div class="slip">
+    <div class="slip-header"><h2>Office of the Municipal Civil Registrar</h2><p>OMCR Document Request System — Official Request Slip</p></div>
+    <div class="slip-rid">${r.id}</div>
+    <div class="slip-row"><span class="slip-key">Full Name</span><span class="slip-val">${r.name}</span></div>
+    <div class="slip-row"><span class="slip-key">Date of Birth</span><span class="slip-val">${r.dob||'—'}</span></div>
+    <div class="slip-row"><span class="slip-key">Place of Birth</span><span class="slip-val">${r.pob||'—'}</span></div>
+    <div class="slip-row"><span class="slip-key">Contact</span><span class="slip-val">${r.contact}</span></div>
+    <div class="slip-row"><span class="slip-key">Address</span><span class="slip-val">${r.address||'—'}</span></div>
+    <div class="slip-row"><span class="slip-key">Document Requested</span><span class="slip-val">${r.doctype}</span></div>
+    <div class="slip-row"><span class="slip-key">No. of Copies</span><span class="slip-val">${r.copies}</span></div>
+    <div class="slip-row"><span class="slip-key">Purpose</span><span class="slip-val">${r.purpose}</span></div>
+    <div class="slip-row"><span class="slip-key">Remarks</span><span class="slip-val">${r.remarks||'—'}</span></div>
+    <div class="slip-row"><span class="slip-key">Date Filed</span><span class="slip-val">${dt.toLocaleDateString('en-PH',{weekday:'long',year:'numeric',month:'long',day:'numeric'})}</span></div>
+    <div class="slip-row"><span class="slip-key">Status</span><span class="slip-val">${r.status}</span></div>
+    <div class="slip-footer">Keep this slip and present it together with a valid ID when claiming your document.<br><strong>OMCR Document Request System</strong></div>
+  </div>`;
+}
+function printModalSlip(){if(lastReq){document.getElementById('print-area').innerHTML=buildSlipHTML(lastReq);window.print();}}
+function printSlip(){
+  const val=document.getElementById('track-in').value.trim().toUpperCase();
+  const r=db.find(x=>x.id===val);
+  if(r){document.getElementById('print-area').innerHTML=buildSlipHTML(r);window.print();}
+}
+
+/* ══════════════════════════════════════
+   APPOINTMENT CALENDAR
+══════════════════════════════════════ */
+let calYear,calMonth,selDate=null,selTime=null;
+const TIME_SLOTS=['8:00 AM','9:00 AM','10:00 AM','11:00 AM','1:00 PM','2:00 PM','3:00 PM','4:00 PM'];
+const MAX_PER_SLOT=3;
+
+function initCal(){const now=new Date();calYear=now.getFullYear();calMonth=now.getMonth();renderCal();}
+
+function changeMonth(d){
+  calMonth+=d;
+  if(calMonth>11){calMonth=0;calYear++;}
+  if(calMonth<0){calMonth=11;calYear--;}
+  selDate=null;selTime=null;
+  document.getElementById('time-slots-wrap').style.display='none';
+  document.getElementById('appt-form').style.display='none';
+  updateSummary();renderCal();
+}
+
+function renderCal(){
+  const months=t('months');
+  document.getElementById('cal-month-title').textContent=months[calMonth]+' '+calYear;
+  const grid=document.getElementById('cal-grid');
+  const dayLabels=t('days_short');
+  let html=dayLabels.map(d=>`<div class="cal-day-label">${d}</div>`).join('');
+  const first=new Date(calYear,calMonth,1).getDay();
+  const daysInMonth=new Date(calYear,calMonth+1,0).getDate();
+  const today=new Date();today.setHours(0,0,0,0);
+  for(let i=0;i<first;i++)html+=`<div class="cal-day empty"></div>`;
+  for(let d=1;d<=daysInMonth;d++){
+    const date=new Date(calYear,calMonth,d);
+    const isPast=date<today, isClosed=date.getDay()===0, isToday=date.getTime()===today.getTime();
+    const dStr=`${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const isSel=selDate===dStr;
+    let cls='cal-day';
+    if(isPast)cls+=' past'; else if(isClosed)cls+=' closed'; else if(isToday)cls+=' today';
+    if(isSel)cls+=' selected';
+    const click=(isPast||isClosed)?'':` onclick="selectDate('${dStr}',${d})"`;
+    html+=`<div class="${cls}"${click}>${d}</div>`;
+  }
+  grid.innerHTML=html;
+}
+
+function selectDate(dStr,d){
+  selDate=dStr;selTime=null;renderCal();
+  const ms=t('months_short');
+  document.getElementById('selected-date-label').textContent=`${ms[calMonth]} ${d}, ${calYear}`;
+  renderSlots(dStr);
+  document.getElementById('time-slots-wrap').style.display='block';
+  document.getElementById('appt-form').style.display='none';
+  updateSummary();
+}
+
+function renderSlots(dStr){
+  const booked=appts.filter(a=>a.date===dStr);
+  document.getElementById('slots-grid').innerHTML=TIME_SLOTS.map(t2=>{
+    const cnt=booked.filter(a=>a.time===t2).length;
+    const full=cnt>=MAX_PER_SLOT, isSel=selTime===t2;
+    let cls='slot'+(full?' slot-full':isSel?' slot-selected':'');
+    return `<div class="${cls}" ${full?'':` onclick="selectSlot('${t2}')"`}>${t2}${full?'<br><small>Full</small>':''}</div>`;
+  }).join('');
+}
+
+function selectSlot(s){
+  selTime=s;renderSlots(selDate);
+  document.getElementById('appt-form').style.display='block';
+  document.getElementById('sum-time').textContent=s;
+  document.getElementById('sum-time').classList.remove('empty');
+  updateSummary();
+}
+
+function updateSummary(){
+  const ds=document.getElementById('sum-date'),ts=document.getElementById('sum-time');
+  if(selDate){
+    const [y,m,d]=selDate.split('-');
+    const ms=t('months_short');
+    ds.textContent=`${ms[parseInt(m)-1]} ${parseInt(d)}, ${y}`;
+    ds.classList.remove('empty');
+  } else {ds.textContent=t('not_selected');ds.classList.add('empty');}
+  if(!selTime){ts.textContent=t('not_selected');ts.classList.add('empty');}
+}
+
+let lastAppt=null;
+function bookAppointment(){
+  const name=document.getElementById('ap-name').value.trim();
+  const contact=document.getElementById('ap-contact').value.trim();
+  const purpose=document.getElementById('ap-purpose').value;
+  if(!selDate||!selTime){toast('⚠️ Please select a date and time slot.');return;}
+  if(!name||!contact||!purpose){toast('⚠️ Please fill in all fields.');return;}
+  const appt={id:genApptID(),name,contact,purpose,date:selDate,time:selTime,bookedAt:new Date().toISOString()};
+  appts.push(appt);saveAppts();lastAppt=appt;
+  const [y,m,d]=selDate.split('-');
+  const months=t('months');
+  document.getElementById('appt-modal-rid').textContent=appt.id;
+  document.getElementById('appt-modal-details').innerHTML=`<strong>${t('lbl_name')}:</strong> ${appt.name}<br><strong>${t('lbl_contact')}:</strong> ${appt.contact}<br><strong>${t('lbl_purpose')}:</strong> ${appt.purpose}<br><strong>${t('lbl_date')}:</strong> ${months[parseInt(m)-1]} ${parseInt(d)}, ${y}<br><strong>${t('lbl_time')}:</strong> ${appt.time}`;
+  document.getElementById('appt-modal').classList.add('show');
+  selDate=null;selTime=null;
+  ['ap-name','ap-contact'].forEach(x=>document.getElementById(x).value='');
+  document.getElementById('ap-purpose').value='';
+  document.getElementById('time-slots-wrap').style.display='none';
+  document.getElementById('appt-form').style.display='none';
+  updateSummary();renderCal();
+}
+
+function buildApptSlipHTML(a){
+  const [y,m,d]=a.date.split('-');
+  const months=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  return `<div class="slip">
+    <div class="slip-header"><h2>Office of the Municipal Civil Registrar</h2><p>OMCR Appointment Slip</p></div>
+    <div class="slip-rid">${a.id}</div>
+    <div class="slip-row"><span class="slip-key">Name</span><span class="slip-val">${a.name}</span></div>
+    <div class="slip-row"><span class="slip-key">Contact</span><span class="slip-val">${a.contact}</span></div>
+    <div class="slip-row"><span class="slip-key">Purpose</span><span class="slip-val">${a.purpose}</span></div>
+    <div class="slip-row"><span class="slip-key">Date</span><span class="slip-val">${months[parseInt(m)-1]} ${parseInt(d)}, ${y}</span></div>
+    <div class="slip-row"><span class="slip-key">Time</span><span class="slip-val">${a.time}</span></div>
+    <div class="slip-row"><span class="slip-key">Office</span><span class="slip-val">OMCR Window 1 — Municipal Hall</span></div>
+    <div class="slip-footer">Arrive 10 minutes before your scheduled time. Bring a valid government-issued ID.<br><strong>OMCR Document Request System</strong></div>
+  </div>`;
+}
+function printApptSlip(){if(lastAppt){document.getElementById('print-area').innerHTML=buildApptSlipHTML(lastAppt);window.print();}}
+
+/* ══════════════════════════════════════
+   TRACK
+══════════════════════════════════════ */
+const STATUSES=['Pending','Processing','Ready for Pickup','Completed'];
+let currentTracked=null;
+
+function doTrack(){
+  db=JSON.parse(localStorage.getItem(DB_KEY)||'[]');
+  const val=document.getElementById('track-in').value.trim().toUpperCase();
+  const rc=document.getElementById('result-card');
+  const tlp=document.getElementById('tl-placeholder');
+  if(!val){toast('⚠️ '+t('enter_ctrl')+'.');return;}
+  const req=db.find(r=>r.id===val);
+  if(!req){rc.classList.remove('show');document.getElementById('timeline').innerHTML='';tlp.style.display='block';toast('❌ '+val+' — not found.');return;}
+  currentTracked=req;
+  document.getElementById('res-rid').textContent=req.id;
+  document.getElementById('res-name').textContent=req.name;
+  document.getElementById('res-doc').textContent=req.doctype;
+  document.getElementById('res-copies').textContent=req.copies+' '+t('copy_label');
+  document.getElementById('res-purpose').textContent=req.purpose;
+  document.getElementById('res-date').textContent=fmtDate(req.date);
+  document.getElementById('res-contact').textContent=req.contact;
+  document.getElementById('res-badge').innerHTML=badge(req.status);
+  // Cancel button — only show if Pending
+  const cancelBtn=document.getElementById('btn-cancel');
+  cancelBtn.disabled=req.status!=='Pending';
+  cancelBtn.title=req.status!=='Pending'?t('not_cancellable'):'';
+  rc.classList.add('show');
+  tlp.style.display='none';
+  renderTimeline(req);
+}
+
+function renderTimeline(req){
+  const tl=document.getElementById('timeline');
+  if(req.status==='Cancelled'){
+    tl.innerHTML=`<div class="tl-item"><div class="tl-left"><div class="tl-dot cancelled">✕</div><div class="tl-line"></div></div><div class="tl-content"><div class="tl-step-name" style="color:#9b2020">${t('tl_cancelled')}</div><div class="tl-step-desc">${req.cancelReason?'Reason: '+req.cancelReason:''}${t('tl_cancelled_desc')}</div></div></div>`;
+    return;
+  }
+  const TL_INFO=[
+    {name:t('tl0_name'),desc:t('tl0_desc'),icon:'📥'},
+    {name:t('tl1_name'),desc:t('tl1_desc'),icon:'🔍'},
+    {name:t('tl2_name'),desc:t('tl2_desc'),icon:'📦'},
+    {name:t('tl3_name'),desc:t('tl3_desc'),icon:'✅'},
+  ];
+  const si=STATUSES.indexOf(req.status);
+  tl.innerHTML=TL_INFO.map((info,i)=>{
+    const done=i<si,current=i===si,cls=done?'done':current?'current':'';
+    return `<div class="tl-item"><div class="tl-left"><div class="tl-dot ${cls}">${done?'✓':current?info.icon:'○'}</div><div class="tl-line ${done?'done':''}"></div></div><div class="tl-content"><div class="tl-step-name" style="color:${current?'var(--navy)':done?'var(--slate)':'var(--muted)'}">${info.name}</div><div class="tl-step-desc">${info.desc}</div></div></div>`;
+  }).join('');
+}
+
+/* ══════════════════════════════════════
+   CANCELLATION
+══════════════════════════════════════ */
+function openCancelModal(){
+  if(!currentTracked||currentTracked.status!=='Pending'){toast('⚠️ '+t('not_cancellable'));return;}
+  document.getElementById('cancel-reason').value='';
+  document.getElementById('cancel-notes').value='';
+  document.getElementById('cancel-modal').classList.add('show');
+}
+
+function confirmCancel(){
+  const reason=document.getElementById('cancel-reason').value;
+  const notes=document.getElementById('cancel-notes').value.trim();
+  if(!reason){toast('⚠️ Please select a reason.');return;}
+  db=JSON.parse(localStorage.getItem(DB_KEY)||'[]');
+  const r=db.find(x=>x.id===currentTracked.id);
+  if(r){
+    r.status='Cancelled';
+    r.cancelReason=reason+(notes?' — '+notes:'');
+    r.cancelledAt=new Date().toISOString();
+    save();
+    currentTracked=r;
+    document.getElementById('res-badge').innerHTML=badge('Cancelled');
+    document.getElementById('btn-cancel').disabled=true;
+    renderTimeline(r);
+    document.getElementById('cancel-modal').classList.remove('show');
+    toast('✅ '+t('cancelled_toast'));
+  }
+}
+
+/* ══════════════════════════════════════
+   BADGE
+══════════════════════════════════════ */
+function badge(s){
+  const m={'Pending':'b-pending','Processing':'b-processing','Ready for Pickup':'b-ready','Completed':'b-completed','Cancelled':'b-cancelled'};
+  const labels={'Pending':t('status_pending'),'Processing':t('status_processing'),'Ready for Pickup':t('status_ready'),'Completed':t('status_completed'),'Cancelled':t('status_cancelled')};
+  return `<span class="badge ${m[s]||'b-pending'}">${labels[s]||s}</span>`;
+}
+
+function toast(msg){
+  const c=document.getElementById('toasts');
+  const el=document.createElement('div');el.className='toast';el.textContent=msg;c.appendChild(el);
+  setTimeout(()=>{el.style.opacity='0';el.style.transition='opacity .3s';setTimeout(()=>el.remove(),300);},3200);
+}
+
+/* ══════════════════════════════════════
+   SEED DATA
+══════════════════════════════════════ */
+if(!db.length){
+  const seeds=[
+    {name:'Santos, Maria Luisa A.',dob:'1990-03-12',pob:'Manila',contact:'09171234567',email:'',address:'123 Rizal St., Brgy. 1, Manila',doctype:'Birth Certificate (PSA)',copies:2,purpose:'Passport Application',remarks:'',status:'Ready for Pickup',date:new Date(Date.now()-3*864e5).toISOString()},
+    {name:'Reyes, Jose Manuel B.',dob:'1985-07-25',pob:'Quezon City',contact:'09281234567',email:'',address:'456 Mabini Ave., Brgy. 5, QC',doctype:'Marriage Certificate (PSA)',copies:1,purpose:'Employment (Abroad / OFW)',remarks:'Urgent',status:'Processing',date:new Date(Date.now()-2*864e5).toISOString()},
+    {name:'Cruz, Ana Beatriz C.',dob:'1995-11-08',pob:'Caloocan',contact:'09391234567',email:'',address:'789 Del Pilar St., Caloocan',doctype:'Certificate of No Marriage (CENOMAR)',copies:1,purpose:'Marriage License Application',remarks:'',status:'Completed',date:new Date(Date.now()-6*864e5).toISOString()},
+    {name:'Lim, Pedro Juan D.',dob:'1978-01-30',pob:'Pasay City',contact:'09501234567',email:'',address:'321 Taft Ave., Pasay',doctype:'Death Certificate (Local Copy)',copies:3,purpose:'Claim of Benefits',remarks:'For SSS claim',status:'Pending',date:new Date(Date.now()-1*864e5).toISOString()},
+    {name:'Gonzales, Rosa Mae E.',dob:'2000-06-14',pob:'Marikina',contact:'09611234567',email:'',address:'654 Marcos Hwy., Marikina',doctype:'Birth Certificate (Local Copy)',copies:1,purpose:'School / Academic Requirement',remarks:'',status:'Processing',date:new Date(Date.now()-4*864e5).toISOString()},
+  ];
+  seeds.forEach(s=>{s.id=genID();db.push(s);});save();
+}
+
+initCal();
+applyTranslations();
+</script>
+</body>
+</html>
