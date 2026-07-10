@@ -765,15 +765,32 @@ function rowToReq(r){
   };
 }
 
-/* Upload a compressed image to Supabase Storage, return its public URL */
+/* Upload a compressed image to Supabase Storage, return the file PATH
+   (not a public URL — bucket is private; admin uses signed URLs) */
 async function uploadPhoto(dataUrl,prefix){
   const res=await fetch(dataUrl);
   const blob=await res.blob();
   const path=`${prefix}-${Date.now()}-${Math.random().toString(36).slice(2,8)}.jpg`;
   const {error}=await sb.storage.from(PHOTO_BUCKET).upload(path,blob,{contentType:'image/jpeg'});
   if(error){console.error('Upload failed:',error);return null;}
-  const {data}=sb.storage.from(PHOTO_BUCKET).getPublicUrl(path);
-  return data.publicUrl;
+  return path; // return path, not public URL — admin generates signed URLs
+}
+
+/* ══════════════════════════════════════
+   INPUT SANITIZATION
+   Strips HTML tags and trims whitespace from all free-text input.
+   Prevents XSS via stored content rendered in the admin dashboard.
+══════════════════════════════════════ */
+function sanitize(str){
+  if(!str)return '';
+  return str
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#x27;')
+    .replace(/\//g,'&#x2F;')
+    .trim()
+    .slice(0,500); // hard cap — no field needs more than 500 chars
 }
 
 /* ══════════════════════════════════════
@@ -841,18 +858,31 @@ function showPage(id,btn){
 ══════════════════════════════════════ */
 let lastReq=null;
 async function submitRequest(){
-  const name=document.getElementById('f-name').value.trim();
+  // Sanitize all free-text fields before any processing
+  const name=sanitize(document.getElementById('f-name').value);
   const dob=document.getElementById('f-dob').value;
-  const pob=document.getElementById('f-pob').value.trim();
-  const contact=document.getElementById('f-contact').value.trim();
-  const email=document.getElementById('f-email').value.trim();
-  const address=document.getElementById('f-address').value.trim();
+  const pob=sanitize(document.getElementById('f-pob').value);
+  const contact=sanitize(document.getElementById('f-contact').value);
+  const email=sanitize(document.getElementById('f-email').value);
+  const address=sanitize(document.getElementById('f-address').value);
   const doctype=document.getElementById('f-doctype').value;
   const copies=document.getElementById('f-copies').value;
   const purpose=document.getElementById('f-purpose').value;
-  const remarks=document.getElementById('f-remarks').value.trim();
+  const remarks=sanitize(document.getElementById('f-remarks').value);
   if(!name||!dob||!pob||!contact||!address||!doctype||!purpose){toast('⚠️ '+t('req_sub').split('.')[0]+'.');return;}
   if(!uploadedID||!uploadedSelfie){toast('⚠️ '+t('verify_missing'));return;}
+
+  // Basic contact number format check (must start with 09 or +63, 10-13 digits)
+  if(!/^(09|\+639)\d{9}$/.test(contact.replace(/[-\s]/g,''))){
+    toast('⚠️ '+(lang==='fil'?'Mangyaring maglagay ng wastong numero ng telepono.':'Please enter a valid Philippine contact number.'));
+    return;
+  }
+
+  // Basic email format check if provided
+  if(email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+    toast('⚠️ '+(lang==='fil'?'Mangyaring maglagay ng wastong email address.':'Please enter a valid email address.'));
+    return;
+  }
 
   const submitBtn=document.querySelector('.btn-submit');
   const origLabel=submitBtn.innerHTML;
@@ -861,20 +891,29 @@ async function submitRequest(){
 
   try{
     const id=genID();
-    const [idUrl,selfieUrl]=await Promise.all([
+    const [idPath,selfiePath]=await Promise.all([
       uploadPhoto(uploadedID,id+'-id'),
       uploadPhoto(uploadedSelfie,id+'-selfie')
     ]);
-    if(!idUrl||!selfieUrl){throw new Error('Photo upload failed');}
+    if(!idPath||!selfiePath){throw new Error('Photo upload failed');}
 
     const {error}=await sb.from('requests').insert({
       id,name,dob,pob,contact,email,address,doctype,
       copies:parseInt(copies)||1,purpose,remarks,status:'Pending',
-      id_photo_url:idUrl, selfie_photo_url:selfieUrl
+      id_photo_url:idPath, selfie_photo_url:selfiePath, lang
     });
-    if(error)throw error;
+    if(error){
+      // Detect rate limit rejection from RLS policy
+      if(error.code==='42501'||error.message?.includes('row-level security')||error.message?.includes('rate')){
+        throw new Error('RATE_LIMIT');
+      }
+      throw error;
+    }
 
-    const req={id,name,dob,pob,contact,email,address,doctype,copies:parseInt(copies)||1,purpose,remarks,status:'Pending',date:new Date().toISOString(),idPhoto:idUrl,selfiePhoto:selfieUrl};
+    sb.functions.invoke('send-confirmation',{body:{requestId:id,lang}})
+      .catch(e=>console.warn('Confirmation email failed (non-blocking):',e));
+
+    const req={id,name,dob,pob,contact,email,address,doctype,copies:parseInt(copies)||1,purpose,remarks,status:'Pending',date:new Date().toISOString(),idPhoto:idPath,selfiePhoto:selfiePath};
     lastReq=req;
     document.getElementById('modal-rid').textContent=req.id;
     document.getElementById('modal-details').innerHTML=`<strong>${t('lbl_name')}:</strong> ${req.name}<br><strong>${t('lbl_doctype')}:</strong> ${req.doctype}<br><strong>${t('lbl_copies')}:</strong> ${req.copies}<br><strong>${t('lbl_purpose')}:</strong> ${req.purpose}<br><strong>${t('lbl_date_filed')}:</strong> ${fmtDate(req.date)}`;
@@ -884,7 +923,13 @@ async function submitRequest(){
     removeUpload('id');removeUpload('selfie');uploadedID=null;uploadedSelfie=null;
   }catch(err){
     console.error(err);
-    toast('❌ '+(lang==='fil'?'Nabigo ang pagsumite. Subukang muli.':'Submission failed. Please try again.'));
+    if(err.message==='RATE_LIMIT'){
+      toast('⚠️ '+(lang==='fil'
+        ?'Napakaraming kahilingan. Mangyaring subukan muli pagkatapos ng isang oras.'
+        :'Too many submissions. Please wait an hour before submitting again.'));
+    } else {
+      toast('❌ '+(lang==='fil'?'Nabigo ang pagsumite. Subukang muli.':'Submission failed. Please try again.'));
+    }
   }finally{
     submitBtn.disabled=false;
     submitBtn.innerHTML=origLabel;
@@ -1166,6 +1211,10 @@ async function confirmCancel(){
       .eq('id',currentTracked.id)
       .eq('status','Pending'); // guard: only cancel if still Pending
     if(error)throw error;
+
+    // Fire cancellation email — fire-and-forget
+    sb.functions.invoke('send-status-update',{body:{requestId:currentTracked.id,newStatus:'Cancelled',lang}})
+      .catch(e=>console.warn('Cancellation email failed (non-blocking):',e));
 
     currentTracked.status='Cancelled';
     currentTracked.cancelReason=cancelReason;

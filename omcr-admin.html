@@ -676,7 +676,7 @@ function rowToReq(r){
     remarks:r.remarks, status:r.status, walkin:r.walkin,
     idPhoto:r.id_photo_url, selfiePhoto:r.selfie_photo_url,
     cancelReason:r.cancel_reason, cancelledAt:r.cancelled_at,
-    date:r.created_at
+    date:r.created_at, lang:r.lang||'en'
   };
 }
 
@@ -881,6 +881,14 @@ async function updateStatus(id,newStatus){
   if(r)r.status=newStatus;
   renderStats();updateBadge();
   toast(`✅ ${id} → ${newStatus}`);
+
+  // Notify requestor by email — fire-and-forget, only fires for
+  // "Ready for Pickup" (the Edge Function itself filters other statuses)
+  if(newStatus==='Ready for Pickup'){
+    sb.functions.invoke('send-status-update',{body:{requestId:id,newStatus,lang:r?.lang||'en'}})
+      .then(({data})=>{ if(data?.sent) toast('📧 Email sent to requestor'); })
+      .catch(e=>console.warn('Status email failed (non-blocking):',e));
+  }
 }
 
 /* ══════════════════════════════════════
