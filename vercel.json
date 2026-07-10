@@ -1,9 +1,10 @@
 {
   "builds": [
     { "src": "main.py", "use": "@vercel/python" },
-    { "src": "omcr-portal.html", "use": "@vercel/static" }  ],
+    { "src": "omcr-portal.html", "use": "@vercel/static" }
+  ],
   "routes": [
     { "src": "/api/(.*)", "dest": "main.py" },
-    { "src": "/(.*)", "dest": "$1" }
+    { "src": "/(.*)", "dest": "omcr-portal.html" }
   ]
 }
