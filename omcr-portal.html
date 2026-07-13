@@ -34,7 +34,7 @@ header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;ba
 .header-title .tagline{font-size:.72rem;color:rgba(255,255,255,.4);margin-top:3px;font-weight:300;}
 .header-right{display:flex;flex-direction:column;align-items:flex-end;gap:10px;}
 
-/* ── LANGUAGE TOGGLE ── */
+/*  LANGUAGE TOGGLE  */
 .lang-toggle{display:flex;align-items:center;gap:0;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:8px;overflow:hidden;}
 .lang-btn{padding:6px 14px;background:transparent;border:none;color:rgba(255,255,255,.5);font-family:'Outfit',sans-serif;font-size:.72rem;font-weight:600;cursor:pointer;letter-spacing:.06em;transition:all .2s;}
 .lang-btn:hover{color:rgba(255,255,255,.85);}
@@ -73,7 +73,7 @@ textarea{resize:vertical;min-height:88px;line-height:1.5;}
 .copies-row{display:flex;align-items:center;gap:12px;}
 .copies-row input[type=number]{width:80px;text-align:center;}
 .copies-lbl{font-size:.82rem;color:var(--muted);}
-/* ── ID VERIFICATION UPLOAD ── */
+/*  ID VERIFICATION UPLOAD  */
 .verify-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
 .upload-box{border:1.5px dashed var(--border);border-radius:10px;padding:20px;text-align:center;background:var(--paper);cursor:pointer;transition:all .2s;position:relative;min-height:160px;display:flex;flex-direction:column;align-items:center;justify-content:center;}
 .upload-box:hover{border-color:var(--gold);background:var(--gold-pale);}
@@ -103,13 +103,13 @@ textarea{resize:vertical;min-height:88px;line-height:1.5;}
 .doc-list{list-style:none;}
 .doc-list li{padding:7px 0;border-bottom:1px solid var(--border-lt);font-size:.83rem;display:flex;align-items:center;gap:9px;}
 .doc-list li:last-child{border:none;}
-.doc-list li::before{content:'📄';font-size:.85rem;}
+.doc-list li::before{content:'';font-size:.85rem;}
 .hours-row,.fee-row{display:flex;justify-content:space-between;padding:5px 0;font-size:.8rem;border-bottom:1px solid var(--border-lt);}
 .hours-row:last-child,.fee-row:last-child{border:none;}
 .hours-day,.fee-name{color:var(--muted);font-weight:500;}
 .hours-time,.fee-amt{font-family:'Inconsolata',monospace;color:var(--ink);}
 
-/* ── APPOINTMENT ── */
+/*  APPOINTMENT  */
 .appt-layout{display:grid;grid-template-columns:1fr 340px;gap:28px;align-items:start;}
 .calendar-card{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:36px;box-shadow:var(--shadow);}
 .cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
@@ -141,7 +141,7 @@ textarea{resize:vertical;min-height:88px;line-height:1.5;}
 .appt-instructions p{font-size:.78rem;color:var(--ink);line-height:1.6;}
 .appt-instructions strong{color:var(--navy);}
 
-/* ── TRACK ── */
+/*  TRACK  */
 .track-layout{display:grid;grid-template-columns:480px 1fr;gap:28px;align-items:start;}
 .track-card{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:36px;box-shadow:var(--shadow);}
 .track-search-label{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:var(--navy);margin-bottom:16px;}
@@ -186,7 +186,7 @@ textarea{resize:vertical;min-height:88px;line-height:1.5;}
 .b-ready{background:#ede9fe;color:#5b21b6;}.b-completed{background:#d1fae5;color:#065f46;}
 .b-cancelled{background:#fee2e2;color:#991b1b;}
 
-/* ── MODALS ── */
+/*  MODALS  */
 .overlay{position:fixed;inset:0;background:rgba(13,31,60,.55);backdrop-filter:blur(5px);z-index:500;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;}
 .overlay.show{opacity:1;pointer-events:all;}
 .modal{background:var(--white);border-radius:16px;max-width:520px;width:92%;overflow:hidden;box-shadow:var(--shadow-lg);transform:scale(.92);transition:transform .3s;}
@@ -217,7 +217,7 @@ textarea{resize:vertical;min-height:88px;line-height:1.5;}
 .toast{background:var(--navy);color:var(--white);padding:11px 18px;border-radius:8px;font-size:.81rem;font-weight:500;border-left:3px solid var(--gold);box-shadow:0 4px 20px rgba(0,0,0,.2);animation:slideIn .28s ease;min-width:240px;}
 @keyframes slideIn{from{opacity:0;transform:translateX(24px);}to{opacity:1;transform:translateX(0);}}
 
-/* ── PRINT ── */
+/*  PRINT  */
 @media print{body>*{display:none!important;}#print-area{display:block!important;}}
 #print-area{display:none;}
 .slip{max-width:520px;margin:40px auto;font-family:'Outfit',sans-serif;color:#1a1612;padding:40px;}
@@ -262,9 +262,9 @@ textarea{resize:vertical;min-height:88px;line-height:1.5;}
         <button class="lang-btn" onclick="setLang('fil')">FIL</button>
       </div>
       <nav class="pub-nav">
-        <button class="nav-btn active" onclick="showPage('request',this)" data-i18n="nav_request">📋 Request</button>
-        <button class="nav-btn" onclick="showPage('appointment',this)" data-i18n="nav_appt">📅 Appointment</button>
-        <button class="nav-btn" onclick="showPage('track',this)" data-i18n="nav_track">🔍 Track</button>
+        <button class="nav-btn active" onclick="showPage('request',this)" data-i18n="nav_request">Request</button>
+        <button class="nav-btn" onclick="showPage('appointment',this)" data-i18n="nav_appt">Appointment</button>
+        <button class="nav-btn" onclick="showPage('track',this)" data-i18n="nav_track">Track</button>
       </nav>
     </div>
   </div>
@@ -272,7 +272,7 @@ textarea{resize:vertical;min-height:88px;line-height:1.5;}
 
 <main>
 
-<!-- ══ REQUEST PAGE ══ -->
+<!--  REQUEST PAGE  -->
 <div id="page-request" class="page active">
   <div class="section-head"><div>
     <div class="section-label" data-i18n="req_label">OMCR Services</div>
@@ -281,7 +281,7 @@ textarea{resize:vertical;min-height:88px;line-height:1.5;}
   </div></div>
   <div class="form-wrap">
     <div class="form-card">
-      <div class="form-card-title"><span>👤</span> <span data-i18n="personal_info">Personal Information</span></div>
+      <div class="form-card-title"><span data-i18n="personal_info">Personal Information</span></div>
       <div class="form-grid">
         <div class="form-group full"><label data-i18n="lbl_name">Full Name (Last, First, Middle) <span class="req">*</span></label><input type="text" id="f-name" data-i18n-ph="ph_name" placeholder="e.g. Dela Cruz, Juan Santos"></div>
         <div class="form-group"><label data-i18n="lbl_dob">Date of Birth <span class="req">*</span></label><input type="date" id="f-dob"></div>
@@ -290,7 +290,7 @@ textarea{resize:vertical;min-height:88px;line-height:1.5;}
         <div class="form-group"><label data-i18n="lbl_email">Email Address</label><input type="email" id="f-email" data-i18n-ph="ph_optional" placeholder="optional"></div>
         <div class="form-group full"><label data-i18n="lbl_address">Current Address <span class="req">*</span></label><input type="text" id="f-address" data-i18n-ph="ph_address" placeholder="House No., Street, Barangay, City/Municipality"></div>
       </div>
-      <div class="form-card-title" style="margin-top:28px;"><span>📄</span> <span data-i18n="doc_details">Document Details</span></div>
+      <div class="form-card-title" style="margin-top:28px;"><span data-i18n="doc_details">Document Details</span></div>
       <div class="form-grid">
         <div class="form-group"><label data-i18n="lbl_doctype">Document Type <span class="req">*</span></label>
           <select id="f-doctype">
@@ -330,12 +330,12 @@ textarea{resize:vertical;min-height:88px;line-height:1.5;}
         <div class="form-group full"><label data-i18n="lbl_remarks">Additional Remarks</label><textarea id="f-remarks" data-i18n-ph="ph_remarks" placeholder="Any special instructions or additional information…"></textarea></div>
       </div>
 
-      <div class="form-card-title" style="margin-top:28px;"><span>🪪</span> <span data-i18n="id_verify">Identity Verification</span></div>
+      <div class="form-card-title" style="margin-top:28px;"><span data-i18n="id_verify">Identity Verification</span></div>
       <div class="verify-grid">
         <div class="upload-box" id="box-id" onclick="document.getElementById('f-idphoto').click()">
           <input type="file" id="f-idphoto" accept="image/*" capture="environment" onchange="handleUpload(this,'id')">
           <div class="upload-placeholder" id="ph-id">
-            <div class="upload-icon">🪪</div>
+            <div class="upload-icon"></div>
             <div class="upload-label" data-i18n="upload_id">Upload Photo of ID</div>
             <div class="upload-hint" data-i18n="upload_id_hint">Any valid government ID</div>
           </div>
@@ -343,29 +343,29 @@ textarea{resize:vertical;min-height:88px;line-height:1.5;}
         <div class="upload-box" id="box-selfie" onclick="document.getElementById('f-selfie').click()">
           <input type="file" id="f-selfie" accept="image/*" capture="user" onchange="handleUpload(this,'selfie')">
           <div class="upload-placeholder" id="ph-selfie">
-            <div class="upload-icon">🤳</div>
+            <div class="upload-icon"></div>
             <div class="upload-label" data-i18n="upload_selfie">Upload a Selfie</div>
             <div class="upload-hint" data-i18n="upload_selfie_hint">Clear photo of your face</div>
           </div>
         </div>
       </div>
-      <div class="verify-note" data-i18n="verify_note">🔒 <strong>Why we ask:</strong> A photo of your ID and a selfie help OMCR staff verify that the requestor is a real, present individual before releasing sensitive civil registry documents. Photos are stored only for this request and reviewed by authorized staff.</div>
+      <div class="verify-note" data-i18n="verify_note"><strong>Why we ask:</strong>A photo of your ID and a selfie help OMCR staff verify that the requestor is a real, present individual before releasing sensitive civil registry documents. Photos are stored only for this request and reviewed by authorized staff.</div>
 
       <div class="submit-row">
-        <button class="btn-submit" onclick="submitRequest()"><span>📨</span><span data-i18n="btn_submit">Submit Request</span></button>
+        <button class="btn-submit" onclick="submitRequest()"><span data-i18n="btn_submit">Submit Request</span></button>
         <p class="note-text" data-i18n="submit_note">By submitting, you confirm that all<br>information provided is accurate and truthful.</p>
       </div>
     </div>
     <div class="info-sidebar">
-      <div class="info-box"><div class="info-box-head" data-i18n="sidebar_docs">📜 Available Documents</div><div class="info-box-body"><ul class="doc-list"><li data-i18n="doc1">Birth Certificate (PSA / Local)</li><li data-i18n="doc2">Marriage Certificate (PSA / Local)</li><li data-i18n="doc3">Death Certificate (PSA / Local)</li><li>CENOMAR</li><li data-i18n="doc4">Certificate of No Birth Record</li><li data-i18n="doc5">Annotations &amp; Corrections</li></ul></div></div>
-      <div class="info-box"><div class="info-box-head" data-i18n="sidebar_hours">🕐 Office Hours</div><div class="info-box-body"><div class="hours-row"><span class="hours-day" data-i18n="day_mf">Mon – Fri</span><span class="hours-time">8:00 – 17:00</span></div><div class="hours-row"><span class="hours-day" data-i18n="day_sat">Saturday</span><span class="hours-time">8:00 – 12:00</span></div><div class="hours-row"><span class="hours-day" data-i18n="day_sun">Sunday</span><span class="hours-time" data-i18n="closed">Closed</span></div><div class="hours-row"><span class="hours-day" data-i18n="day_hol">Holidays</span><span class="hours-time" data-i18n="closed">Closed</span></div></div></div>
-      <div class="info-box"><div class="info-box-head" data-i18n="sidebar_fees">💰 Filing Fees</div><div class="info-box-body"><div class="fee-row"><span class="fee-name" data-i18n="fee1">Local Copy</span><span class="fee-amt">₱ 50.00</span></div><div class="fee-row"><span class="fee-name" data-i18n="fee2">PSA Endorsed</span><span class="fee-amt">₱ 155.00</span></div><div class="fee-row"><span class="fee-name" data-i18n="fee3">Certification</span><span class="fee-amt">₱ 50.00</span></div><div class="fee-row"><span class="fee-name" data-i18n="fee4">RA 9048 Filing</span><span class="fee-amt">₱ 1,000.00</span></div><div class="fee-row"><span class="fee-name" data-i18n="fee5">Payable at</span><span class="fee-amt" data-i18n="fee5v">City Treasurer</span></div></div></div>
-      <div class="info-box"><div class="info-box-head" data-i18n="sidebar_req">📌 Requirements</div><div class="info-box-body"><ul class="doc-list"><li data-i18n="req1">Valid government-issued ID</li><li data-i18n="req2">Accomplished request form</li><li data-i18n="req3">Official Receipt (City Treasurer)</li><li data-i18n="req4">Authorization letter (if by representative)</li></ul></div></div>
+      <div class="info-box"><div class="info-box-head" data-i18n="sidebar_docs">Available Documents</div><div class="info-box-body"><ul class="doc-list"><li data-i18n="doc1">Birth Certificate (PSA / Local)</li><li data-i18n="doc2">Marriage Certificate (PSA / Local)</li><li data-i18n="doc3">Death Certificate (PSA / Local)</li><li>CENOMAR</li><li data-i18n="doc4">Certificate of No Birth Record</li><li data-i18n="doc5">Annotations &amp; Corrections</li></ul></div></div>
+      <div class="info-box"><div class="info-box-head" data-i18n="sidebar_hours">Office Hours</div><div class="info-box-body"><div class="hours-row"><span class="hours-day" data-i18n="day_mf">Mon – Fri</span><span class="hours-time">8:00 – 17:00</span></div><div class="hours-row"><span class="hours-day" data-i18n="day_sat">Saturday</span><span class="hours-time">8:00 – 12:00</span></div><div class="hours-row"><span class="hours-day" data-i18n="day_sun">Sunday</span><span class="hours-time" data-i18n="closed">Closed</span></div><div class="hours-row"><span class="hours-day" data-i18n="day_hol">Holidays</span><span class="hours-time" data-i18n="closed">Closed</span></div></div></div>
+      <div class="info-box"><div class="info-box-head" data-i18n="sidebar_fees">Filing Fees</div><div class="info-box-body"><div class="fee-row"><span class="fee-name" data-i18n="fee1">Local Copy</span><span class="fee-amt">₱ 50.00</span></div><div class="fee-row"><span class="fee-name" data-i18n="fee2">PSA Endorsed</span><span class="fee-amt">₱ 155.00</span></div><div class="fee-row"><span class="fee-name" data-i18n="fee3">Certification</span><span class="fee-amt">₱ 50.00</span></div><div class="fee-row"><span class="fee-name" data-i18n="fee4">RA 9048 Filing</span><span class="fee-amt">₱ 1,000.00</span></div><div class="fee-row"><span class="fee-name" data-i18n="fee5">Payable at</span><span class="fee-amt" data-i18n="fee5v">City Treasurer</span></div></div></div>
+      <div class="info-box"><div class="info-box-head" data-i18n="sidebar_req">Requirements</div><div class="info-box-body"><ul class="doc-list"><li data-i18n="req1">Valid government-issued ID</li><li data-i18n="req2">Accomplished request form</li><li data-i18n="req3">Official Receipt (City Treasurer)</li><li data-i18n="req4">Authorization letter (if by representative)</li></ul></div></div>
     </div>
   </div>
 </div>
 
-<!-- ══ APPOINTMENT PAGE ══ -->
+<!--  APPOINTMENT PAGE  -->
 <div id="page-appointment" class="page">
   <div class="section-head"><div>
     <div class="section-label" data-i18n="appt_label">Schedule a Visit</div>
@@ -384,7 +384,7 @@ textarea{resize:vertical;min-height:88px;line-height:1.5;}
         <div class="slots-grid" id="slots-grid"></div>
       </div>
       <div class="appt-form" id="appt-form" style="display:none;">
-        <div class="form-card-title" style="margin-bottom:18px;"><span>👤</span> <span data-i18n="your_details">Your Details</span></div>
+        <div class="form-card-title" style="margin-bottom:18px;"><span data-i18n="your_details">Your Details</span></div>
         <div class="form-grid" style="margin-bottom:18px;">
           <div class="form-group full"><label data-i18n="lbl_name">Full Name <span class="req">*</span></label><input type="text" id="ap-name" data-i18n-ph="ph_name" placeholder="Last, First, Middle"></div>
           <div class="form-group"><label data-i18n="lbl_contact">Contact Number <span class="req">*</span></label><input type="tel" id="ap-contact" placeholder="09XX-XXX-XXXX"></div>
@@ -392,23 +392,23 @@ textarea{resize:vertical;min-height:88px;line-height:1.5;}
             <select id="ap-purpose"><option value="" data-i18n="sel_purpose">— Select —</option><option>Birth Certificate (PSA)</option><option>Birth Certificate (Local Copy)</option><option>Marriage Certificate (PSA)</option><option>Death Certificate (PSA)</option><option>Certificate of No Marriage (CENOMAR)</option><option>General Inquiry</option></select>
           </div>
         </div>
-        <button class="btn-submit" onclick="bookAppointment()"><span>📅</span><span data-i18n="btn_confirm_appt">Confirm Appointment</span></button>
+        <button class="btn-submit" onclick="bookAppointment()"><span data-i18n="btn_confirm_appt">Confirm Appointment</span></button>
       </div>
     </div>
     <div>
       <div class="appt-summary">
-        <h3 data-i18n="appt_summary">📋 Appointment Summary</h3>
+        <h3 data-i18n="appt_summary">Appointment Summary</h3>
         <div class="appt-row"><span class="appt-k" data-i18n="lbl_date">Date</span><span class="appt-v empty" id="sum-date" data-i18n="not_selected">Not selected</span></div>
         <div class="appt-row"><span class="appt-k" data-i18n="lbl_time">Time</span><span class="appt-v empty" id="sum-time" data-i18n="not_selected">Not selected</span></div>
         <div class="appt-row"><span class="appt-k" data-i18n="lbl_office">Office</span><span class="appt-v" data-i18n="omcr_window">OMCR Window 1</span></div>
         <div class="appt-row"><span class="appt-k" data-i18n="lbl_location">Location</span><span class="appt-v" data-i18n="mun_hall">Municipal Hall, Ground Floor</span></div>
       </div>
-      <div class="appt-instructions" style="margin-top:18px;"><p data-i18n="appt_reminders"><strong>📌 Reminders:</strong><br>• Arrive 10 minutes before your scheduled time.<br>• Bring a valid government-issued ID.<br>• Slots are limited to 3 per time block.<br>• Walk-ins are accommodated on a first-come, first-served basis.</p></div>
+      <div class="appt-instructions" style="margin-top:18px;"><p data-i18n="appt_reminders"><strong>Reminders:</strong><br>• Arrive 10 minutes before your scheduled time.<br>• Bring a valid government-issued ID.<br>• Slots are limited to 3 per time block.<br>• Walk-ins are accommodated on a first-come, first-served basis.</p></div>
     </div>
   </div>
 </div>
 
-<!-- ══ TRACK PAGE ══ -->
+<!--  TRACK PAGE  -->
 <div id="page-track" class="page">
   <div class="section-head"><div>
     <div class="section-label" data-i18n="track_label">Request Monitoring</div>
@@ -434,14 +434,14 @@ textarea{resize:vertical;min-height:88px;line-height:1.5;}
             <div class="info-row"><span class="info-k" data-i18n="lbl_contact">Contact</span><span class="info-v" id="res-contact">—</span></div>
           </div>
           <div class="result-actions">
-            <button class="btn-print-slip" onclick="printSlip()">🖨️ <span data-i18n="btn_print_slip">Print Request Slip</span></button>
-            <button class="btn-cancel-req" id="btn-cancel" onclick="openCancelModal()">✕ <span data-i18n="btn_cancel">Cancel Request</span></button>
+            <button class="btn-print-slip" onclick="printSlip()"><span data-i18n="btn_print_slip">Print Request Slip</span></button>
+            <button class="btn-cancel-req" id="btn-cancel" onclick="openCancelModal()"><span data-i18n="btn_cancel">Cancel Request</span></button>
           </div>
         </div>
       </div>
     </div>
     <div class="timeline-card">
-      <div class="timeline-title" data-i18n="timeline_title">📊 Request Processing Timeline</div>
+      <div class="timeline-title" data-i18n="timeline_title">Request Processing Timeline</div>
       <div class="timeline" id="timeline"></div>
       <div id="tl-placeholder" style="color:var(--muted);font-size:.84rem;text-align:center;padding:24px 0;" data-i18n="tl_placeholder">Search for a Request ID to view its timeline.</div>
     </div>
@@ -450,46 +450,46 @@ textarea{resize:vertical;min-height:88px;line-height:1.5;}
 
 </main>
 
-<!-- ══ SUCCESS MODAL ══ -->
+<!--  SUCCESS MODAL  -->
 <div class="overlay" id="modal-overlay">
   <div class="modal">
-    <div class="modal-top"><div class="modal-seal">✅</div><h2 data-i18n="modal_success_title">Request Successfully Filed</h2><p data-i18n="modal_success_sub">Your document request has been received by the OMCR.</p></div>
+    <div class="modal-top"><div class="modal-seal"></div><h2 data-i18n="modal_success_title">Request Successfully Filed</h2><p data-i18n="modal_success_sub">Your document request has been received by the OMCR.</p></div>
     <div class="modal-body">
       <p style="font-size:.78rem;color:var(--muted);margin-bottom:8px;" data-i18n="your_ctrl_no">YOUR REQUEST CONTROL NUMBER</p>
       <div class="rid-box" id="modal-rid">—</div>
       <div class="modal-details" id="modal-details"></div>
-      <p class="modal-note" data-i18n="modal_save_note">📌 <strong>Save this Control Number.</strong> Present a valid ID and this number when claiming your document at the OMCR office.</p>
+      <p class="modal-note" data-i18n="modal_save_note"><strong>Save this Control Number.</strong>Present a valid ID and this number when claiming your document at the OMCR office.</p>
       <div class="modal-actions">
-        <button class="btn-modal-print" onclick="printModalSlip()">🖨️ <span data-i18n="btn_print_slip">Print Request Slip</span></button>
+        <button class="btn-modal-print" onclick="printModalSlip()"><span data-i18n="btn_print_slip">Print Request Slip</span></button>
         <button class="btn-modal-close" onclick="closeModal()" data-i18n="btn_close">Close</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ══ APPOINTMENT MODAL ══ -->
+<!--  APPOINTMENT MODAL  -->
 <div class="overlay" id="appt-modal">
   <div class="modal">
-    <div class="modal-top"><div class="modal-seal">📅</div><h2 data-i18n="appt_confirmed">Appointment Confirmed!</h2><p data-i18n="appt_confirmed_sub">Your visit has been scheduled at the OMCR office.</p></div>
+    <div class="modal-top"><div class="modal-seal"></div><h2 data-i18n="appt_confirmed">Appointment Confirmed!</h2><p data-i18n="appt_confirmed_sub">Your visit has been scheduled at the OMCR office.</p></div>
     <div class="modal-body">
       <p style="font-size:.78rem;color:var(--muted);margin-bottom:8px;" data-i18n="appt_ref">APPOINTMENT REFERENCE</p>
       <div class="rid-box" id="appt-modal-rid">—</div>
       <div class="modal-details" id="appt-modal-details"></div>
-      <p class="modal-note" data-i18n="appt_note">📌 Please arrive 10 minutes early. Bring a valid government-issued ID and this reference number.</p>
+      <p class="modal-note" data-i18n="appt_note">Please arrive 10 minutes early. Bring a valid government-issued ID and this reference number.</p>
       <div class="modal-actions">
-        <button class="btn-modal-print" onclick="printApptSlip()">🖨️ <span data-i18n="btn_print_appt">Print Appointment Slip</span></button>
+        <button class="btn-modal-print" onclick="printApptSlip()"><span data-i18n="btn_print_appt">Print Appointment Slip</span></button>
         <button class="btn-modal-close" onclick="document.getElementById('appt-modal').classList.remove('show')" data-i18n="btn_close">Close</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ══ CANCEL MODAL ══ -->
+<!--  CANCEL MODAL  -->
 <div class="overlay" id="cancel-modal">
   <div class="modal">
-    <div class="modal-top" style="background:#7f1d1d;"><div class="modal-seal red">✕</div><h2 data-i18n="cancel_modal_title">Cancel Request</h2><p data-i18n="cancel_modal_sub">This action cannot be undone.</p></div>
+    <div class="modal-top" style="background:#7f1d1d;"><div class="modal-seal red"></div><h2 data-i18n="cancel_modal_title">Cancel Request</h2><p data-i18n="cancel_modal_sub">This action cannot be undone.</p></div>
     <div class="modal-body">
-      <div class="cancel-warning" data-i18n="cancel_warning">⚠️ Cancelling your request will permanently remove it from the system. You will need to submit a new request if needed.</div>
+      <div class="cancel-warning" data-i18n="cancel_warning">Cancelling your request will permanently remove it from the system. You will need to submit a new request if needed.</div>
       <div class="cancel-reason-wrap">
         <label data-i18n="cancel_reason_lbl">Reason for Cancellation <span class="req">*</span></label>
         <select id="cancel-reason">
@@ -516,16 +516,16 @@ textarea{resize:vertical;min-height:88px;line-height:1.5;}
 <div class="toasts" id="toasts"></div>
 
 <script>
-/* ══════════════════════════════════════
+/* 
    TRANSLATIONS
-══════════════════════════════════════ */
+ */
 const T = {
   en: {
     banner:'Republic of the Philippines · Local Government Unit · Office of the Municipal Civil Registrar (OMCR)',
     office:'Office of the Municipal Civil Registrar (OMCR)',
     sys_title:'Document Request System',
     tagline:'OMCR Online Document Request Portal',
-    nav_request:'📋 Request', nav_appt:'📅 Appointment', nav_track:'🔍 Track',
+    nav_request:'Request', nav_appt:'Appointment', nav_track:'Track',
     req_label:'OMCR Services', req_title:'Submit a Document Request',
     req_sub:'Fill out all required fields to request your official OMCR document.',
     personal_info:'Personal Information', doc_details:'Document Details',
@@ -537,7 +537,7 @@ const T = {
     id_verify:'Identity Verification',
     upload_id:'Upload Photo of ID', upload_id_hint:'Any valid government ID',
     upload_selfie:'Upload a Selfie', upload_selfie_hint:'Clear photo of your face',
-    verify_note:'🔒 <strong>Why we ask:</strong> A photo of your ID and a selfie help OMCR staff verify that the requestor is a real, present individual before releasing sensitive civil registry documents. Photos are stored only for this request and reviewed by authorized staff.',
+    verify_note:'<strong>Why we ask:</strong> A photo of your ID and a selfie help OMCR staff verify that the requestor is a real, present individual before releasing sensitive civil registry documents. Photos are stored only for this request and reviewed by authorized staff.',
     verify_missing:'Please upload both an ID photo and a selfie to continue.',
     image_too_large:'Image could not be processed. Please try a smaller photo.',
     lbl_requestor:'Requestor', lbl_document:'Document',
@@ -557,8 +557,8 @@ const T = {
     pur_benefits:'Claim of Benefits', pur_personal:'Personal Records', pur_other:'Other',
     copy_label:'copy/copies',
     btn_submit:'Submit Request', submit_note:'By submitting, you confirm that all information provided is accurate and truthful.',
-    sidebar_docs:'📜 Available Documents', sidebar_hours:'🕐 Office Hours',
-    sidebar_fees:'💰 Filing Fees', sidebar_req:'📌 Requirements',
+    sidebar_docs:'Available Documents', sidebar_hours:'Office Hours',
+    sidebar_fees:'Filing Fees', sidebar_req:'Requirements',
     doc1:'Birth Certificate (PSA / Local)', doc2:'Marriage Certificate (PSA / Local)',
     doc3:'Death Certificate (PSA / Local)', doc4:'Certificate of No Birth Record', doc5:'Annotations & Corrections',
     day_mf:'Mon – Fri', day_sat:'Saturday', day_sun:'Sunday', day_hol:'Holidays', closed:'Closed',
@@ -570,15 +570,15 @@ const T = {
     appt_sub:'Select a date and time slot to visit the OMCR office.',
     slots_for:'Available Time Slots for', your_details:'Your Details',
     btn_confirm_appt:'Confirm Appointment',
-    appt_summary:'📋 Appointment Summary', not_selected:'Not selected',
+    appt_summary:'Appointment Summary', not_selected:'Not selected',
     omcr_window:'OMCR Window 1', mun_hall:'Municipal Hall, Ground Floor',
-    appt_reminders:'<strong>📌 Reminders:</strong><br>• Arrive 10 minutes before your scheduled time.<br>• Bring a valid government-issued ID.<br>• Slots are limited to 3 per time block.<br>• Walk-ins are accommodated on a first-come, first-served basis.',
+    appt_reminders:'<strong>Reminders:</strong><br>• Arrive 10 minutes before your scheduled time.<br>• Bring a valid government-issued ID.<br>• Slots are limited to 3 per time block.<br>• Walk-ins are accommodated on a first-come, first-served basis.',
     track_label:'Request Monitoring', track_title:'Track Your Request',
     track_sub:'Enter your Request Control Number to view real-time status.',
     enter_ctrl:'Enter Request Control Number', btn_search:'Search',
     btn_print_slip:'Print Request Slip', btn_cancel:'Cancel Request',
     btn_print_appt:'Print Appointment Slip',
-    timeline_title:'📊 Request Processing Timeline',
+    timeline_title:'Request Processing Timeline',
     tl_placeholder:'Search for a Request ID to view its timeline.',
     tl0_name:'Request Filed', tl0_desc:'Request submitted and assigned a control number.',
     tl1_name:'Under Review', tl1_desc:'OMCR staff is verifying the request details.',
@@ -588,14 +588,14 @@ const T = {
     modal_success_title:'Request Successfully Filed',
     modal_success_sub:'Your document request has been received by the OMCR.',
     your_ctrl_no:'YOUR REQUEST CONTROL NUMBER',
-    modal_save_note:'📌 Save this Control Number. Present a valid ID and this number when claiming your document.',
+    modal_save_note:'Save this Control Number. Present a valid ID and this number when claiming your document.',
     btn_close:'Close',
     appt_confirmed:'Appointment Confirmed!',
     appt_confirmed_sub:'Your visit has been scheduled at the OMCR office.',
     appt_ref:'APPOINTMENT REFERENCE',
-    appt_note:'📌 Please arrive 10 minutes early. Bring a valid government-issued ID and this reference number.',
+    appt_note:'Please arrive 10 minutes early. Bring a valid government-issued ID and this reference number.',
     cancel_modal_title:'Cancel Request', cancel_modal_sub:'This action cannot be undone.',
-    cancel_warning:'⚠️ Cancelling your request will permanently remove it from the system. You will need to submit a new request if needed.',
+    cancel_warning:'Cancelling your request will permanently remove it from the system. You will need to submit a new request if needed.',
     cancel_reason_lbl:'Reason for Cancellation',
     cancel_notes_lbl:'Additional Notes (optional)',
     cr1:'Document no longer needed', cr2:'Submitted incorrect information',
@@ -615,7 +615,7 @@ const T = {
     office:'Tanggapan ng Municipal na Civil Registrar (OMCR)',
     sys_title:'Sistema ng Kahilingan ng Dokumento',
     tagline:'OMCR Online na Portal ng Kahilingan ng Dokumento',
-    nav_request:'📋 Kahilingan', nav_appt:'📅 Appointment', nav_track:'🔍 Subaybayan',
+    nav_request:'Kahilingan', nav_appt:'Appointment', nav_track:'Subaybayan',
     req_label:'Mga Serbisyo ng OMCR', req_title:'Magsumite ng Kahilingan',
     req_sub:'Punan ang lahat ng kinakailangang patlang para humiling ng opisyal na dokumento mula sa OMCR.',
     personal_info:'Personal na Impormasyon', doc_details:'Detalye ng Dokumento',
@@ -628,7 +628,7 @@ const T = {
     id_verify:'Pagberipika ng Pagkakakilanlan',
     upload_id:'Mag-upload ng Larawan ng ID', upload_id_hint:'Anumang valid na ID mula sa gobyerno',
     upload_selfie:'Mag-upload ng Selfie', upload_selfie_hint:'Malinaw na larawan ng iyong mukha',
-    verify_note:'🔒 <strong>Bakit hinihingi namin ito:</strong> Ang larawan ng iyong ID at selfie ay tumutulong sa kawani ng OMCR na ma-verify na ang humihiling ay tunay at naroroon bago ilabas ang sensitibong dokumento ng civil registry. Ang mga larawan ay iniingatan lamang para sa kahilingang ito.',
+    verify_note:'<strong>Bakit hinihingi namin ito:</strong> Ang larawan ng iyong ID at selfie ay tumutulong sa kawani ng OMCR na ma-verify na ang humihiling ay tunay at naroroon bago ilabas ang sensitibong dokumento ng civil registry. Ang mga larawan ay iniingatan lamang para sa kahilingang ito.',
     verify_missing:'Mangyaring mag-upload ng larawan ng ID at selfie para magpatuloy.',
     image_too_large:'Hindi ma-process ang larawan. Subukan ang mas maliit na litrato.',
     lbl_requestor:'Humihiling', lbl_document:'Dokumento',
@@ -649,8 +649,8 @@ const T = {
     copy_label:'kopya',
     btn_submit:'Isumite ang Kahilingan',
     submit_note:'Sa pag-submit, kinukumpirma mo na ang lahat ng impormasyon ay tama at totoo.',
-    sidebar_docs:'📜 Mga Available na Dokumento', sidebar_hours:'🕐 Oras ng Tanggapan',
-    sidebar_fees:'💰 Bayad sa Pagsampa', sidebar_req:'📌 Mga Kinakailangan',
+    sidebar_docs:'Mga Available na Dokumento', sidebar_hours:'Oras ng Tanggapan',
+    sidebar_fees:'Bayad sa Pagsampa', sidebar_req:'Mga Kinakailangan',
     doc1:'Sertipiko ng Kapanganakan (PSA / Lokal)', doc2:'Sertipiko ng Kasal (PSA / Lokal)',
     doc3:'Sertipiko ng Kamatayan (PSA / Lokal)', doc4:'Sertipiko ng Walang Rekord ng Kapanganakan',
     doc5:'Mga Anotasyon at Koreksyon',
@@ -663,15 +663,15 @@ const T = {
     appt_sub:'Pumili ng petsa at oras para bisitahin ang tanggapan ng OMCR.',
     slots_for:'Mga Available na Oras para sa', your_details:'Iyong Mga Detalye',
     btn_confirm_appt:'Kumpirmahin ang Appointment',
-    appt_summary:'📋 Buod ng Appointment', not_selected:'Hindi pa napili',
+    appt_summary:'Buod ng Appointment', not_selected:'Hindi pa napili',
     omcr_window:'OMCR Bintana 1', mun_hall:'Municipal Hall, Ground Floor',
-    appt_reminders:'<strong>📌 Mga Paalala:</strong><br>• Dumating 10 minuto bago ang inyong oras.<br>• Magdala ng valid na ID mula sa gobyerno.<br>• Limitado sa 3 ang bawat time slot.<br>• Ang mga walk-in ay tatanggapin kung available ang puwesto.',
+    appt_reminders:'<strong>Mga Paalala:</strong><br>• Dumating 10 minuto bago ang inyong oras.<br>• Magdala ng valid na ID mula sa gobyerno.<br>• Limitado sa 3 ang bawat time slot.<br>• Ang mga walk-in ay tatanggapin kung available ang puwesto.',
     track_label:'Pagsubaybay sa Kahilingan', track_title:'Subaybayan ang Iyong Kahilingan',
     track_sub:'Ilagay ang iyong Control Number para makita ang kasalukuyang katayuan.',
     enter_ctrl:'Ilagay ang Control Number ng Kahilingan', btn_search:'Hanapin',
     btn_print_slip:'I-print ang Slip', btn_cancel:'Kanselahin ang Kahilingan',
     btn_print_appt:'I-print ang Slip ng Appointment',
-    timeline_title:'📊 Timeline ng Pagproseso ng Kahilingan',
+    timeline_title:'Timeline ng Pagproseso ng Kahilingan',
     tl_placeholder:'Maghanap ng Control Number para makita ang timeline.',
     tl0_name:'Naihain na ang Kahilingan', tl0_desc:'Naihain ang kahilingan at nabigyan ng control number.',
     tl1_name:'Sinusuri', tl1_desc:'Sinusuri ng kawani ng OMCR ang detalye ng kahilingan.',
@@ -681,14 +681,14 @@ const T = {
     modal_success_title:'Matagumpay na Naihain ang Kahilingan',
     modal_success_sub:'Natanggap na ng OMCR ang iyong kahilingan.',
     your_ctrl_no:'ANG IYONG CONTROL NUMBER',
-    modal_save_note:'📌 I-save ang Control Number na ito. Magdala ng valid na ID at ang numerong ito sa pagkuha ng dokumento.',
+    modal_save_note:'I-save ang Control Number na ito. Magdala ng valid na ID at ang numerong ito sa pagkuha ng dokumento.',
     btn_close:'Isara',
     appt_confirmed:'Nakumpirma ang Appointment!',
     appt_confirmed_sub:'Naitakda na ang iyong pagbisita sa tanggapan ng OMCR.',
     appt_ref:'REFERENCE NG APPOINTMENT',
-    appt_note:'📌 Dumating 10 minuto bago ang inyong oras. Magdala ng valid na ID at reference number na ito.',
+    appt_note:'Dumating 10 minuto bago ang inyong oras. Magdala ng valid na ID at reference number na ito.',
     cancel_modal_title:'Kanselahin ang Kahilingan', cancel_modal_sub:'Hindi na ito mababago.',
-    cancel_warning:'⚠️ Ang pagkansela ng iyong kahilingan ay permanenteng aalisin ito sa sistema. Kailangan kang magsumite muli kung kailangan.',
+    cancel_warning:'Ang pagkansela ng iyong kahilingan ay permanenteng aalisin ito sa sistema. Kailangan kang magsumite muli kung kailangan.',
     cancel_reason_lbl:'Dahilan ng Pagkansela',
     cancel_notes_lbl:'Karagdagang Tala (opsyonal)',
     cr1:'Hindi na kailangan ang dokumento', cr2:'Maling impormasyon ang isinumite',
@@ -741,9 +741,9 @@ function applyTranslations(){
   if(rc && rc.classList.contains('show') && currentTracked) renderTimeline(currentTracked);
 }
 
-/* ══════════════════════════════════════
+/* 
    DATA — Supabase
-══════════════════════════════════════ */
+ */
 const SUPABASE_URL='https://jelxcshciicbxbatedcj.supabase.co';
 const SUPABASE_KEY='sb_publishable_Ymf0bxoTDwB-h7genh4vMw_dvMa3X75';
 const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
@@ -776,11 +776,11 @@ async function uploadPhoto(dataUrl,prefix){
   return path; // return path, not public URL — admin generates signed URLs
 }
 
-/* ══════════════════════════════════════
+/* 
    BROWSER FINGERPRINT
    A lightweight, stable identifier derived from browser properties.
    Used for rate limiting — not stored, not linked to identity.
-══════════════════════════════════════ */
+ */
 async function getFingerprint(){
   const raw=[
     navigator.language,
@@ -810,11 +810,11 @@ async function checkRateLimit(action){
   }
 }
 
-/* ══════════════════════════════════════
+/* 
    INPUT SANITIZATION
    Strips HTML tags and trims whitespace from all free-text input.
    Prevents XSS via stored content rendered in the admin dashboard.
-══════════════════════════════════════ */
+ */
 function sanitize(str){
   if(!str)return '';
   return str
@@ -827,16 +827,16 @@ function sanitize(str){
     .slice(0,500); // hard cap — no field needs more than 500 chars
 }
 
-/* ══════════════════════════════════════
+/* 
    ID / SELFIE UPLOAD (compressed, in-memory base64)
-══════════════════════════════════════ */
+ */
 let uploadedID=null, uploadedSelfie=null;
 const MAX_DIM=720, JPEG_QUALITY=0.75;
 
 function handleUpload(input,kind){
   const file=input.files[0];
   if(!file)return;
-  if(!file.type.startsWith('image/')){toast('⚠️ '+t('image_too_large'));return;}
+  if(!file.type.startsWith('image/')){toast(' '+t('image_too_large'));return;}
   const reader=new FileReader();
   reader.onload=e=>{
     const img=new Image();
@@ -852,34 +852,34 @@ function handleUpload(input,kind){
       if(kind==='id'){uploadedID=dataUrl;showPreview('box-id','ph-id',dataUrl,'id');}
       else{uploadedSelfie=dataUrl;showPreview('box-selfie','ph-selfie',dataUrl,'selfie');}
     };
-    img.onerror=()=>toast('⚠️ '+t('image_too_large'));
+    img.onerror=()=>toast(' '+t('image_too_large'));
     img.src=e.target.result;
   };
-  reader.onerror=()=>toast('⚠️ '+t('image_too_large'));
+  reader.onerror=()=>toast(' '+t('image_too_large'));
   reader.readAsDataURL(file);
 }
 
 function showPreview(boxId,phId,dataUrl,kind){
   const box=document.getElementById(boxId);
   box.classList.add('has-image');
-  box.innerHTML=`<img class="upload-preview" src="${dataUrl}"><button type="button" class="upload-remove" onclick="event.stopPropagation();removeUpload('${kind}')">✕</button>`;
+  box.innerHTML=`<img class="upload-preview" src="${dataUrl}"><button type="button" class="upload-remove" onclick="event.stopPropagation();removeUpload('${kind}')"></button>`;
 }
 
 function removeUpload(kind){
   if(kind==='id'){
     uploadedID=null;
     document.getElementById('box-id').classList.remove('has-image');
-    document.getElementById('box-id').innerHTML=`<input type="file" id="f-idphoto" accept="image/*" capture="environment" onchange="handleUpload(this,'id')"><div class="upload-placeholder"><div class="upload-icon">🪪</div><div class="upload-label" data-i18n="upload_id">${t('upload_id')}</div><div class="upload-hint" data-i18n="upload_id_hint">${t('upload_id_hint')}</div></div>`;
+    document.getElementById('box-id').innerHTML=`<input type="file" id="f-idphoto" accept="image/*" capture="environment" onchange="handleUpload(this,'id')"><div class="upload-placeholder"><div class="upload-icon"></div><div class="upload-label" data-i18n="upload_id">${t('upload_id')}</div><div class="upload-hint" data-i18n="upload_id_hint">${t('upload_id_hint')}</div></div>`;
   } else {
     uploadedSelfie=null;
     document.getElementById('box-selfie').classList.remove('has-image');
-    document.getElementById('box-selfie').innerHTML=`<input type="file" id="f-selfie" accept="image/*" capture="user" onchange="handleUpload(this,'selfie')"><div class="upload-placeholder"><div class="upload-icon">🤳</div><div class="upload-label" data-i18n="upload_selfie">${t('upload_selfie')}</div><div class="upload-hint" data-i18n="upload_selfie_hint">${t('upload_selfie_hint')}</div></div>`;
+    document.getElementById('box-selfie').innerHTML=`<input type="file" id="f-selfie" accept="image/*" capture="user" onchange="handleUpload(this,'selfie')"><div class="upload-placeholder"><div class="upload-icon"></div><div class="upload-label" data-i18n="upload_selfie">${t('upload_selfie')}</div><div class="upload-hint" data-i18n="upload_selfie_hint">${t('upload_selfie_hint')}</div></div>`;
   }
 }
 
-/* ══════════════════════════════════════
+/* 
    NAV
-══════════════════════════════════════ */
+ */
 function showPage(id,btn){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
@@ -887,9 +887,9 @@ function showPage(id,btn){
   if(btn)btn.classList.add('active');
 }
 
-/* ══════════════════════════════════════
+/* 
    REQUEST SUBMIT
-══════════════════════════════════════ */
+ */
 let lastReq=null;
 async function submitRequest(){
   // Sanitize all free-text fields before any processing
@@ -903,18 +903,18 @@ async function submitRequest(){
   const copies=document.getElementById('f-copies').value;
   const purpose=document.getElementById('f-purpose').value;
   const remarks=sanitize(document.getElementById('f-remarks').value);
-  if(!name||!dob||!pob||!contact||!address||!doctype||!purpose){toast('⚠️ '+t('req_sub').split('.')[0]+'.');return;}
-  if(!uploadedID||!uploadedSelfie){toast('⚠️ '+t('verify_missing'));return;}
+  if(!name||!dob||!pob||!contact||!address||!doctype||!purpose){toast(' '+t('req_sub').split('.')[0]+'.');return;}
+  if(!uploadedID||!uploadedSelfie){toast(' '+t('verify_missing'));return;}
 
   // Basic contact number format check (must start with 09 or +63, 10-13 digits)
   if(!/^(09|\+639)\d{9}$/.test(contact.replace(/[-\s]/g,''))){
-    toast('⚠️ '+(lang==='fil'?'Mangyaring maglagay ng wastong numero ng telepono.':'Please enter a valid Philippine contact number.'));
+    toast(' '+(lang==='fil'?'Mangyaring maglagay ng wastong numero ng telepono.':'Please enter a valid Philippine contact number.'));
     return;
   }
 
   // Basic email format check if provided
   if(email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
-    toast('⚠️ '+(lang==='fil'?'Mangyaring maglagay ng wastong email address.':'Please enter a valid email address.'));
+    toast(' '+(lang==='fil'?'Mangyaring maglagay ng wastong email address.':'Please enter a valid email address.'));
     return;
   }
 
@@ -927,7 +927,7 @@ async function submitRequest(){
     // Rate limit check — 3 submissions per hour per browser fingerprint
     const allowed=await checkRateLimit('request_submit');
     if(!allowed){
-      toast('⚠️ '+(lang==='fil'
+      toast(' '+(lang==='fil'
         ?'Napakaraming kahilingan. Mangyaring subukan muli pagkatapos ng isang oras.'
         :'Too many submissions. Please wait an hour before submitting again.'));
       return;
@@ -967,11 +967,11 @@ async function submitRequest(){
   }catch(err){
     console.error(err);
     if(err.message==='RATE_LIMIT'){
-      toast('⚠️ '+(lang==='fil'
+      toast(' '+(lang==='fil'
         ?'Napakaraming kahilingan. Mangyaring subukan muli pagkatapos ng isang oras.'
         :'Too many submissions. Please wait an hour before submitting again.'));
     } else {
-      toast('❌ '+(lang==='fil'?'Nabigo ang pagsumite. Subukang muli.':'Submission failed. Please try again.'));
+      toast(' '+(lang==='fil'?'Nabigo ang pagsumite. Subukang muli.':'Submission failed. Please try again.'));
     }
   }finally{
     submitBtn.disabled=false;
@@ -980,9 +980,9 @@ async function submitRequest(){
 }
 function closeModal(){document.getElementById('modal-overlay').classList.remove('show');}
 
-/* ══════════════════════════════════════
+/* 
    PRINT SLIP
-══════════════════════════════════════ */
+ */
 function buildSlipHTML(r){
   const dt=new Date(r.date);
   return `<div class="slip">
@@ -1007,9 +1007,9 @@ function printSlip(){
   if(currentTracked){document.getElementById('print-area').innerHTML=buildSlipHTML(currentTracked);window.print();}
 }
 
-/* ══════════════════════════════════════
+/* 
    APPOINTMENT CALENDAR
-══════════════════════════════════════ */
+ */
 let calYear,calMonth,selDate=null,selTime=null;
 const TIME_SLOTS=['8:00 AM','9:00 AM','10:00 AM','11:00 AM','1:00 PM','2:00 PM','3:00 PM','4:00 PM'];
 const MAX_PER_SLOT=3;
@@ -1101,8 +1101,8 @@ async function bookAppointment(){
   const name=sanitize(document.getElementById('ap-name').value);
   const contact=sanitize(document.getElementById('ap-contact').value);
   const purpose=document.getElementById('ap-purpose').value;
-  if(!selDate||!selTime){toast('⚠️ Please select a date and time slot.');return;}
-  if(!name||!contact||!purpose){toast('⚠️ Please fill in all fields.');return;}
+  if(!selDate||!selTime){toast('Please select a date and time slot.');return;}
+  if(!name||!contact||!purpose){toast('Please fill in all fields.');return;}
 
   const confirmBtn=document.querySelector('#appt-form .btn-submit');
   const origLabel=confirmBtn.innerHTML;
@@ -1113,7 +1113,7 @@ async function bookAppointment(){
     // Rate limit check — 2 bookings per hour per browser fingerprint
     const allowed=await checkRateLimit('appointment_book');
     if(!allowed){
-      toast('⚠️ '+(lang==='fil'
+      toast(' '+(lang==='fil'
         ?'Napakaraming booking. Mangyaring subukan muli pagkatapos ng isang oras.'
         :'Too many bookings. Please wait an hour before booking again.'));
       return;
@@ -1122,7 +1122,7 @@ async function bookAppointment(){
     // Re-check slot isn't full (race condition guard)
     const {data:check}=await sb.from('appointments').select('id').eq('appt_date',selDate).eq('appt_time',selTime);
     if(check && check.length>=MAX_PER_SLOT){
-      toast('⚠️ '+(lang==='fil'?'Puno na ang slot na ito. Pumili ng iba.':'This slot just filled up. Please pick another.'));
+      toast(' '+(lang==='fil'?'Puno na ang slot na ito. Pumili ng iba.':'This slot just filled up. Please pick another.'));
       await loadSlotsForDate(selDate);
       return;
     }
@@ -1145,7 +1145,7 @@ async function bookAppointment(){
     updateSummary();renderCal();
   }catch(err){
     console.error(err);
-    toast('❌ '+(lang==='fil'?'Nabigo ang pag-book. Subukang muli.':'Booking failed. Please try again.'));
+    toast(' '+(lang==='fil'?'Nabigo ang pag-book. Subukang muli.':'Booking failed. Please try again.'));
   }finally{
     confirmBtn.disabled=false;
     confirmBtn.innerHTML=origLabel;
@@ -1169,9 +1169,9 @@ function buildApptSlipHTML(a){
 }
 function printApptSlip(){if(lastAppt){document.getElementById('print-area').innerHTML=buildApptSlipHTML(lastAppt);window.print();}}
 
-/* ══════════════════════════════════════
+/* 
    TRACK
-══════════════════════════════════════ */
+ */
 const STATUSES=['Pending','Processing','Ready for Pickup','Completed'];
 let currentTracked=null;
 
@@ -1179,7 +1179,7 @@ async function doTrack(){
   const val=document.getElementById('track-in').value.trim().toUpperCase();
   const rc=document.getElementById('result-card');
   const tlp=document.getElementById('tl-placeholder');
-  if(!val){toast('⚠️ '+t('enter_ctrl')+'.');return;}
+  if(!val){toast(' '+t('enter_ctrl')+'.');return;}
 
   const searchBtn=document.querySelector('.btn-search');
   const origLabel=searchBtn.textContent;
@@ -1189,7 +1189,7 @@ async function doTrack(){
   try{
     const {data,error}=await sb.from('requests').select('*').eq('id',val).maybeSingle();
     if(error)throw error;
-    if(!data){rc.classList.remove('show');document.getElementById('timeline').innerHTML='';tlp.style.display='block';toast('❌ '+val+' — not found.');return;}
+    if(!data){rc.classList.remove('show');document.getElementById('timeline').innerHTML='';tlp.style.display='block';toast(' '+val+' — not found.');return;}
 
     const req=rowToReq(data);
     currentTracked=req;
@@ -1209,7 +1209,7 @@ async function doTrack(){
     renderTimeline(req);
   }catch(err){
     console.error(err);
-    toast('❌ '+(lang==='fil'?'May error sa paghahanap.':'Something went wrong while searching.'));
+    toast(' '+(lang==='fil'?'May error sa paghahanap.':'Something went wrong while searching.'));
   }finally{
     searchBtn.disabled=false;
     searchBtn.textContent=origLabel;
@@ -1219,27 +1219,27 @@ async function doTrack(){
 function renderTimeline(req){
   const tl=document.getElementById('timeline');
   if(req.status==='Cancelled'){
-    tl.innerHTML=`<div class="tl-item"><div class="tl-left"><div class="tl-dot cancelled">✕</div><div class="tl-line"></div></div><div class="tl-content"><div class="tl-step-name" style="color:#9b2020">${t('tl_cancelled')}</div><div class="tl-step-desc">${req.cancelReason?'Reason: '+req.cancelReason:''}${t('tl_cancelled_desc')}</div></div></div>`;
+    tl.innerHTML=`<div class="tl-item"><div class="tl-left"><div class="tl-dot cancelled"></div><div class="tl-line"></div></div><div class="tl-content"><div class="tl-step-name" style="color:#9b2020">${t('tl_cancelled')}</div><div class="tl-step-desc">${req.cancelReason?'Reason: '+req.cancelReason:''}${t('tl_cancelled_desc')}</div></div></div>`;
     return;
   }
   const TL_INFO=[
-    {name:t('tl0_name'),desc:t('tl0_desc'),icon:'📥'},
-    {name:t('tl1_name'),desc:t('tl1_desc'),icon:'🔍'},
-    {name:t('tl2_name'),desc:t('tl2_desc'),icon:'📦'},
-    {name:t('tl3_name'),desc:t('tl3_desc'),icon:'✅'},
+    {name:t('tl0_name'),desc:t('tl0_desc'),icon:''},
+    {name:t('tl1_name'),desc:t('tl1_desc'),icon:''},
+    {name:t('tl2_name'),desc:t('tl2_desc'),icon:''},
+    {name:t('tl3_name'),desc:t('tl3_desc'),icon:''},
   ];
   const si=STATUSES.indexOf(req.status);
   tl.innerHTML=TL_INFO.map((info,i)=>{
     const done=i<si,current=i===si,cls=done?'done':current?'current':'';
-    return `<div class="tl-item"><div class="tl-left"><div class="tl-dot ${cls}">${done?'✓':current?info.icon:'○'}</div><div class="tl-line ${done?'done':''}"></div></div><div class="tl-content"><div class="tl-step-name" style="color:${current?'var(--navy)':done?'var(--slate)':'var(--muted)'}">${info.name}</div><div class="tl-step-desc">${info.desc}</div></div></div>`;
+    return `<div class="tl-item"><div class="tl-left"><div class="tl-dot ${cls}">${done?'':current?info.icon:''}</div><div class="tl-line ${done?'done':''}"></div></div><div class="tl-content"><div class="tl-step-name" style="color:${current?'var(--navy)':done?'var(--slate)':'var(--muted)'}">${info.name}</div><div class="tl-step-desc">${info.desc}</div></div></div>`;
   }).join('');
 }
 
-/* ══════════════════════════════════════
+/* 
    CANCELLATION
-══════════════════════════════════════ */
+ */
 function openCancelModal(){
-  if(!currentTracked||currentTracked.status!=='Pending'){toast('⚠️ '+t('not_cancellable'));return;}
+  if(!currentTracked||currentTracked.status!=='Pending'){toast(' '+t('not_cancellable'));return;}
   document.getElementById('cancel-reason').value='';
   document.getElementById('cancel-notes').value='';
   document.getElementById('cancel-modal').classList.add('show');
@@ -1248,7 +1248,7 @@ function openCancelModal(){
 async function confirmCancel(){
   const reason=document.getElementById('cancel-reason').value;
   const notes=document.getElementById('cancel-notes').value.trim();
-  if(!reason){toast('⚠️ Please select a reason.');return;}
+  if(!reason){toast('Please select a reason.');return;}
 
   const confirmBtn=document.querySelector('#cancel-modal .btn-modal-danger');
   const origLabel=confirmBtn.textContent;
@@ -1275,19 +1275,19 @@ async function confirmCancel(){
     document.getElementById('btn-cancel').disabled=true;
     renderTimeline(currentTracked);
     document.getElementById('cancel-modal').classList.remove('show');
-    toast('✅ '+t('cancelled_toast'));
+    toast(' '+t('cancelled_toast'));
   }catch(err){
     console.error(err);
-    toast('❌ '+(lang==='fil'?'Nabigo ang pagkansela.':'Cancellation failed. Please try again.'));
+    toast(' '+(lang==='fil'?'Nabigo ang pagkansela.':'Cancellation failed. Please try again.'));
   }finally{
     confirmBtn.disabled=false;
     confirmBtn.textContent=origLabel;
   }
 }
 
-/* ══════════════════════════════════════
+/* 
    BADGE
-══════════════════════════════════════ */
+ */
 function badge(s){
   const m={'Pending':'b-pending','Processing':'b-processing','Ready for Pickup':'b-ready','Completed':'b-completed','Cancelled':'b-cancelled'};
   const labels={'Pending':t('status_pending'),'Processing':t('status_processing'),'Ready for Pickup':t('status_ready'),'Completed':t('status_completed'),'Cancelled':t('status_cancelled')};
@@ -1300,9 +1300,9 @@ function toast(msg){
   setTimeout(()=>{el.style.opacity='0';el.style.transition='opacity .3s';setTimeout(()=>el.remove(),300);},3200);
 }
 
-/* ══════════════════════════════════════
+/* 
    INIT
-══════════════════════════════════════ */
+ */
 
 initCal();
 applyTranslations();

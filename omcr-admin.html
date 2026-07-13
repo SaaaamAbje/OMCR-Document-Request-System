@@ -20,7 +20,7 @@
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Outfit',sans-serif;background:var(--adm-bg);color:var(--ink);min-height:100vh;}
 
-/* ── LOGIN ── */
+/*  LOGIN  */
 #login-screen{display:flex;min-height:100vh;background:var(--navy);align-items:center;justify-content:center;position:relative;}
 #login-screen::before{content:'';position:absolute;inset:0;pointer-events:none;
   background:radial-gradient(circle at 20% 80%,rgba(200,150,42,.1) 0%,transparent 40%),
@@ -47,7 +47,7 @@ body{font-family:'Outfit',sans-serif;background:var(--adm-bg);color:var(--ink);m
 .btn-back{display:flex;align-items:center;gap:8px;justify-content:center;margin-top:20px;background:none;border:none;color:rgba(255,255,255,.35);font-family:'Outfit',sans-serif;font-size:.78rem;cursor:pointer;transition:color .2s;width:100%;}
 .btn-back:hover{color:rgba(255,255,255,.7);}
 
-/* ── DASHBOARD ── */
+/*  DASHBOARD  */
 #dash-screen{display:none;min-height:100vh;}
 #dash-screen.active{display:flex;}
 
@@ -90,7 +90,7 @@ body{font-family:'Outfit',sans-serif;background:var(--adm-bg);color:var(--ink);m
 .adm-page.active{display:block;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
 
-/* ── STATS ── */
+/*  STATS  */
 .stats-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:28px;}
 .stat{background:var(--white);border:1px solid var(--adm-border);border-radius:10px;padding:16px 14px;position:relative;overflow:hidden;box-shadow:0 2px 8px rgba(13,31,60,.06);cursor:pointer;transition:box-shadow .2s,transform .2s;}
 .stat:hover{box-shadow:0 4px 16px rgba(13,31,60,.12);transform:translateY(-2px);}
@@ -104,7 +104,7 @@ body{font-family:'Outfit',sans-serif;background:var(--adm-bg);color:var(--ink);m
 .stat-n{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:700;color:var(--navy);line-height:1;margin-bottom:4px;}
 .stat-l{font-size:.63rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);}
 
-/* ── SEARCH & FILTERS ── */
+/*  SEARCH & FILTERS  */
 .search-bar-wrap{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;}
 .search-input{flex:1;min-width:200px;padding:9px 14px;border:1.5px solid var(--adm-border);border-radius:8px;font-family:'Outfit',sans-serif;font-size:.84rem;background:var(--white);color:var(--ink);outline:none;transition:border-color .2s;}
 .search-input:focus{border-color:var(--navy);}
@@ -115,7 +115,7 @@ body{font-family:'Outfit',sans-serif;background:var(--adm-bg);color:var(--ink);m
 .flt{padding:7px 12px;border:1.5px solid var(--adm-border);border-radius:7px;font-family:'Outfit',sans-serif;font-size:.78rem;background:var(--white);color:var(--ink);cursor:pointer;outline:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%237a6e5f' stroke-width='1.3' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:26px;}
 .flt:focus{border-color:var(--navy);}
 
-/* ── TABLE ── */
+/*  TABLE  */
 .tbl-wrap{background:var(--white);border:1px solid var(--adm-border);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);}
 table{width:100%;border-collapse:collapse;}
 thead th{background:var(--navy);color:rgba(255,255,255,.9);padding:12px 14px;font-size:.69rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;text-align:left;white-space:nowrap;}
@@ -133,7 +133,7 @@ td{padding:11px 14px;font-size:.82rem;vertical-align:middle;}
 .empty-tbl{text-align:center;padding:52px 20px;color:var(--muted);}
 .empty-tbl .eico{font-size:36px;margin-bottom:10px;}
 
-/* ── WALK-IN FORM ── */
+/*  WALK-IN FORM  */
 .walkin-wrap{background:var(--white);border:1px solid var(--adm-border);border-radius:14px;padding:36px;box-shadow:var(--shadow);max-width:780px;}
 .walkin-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:20px;}
 .form-group{display:flex;flex-direction:column;gap:5px;}
@@ -156,7 +156,7 @@ td{padding:11px 14px;font-size:.82rem;vertical-align:middle;}
 .walkin-success{background:#d1fae5;border:1.5px solid #16a34a;border-radius:10px;padding:16px 20px;display:none;align-items:center;gap:12px;font-size:.85rem;color:#065f46;font-weight:500;margin-top:16px;}
 .walkin-success .wrid{font-family:'Inconsolata',monospace;font-weight:700;font-size:.95rem;}
 
-/* ── BADGES ── */
+/*  BADGES  */
 .badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:.71rem;font-weight:600;letter-spacing:.04em;white-space:nowrap;}
 .badge::before{content:'';width:5px;height:5px;border-radius:50%;background:currentColor;opacity:.7;}
 .b-pending{background:#fef3c7;color:#92400e;}
@@ -166,7 +166,7 @@ td{padding:11px 14px;font-size:.82rem;vertical-align:middle;}
 .b-cancelled{background:#fee2e2;color:#991b1b;}
 .walkin-tag{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:12px;font-size:.67rem;font-weight:600;background:#ede9fe;color:#4c1d95;margin-left:4px;}
 
-/* ── DETAIL MODAL ── */
+/*  DETAIL MODAL  */
 .overlay{position:fixed;inset:0;background:rgba(13,31,60,.55);backdrop-filter:blur(5px);z-index:500;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;}
 .overlay.show{opacity:1;pointer-events:all;}
 .modal{background:var(--white);border-radius:16px;max-width:560px;width:92%;overflow:hidden;box-shadow:var(--shadow-lg);transform:scale(.92);transition:transform .3s;max-height:90vh;display:flex;flex-direction:column;}
@@ -191,7 +191,7 @@ td{padding:11px 14px;font-size:.82rem;vertical-align:middle;}
 .cancel-info-box .ci-reason{font-size:.84rem;color:#7f1d1d;font-weight:500;}
 .cancel-info-box .ci-date{font-size:.75rem;color:#b91c1c;margin-top:4px;font-family:'Inconsolata',monospace;}
 
-/* ── ID VERIFICATION PHOTOS ── */
+/*  ID VERIFICATION PHOTOS  */
 .verify-photo-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
 .verify-photo-card{border:1.5px solid var(--adm-border);border-radius:10px;overflow:hidden;background:var(--off-white);}
 .verify-photo-card .vp-label{padding:8px 12px;font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);background:var(--white);border-bottom:1px solid var(--adm-border);display:flex;align-items:center;gap:6px;}
@@ -213,12 +213,12 @@ td{padding:11px 14px;font-size:.82rem;vertical-align:middle;}
 .btn-modal-close-foot{padding:9px 16px;background:transparent;border:1.5px solid var(--adm-border);border-radius:8px;font-family:'Outfit',sans-serif;font-size:.78rem;color:var(--muted);cursor:pointer;transition:all .2s;}
 .btn-modal-close-foot:hover{border-color:var(--navy);color:var(--navy);}
 
-/* ── TOAST ── */
+/*  TOAST  */
 .toasts{position:fixed;bottom:24px;right:24px;z-index:600;display:flex;flex-direction:column;gap:8px;}
 .toast{background:var(--navy);color:var(--white);padding:11px 18px;border-radius:8px;font-size:.81rem;font-weight:500;border-left:3px solid var(--gold);box-shadow:0 4px 20px rgba(0,0,0,.2);animation:slideIn .28s ease;min-width:240px;}
 @keyframes slideIn{from{opacity:0;transform:translateX(24px);}to{opacity:1;transform:translateX(0);}}
 
-/* ── PRINT ── */
+/*  PRINT  */
 @media print{body>*{display:none!important;}#print-area{display:block!important;}}
 #print-area{display:none;}
 .slip{max-width:520px;margin:40px auto;font-family:'Outfit',sans-serif;color:#1a1612;padding:40px;}
@@ -237,11 +237,11 @@ td{padding:11px 14px;font-size:.82rem;vertical-align:middle;}
 </head>
 <body>
 
-<!-- ══ LOGIN ══ -->
+<!--  LOGIN  -->
 <div id="login-screen">
   <div class="login-wrap">
     <div class="login-header">
-      <div class="login-seal">🔐</div>
+      <div class="login-seal"></div>
       <div class="off-tag" data-i18n="office_short">Office of the Municipal Civil Registrar</div>
       <h2 data-i18n="admin_portal">Admin Portal</h2>
       <p data-i18n="login_sub">Sign in with your administrator credentials</p>
@@ -261,11 +261,11 @@ td{padding:11px 14px;font-size:.82rem;vertical-align:middle;}
   </div>
 </div>
 
-<!-- ══ DASHBOARD ══ -->
+<!--  DASHBOARD  -->
 <div id="dash-screen">
   <aside class="sidebar">
     <div class="sb-logo">
-      <div class="sm-seal">📜</div>
+      <div class="sm-seal"></div>
       <div class="sys-name" data-i18n="sys_name">OMCR Document Request System</div>
       <div class="sys-sub" data-i18n="admin_dashboard">Admin Dashboard</div>
     </div>
@@ -273,17 +273,17 @@ td{padding:11px 14px;font-size:.82rem;vertical-align:middle;}
     <nav class="sb-nav">
       <div class="sb-section">
         <div class="sb-section-lbl" data-i18n="nav_main">Main</div>
-        <button class="sb-btn active" onclick="showPage('overview',this)"><span class="ic">🏠</span> <span data-i18n="nav_overview">Overview</span></button>
-        <button class="sb-btn" onclick="showPage('requests',this)"><span class="ic">📋</span> <span data-i18n="nav_requests">All Requests</span> <span class="bcnt" id="badge-pending">0</span></button>
-        <button class="sb-btn" onclick="showPage('walkin',this)"><span class="ic">🚶</span> <span data-i18n="nav_walkin">Walk-in Entry</span></button>
+        <button class="sb-btn active" onclick="showPage('overview',this)"><span data-i18n="nav_overview">Overview</span></button>
+        <button class="sb-btn" onclick="showPage('requests',this)"><span data-i18n="nav_requests">All Requests</span> <span class="bcnt" id="badge-pending">0</span></button>
+        <button class="sb-btn" onclick="showPage('walkin',this)"><span data-i18n="nav_walkin">Walk-in Entry</span></button>
       </div>
       <div class="sb-section">
         <div class="sb-section-lbl" data-i18n="nav_by_status">Filter by Status</div>
-        <button class="sb-btn" onclick="filterAndGo('Pending',this)"><span class="ic">🕐</span> <span data-i18n="status_pending">Pending</span></button>
-        <button class="sb-btn" onclick="filterAndGo('Processing',this)"><span class="ic">⚙️</span> <span data-i18n="status_processing">Processing</span></button>
-        <button class="sb-btn" onclick="filterAndGo('Ready for Pickup',this)"><span class="ic">📦</span> <span data-i18n="status_ready">Ready for Pickup</span></button>
-        <button class="sb-btn" onclick="filterAndGo('Completed',this)"><span class="ic">✅</span> <span data-i18n="status_completed">Completed</span></button>
-        <button class="sb-btn" onclick="filterAndGo('Cancelled',this)"><span class="ic">✕</span> <span data-i18n="status_cancelled">Cancelled</span></button>
+        <button class="sb-btn" onclick="filterAndGo('Pending',this)"><span data-i18n="status_pending">Pending</span></button>
+        <button class="sb-btn" onclick="filterAndGo('Processing',this)"><span data-i18n="status_processing">Processing</span></button>
+        <button class="sb-btn" onclick="filterAndGo('Ready for Pickup',this)"><span data-i18n="status_ready">Ready for Pickup</span></button>
+        <button class="sb-btn" onclick="filterAndGo('Completed',this)"><span data-i18n="status_completed">Completed</span></button>
+        <button class="sb-btn" onclick="filterAndGo('Cancelled',this)"><span data-i18n="status_cancelled">Cancelled</span></button>
       </div>
     </nav>
 
@@ -297,13 +297,13 @@ td{padding:11px 14px;font-size:.82rem;vertical-align:middle;}
 
     <div class="sb-footer">
       <div class="sb-user">
-        <div class="sb-avatar">👤</div>
+        <div class="sb-avatar"></div>
         <div>
           <div class="sb-uname" id="sb-user-email" style="font-size:.78rem;word-break:break-all;">—</div>
           <div class="sb-urole" data-i18n="omcr_staff">OMCR Staff</div>
         </div>
       </div>
-      <button class="btn-signout" onclick="doLogout()">⎋ &nbsp;<span data-i18n="btn_signout">Sign Out</span></button>
+      <button class="btn-signout" onclick="doLogout()">⎋ <span data-i18n="btn_signout">Sign Out</span></button>
     </div>
   </aside>
 
@@ -342,7 +342,7 @@ td{padding:11px 14px;font-size:.82rem;vertical-align:middle;}
     <!-- ALL REQUESTS -->
     <div id="adm-requests" class="adm-page">
       <div class="search-bar-wrap">
-        <input class="search-input" type="text" id="search-input" data-i18n-ph="ph_search" placeholder="🔍  Search by name, control number, or document type…" oninput="renderTable()">
+        <input class="search-input" type="text" id="search-input" data-i18n-ph="ph_search" placeholder="Search by name, control number, or document type…" oninput="renderTable()">
         <div class="filters">
           <select class="flt" id="flt-status" onchange="renderTable()">
             <option value="" data-i18n="all_statuses">All Statuses</option>
@@ -385,7 +385,7 @@ td{padding:11px 14px;font-size:.82rem;vertical-align:middle;}
     <!-- WALK-IN ENTRY -->
     <div id="adm-walkin" class="adm-page">
       <div class="walkin-wrap">
-        <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;color:var(--navy);margin-bottom:4px;display:flex;align-items:center;gap:10px;"><span>🚶</span> <span data-i18n="walkin_title">Register Walk-in Request</span></div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;color:var(--navy);margin-bottom:4px;display:flex;align-items:center;gap:10px;"><span data-i18n="walkin_title">Register Walk-in Request</span></div>
         <p style="font-size:.82rem;color:var(--muted);margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid var(--adm-border);" data-i18n="walkin_sub">Enter details for a requestor present at the counter. A control number will be generated immediately.</p>
         <div class="walkin-grid">
           <div class="form-group full"><label data-i18n="lbl_fullname">Full Name (Last, First, Middle) <span class="req">*</span></label><input type="text" id="w-name" data-i18n-ph="ph_name" placeholder="e.g. Dela Cruz, Juan Santos"></div>
@@ -439,11 +439,11 @@ td{padding:11px 14px;font-size:.82rem;vertical-align:middle;}
           <div class="form-group full"><label data-i18n="lbl_remarks">Remarks / Notes</label><textarea id="w-remarks" data-i18n-ph="ph_walkin_remarks" placeholder="Any additional notes about this walk-in request…"></textarea></div>
         </div>
         <div class="walkin-actions">
-          <button class="btn-walkin-submit" onclick="submitWalkin()"><span>✚</span><span data-i18n="btn_register">Register Request</span></button>
-          <button class="btn-walkin-print" id="btn-walkin-print" onclick="printWalkin()">🖨️ <span data-i18n="btn_print_slip">Print Slip</span></button>
+          <button class="btn-walkin-submit" onclick="submitWalkin()"><span data-i18n="btn_register">Register Request</span></button>
+          <button class="btn-walkin-print" id="btn-walkin-print" onclick="printWalkin()"><span data-i18n="btn_print_slip">Print Slip</span></button>
         </div>
         <div class="walkin-success" id="walkin-success">
-          <span style="font-size:1.4rem;">✅</span>
+          <span style="font-size:1.4rem;"></span>
           <div><span data-i18n="walkin_registered">Walk-in registered! Control No:</span> <span class="wrid" id="walkin-rid">—</span></div>
         </div>
       </div>
@@ -462,14 +462,14 @@ td{padding:11px 14px;font-size:.82rem;vertical-align:middle;}
       </div>
       <div class="modal-top-right">
         <div id="dm-badge"></div>
-        <button class="btn-modal-x" onclick="document.getElementById('detail-modal').classList.remove('show')">✕ <span data-i18n="btn_close">Close</span></button>
+        <button class="btn-modal-x" onclick="document.getElementById('detail-modal').classList.remove('show')"><span data-i18n="btn_close">Close</span></button>
       </div>
     </div>
     <div class="modal-scroll">
       <div class="modal-body" id="modal-body-content"></div>
     </div>
     <div class="modal-footer">
-      <button class="btn-print-detail" onclick="printDetailSlip()">🖨️ <span data-i18n="btn_print_slip">Print Request Slip</span></button>
+      <button class="btn-print-detail" onclick="printDetailSlip()"><span data-i18n="btn_print_slip">Print Request Slip</span></button>
       <button class="btn-modal-close-foot" onclick="document.getElementById('detail-modal').classList.remove('show')" data-i18n="btn_close">Close</button>
     </div>
   </div>
@@ -478,15 +478,15 @@ td{padding:11px 14px;font-size:.82rem;vertical-align:middle;}
 <div id="print-area"></div>
 
 <div class="lightbox" id="lightbox" onclick="closeLightbox()">
-  <button class="lightbox-close" onclick="event.stopPropagation();closeLightbox()">✕</button>
+  <button class="lightbox-close" onclick="event.stopPropagation();closeLightbox()"></button>
   <img id="lightbox-img" src="" onclick="event.stopPropagation()">
 </div>
 <div class="toasts" id="toasts"></div>
 
 <script>
-/* ══════════════════════════════════════
+/* 
    TRANSLATIONS
-══════════════════════════════════════ */
+ */
 const T = {
   en:{
     office_short:'Office of the Municipal Civil Registrar',
@@ -513,7 +513,7 @@ const T = {
     all_statuses:'All Statuses', all_documents:'All Documents',
     status_pending:'Pending', status_processing:'Processing',
     status_ready:'Ready for Pickup', status_completed:'Completed', status_cancelled:'Cancelled',
-    ph_search:'🔍  Search by name, control number, or document type…',
+    ph_search:'Search by name, control number, or document type…',
     walkin_title:'Register Walk-in Request',
     walkin_sub:'Enter details for a requestor present at the counter. A control number will be generated immediately.',
     lbl_fullname:'Full Name (Last, First, Middle)', lbl_dob:'Date of Birth',
@@ -536,7 +536,7 @@ const T = {
     btn_register:'Register Request', btn_print_slip:'Print Slip',
     walkin_registered:'Walk-in registered! Control No:',
     btn_close:'Close',
-    view_btn:'👁 View', online_tag:'Online', walkin_tag_lbl:'Walk-in',
+    view_btn:'View', online_tag:'Online', walkin_tag_lbl:'Walk-in',
     total_requests:'Total Requests',
     // Detail modal labels
     dm_personal:'Personal Information',
@@ -578,7 +578,7 @@ const T = {
     all_statuses:'Lahat ng Katayuan', all_documents:'Lahat ng Dokumento',
     status_pending:'Nakabinbin', status_processing:'Pinoproseso',
     status_ready:'Handa na para Kunin', status_completed:'Natapos na', status_cancelled:'Kinansela',
-    ph_search:'🔍  Maghanap ayon sa pangalan, control number, o uri ng dokumento…',
+    ph_search:'Maghanap ayon sa pangalan, control number, o uri ng dokumento…',
     walkin_title:'Irehistro ang Kahilingan ng Walk-in',
     walkin_sub:'Ilagay ang mga detalye ng requestor na naroroon sa counter. Agad na malilikha ang control number.',
     lbl_fullname:'Buong Pangalan (Apelyido, Pangalan, Gitnang Pangalan)',
@@ -602,7 +602,7 @@ const T = {
     btn_register:'Irehistro ang Kahilingan', btn_print_slip:'I-print ang Slip',
     walkin_registered:'Narehistro ang walk-in! Control No:',
     btn_close:'Isara',
-    view_btn:'👁 Tingnan', online_tag:'Online', walkin_tag_lbl:'Walk-in',
+    view_btn:'Tingnan', online_tag:'Online', walkin_tag_lbl:'Walk-in',
     total_requests:'Kabuuang Kahilingan',
     dm_personal:'Personal na Impormasyon',
     dm_document:'Detalye ng Dokumento',
@@ -660,19 +660,19 @@ function applyTranslations(){
   }
 }
 
-/* ══════════════════════════════════════
+/* 
    DATA — Supabase
-══════════════════════════════════════ */
+ */
 const SUPABASE_URL='https://jelxcshciicbxbatedcj.supabase.co';
 const SUPABASE_KEY='sb_publishable_Ymf0bxoTDwB-h7genh4vMw_dvMa3X75';
 const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
 let db=[], currentPage='overview', detailReq=null, lastWalkin=null;
 
-/* ══════════════════════════════════════
+/* 
    INPUT SANITIZATION
    Applied to all free-text fields in walk-in entry form.
-══════════════════════════════════════ */
+ */
 function sanitize(str){
   if(!str)return '';
   return str
@@ -685,11 +685,11 @@ function sanitize(str){
     .slice(0,500);
 }
 
-/* ══════════════════════════════════════
+/* 
    SESSION TIMEOUT
    Auto sign-out after 30 minutes of inactivity.
    Resets on any mouse move, keypress, or click.
-══════════════════════════════════════ */
+ */
 const IDLE_TIMEOUT_MS = 30 * 60 * 1000; // 30 minutes
 const IDLE_WARNING_MS = 25 * 60 * 1000; // warn at 25 minutes
 let idleTimer=null, idleWarnTimer=null;
@@ -739,19 +739,19 @@ function rowToReq(r){
 
 async function loadDB(){
   const {data,error}=await sb.from('requests').select('*').order('created_at',{ascending:false});
-  if(error){console.error(error);toast('❌ Failed to load requests.');db=[];return;}
+  if(error){console.error(error);toast('Failed to load requests.');db=[];return;}
   db=data.map(rowToReq);
 }
 function fmtDate(iso){return new Date(iso).toLocaleDateString('en-PH',{year:'numeric',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});}
 function fmtShort(iso){return new Date(iso).toLocaleDateString('en-PH',{year:'numeric',month:'short',day:'numeric'});}
 function genID(){const a='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let s='OMCR-';for(let i=0;i<8;i++)s+=a[Math.floor(Math.random()*a.length)];return s;}
 
-/* ══════════════════════════════════════
+/* 
    LOGIN / LOGOUT
-══════════════════════════════════════ */
-/* ══════════════════════════════════════
+ */
+/* 
    AUTH — Supabase Auth
-══════════════════════════════════════ */
+ */
 function showDashboard(user){
   document.getElementById('login-screen').style.display='none';
   document.getElementById('dash-screen').classList.add('active');
@@ -763,7 +763,7 @@ function showDashboard(user){
 async function doLogin(){
   const email=document.getElementById('a-user').value.trim();
   const pass=document.getElementById('a-pass').value;
-  if(!email||!pass){toast('⚠️ Please enter your email and password.');return;}
+  if(!email||!pass){toast('Please enter your email and password.');return;}
 
   const btn=document.querySelector('.btn-login');
   const orig=btn.textContent;
@@ -781,7 +781,7 @@ async function doLogin(){
     const msg=err.message==='Invalid login credentials'
       ? (lang==='fil'?'Maling email o password. Subukang muli.':'Incorrect email or password. Please try again.')
       : (lang==='fil'?'May error sa pag-sign in. Subukang muli.':'Sign-in error. Please try again.');
-    toast('❌ '+msg);
+    toast(' '+msg);
   }finally{
     btn.disabled=false;btn.textContent=orig;
     document.getElementById('a-pass').value='';
@@ -826,12 +826,12 @@ async function refreshData(){
   if(currentPage==='overview')renderOverview();
   if(currentPage==='requests')renderTable();
   updateBadge();
-  toast('🔄 '+t('btn_refresh')+'…');
+  toast(' '+t('btn_refresh')+'…');
 }
 
-/* ══════════════════════════════════════
+/* 
    NAV
-══════════════════════════════════════ */
+ */
 function showPage(id,btn){
   document.querySelectorAll('.adm-page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.sb-btn').forEach(b=>b.classList.remove('active'));
@@ -862,9 +862,9 @@ function filterAndGo(status,btn){
   renderTable();
 }
 
-/* ══════════════════════════════════════
+/* 
    STATS
-══════════════════════════════════════ */
+ */
 function updateBadge(){document.getElementById('badge-pending').textContent=db.filter(r=>r.status==='Pending').length;}
 
 function renderStats(){
@@ -887,13 +887,13 @@ function renderOverview(){
   renderStats();
   const recent=db.slice(0,5);
   const tbody=document.getElementById('recent-tbody');
-  if(!recent.length){tbody.innerHTML=`<tr><td colspan="6"><div class="empty-tbl"><div class="eico">📭</div><p>No requests yet.</p></div></td></tr>`;return;}
+  if(!recent.length){tbody.innerHTML=`<tr><td colspan="6"><div class="empty-tbl"><div class="eico"></div><p>No requests yet.</p></div></td></tr>`;return;}
   tbody.innerHTML=recent.map(r=>`<tr class="${r.status==='Cancelled'?'row-cancelled':''}">
     <td><span class="mono">${r.id}</span></td>
     <td>${r.name}</td>
     <td>${r.doctype}</td>
     <td><span class="mono" style="font-size:.75rem;">${fmtShort(r.date)}</span></td>
-    <td>${r.walkin?`<span class="walkin-tag">🚶 ${t('walkin_tag_lbl')}</span>`:`<span style="font-size:.75rem;color:var(--muted);">${t('online_tag')}</span>`}</td>
+    <td>${r.walkin?`<span class="walkin-tag">${t('walkin_tag_lbl')}</span>`:`<span style="font-size:.75rem;color:var(--muted);">${t('online_tag')}</span>`}</td>
     <td>${badge(r.status)}</td>
   </tr>`).join('');
 }
@@ -909,15 +909,15 @@ function renderTable(){
   if(q)f=f.filter(r=>(r.name||'').toLowerCase().includes(q)||(r.id||'').toLowerCase().includes(q)||(r.doctype||'').toLowerCase().includes(q)||(r.contact||'').toLowerCase().includes(q));
   const n=f.length;
   document.getElementById('result-count').textContent=`(${n} ${n===1?t('result_count_label'):t('result_count_label_pl')})`;
-  if(!f.length){tbody.innerHTML=`<tr><td colspan="9"><div class="empty-tbl"><div class="eico">📭</div><p>No requests found.</p></div></td></tr>`;return;}
+  if(!f.length){tbody.innerHTML=`<tr><td colspan="9"><div class="empty-tbl"><div class="eico"></div><p>No requests found.</p></div></td></tr>`;return;}
   tbody.innerHTML=f.map(r=>`<tr class="${r.status==='Cancelled'?'row-cancelled':''}">
     <td><span class="mono">${r.id}</span></td>
-    <td>${r.name}${(r.idPhoto&&r.selfiePhoto)?`<span title="${t('verified_uploaded')}" style="margin-left:6px;color:#16a34a;font-size:.85rem;">🪪✓</span>`:r.walkin?'':`<span title="${t('verify_incomplete')}" style="margin-left:6px;color:#dc2626;font-size:.85rem;">⚠</span>`}</td>
+    <td>${r.name}${(r.idPhoto&&r.selfiePhoto)?`<span title="${t('verified_uploaded')}" style="margin-left:6px;color:#16a34a;font-size:.85rem;"></span>`:r.walkin?'':`<span title="${t('verify_incomplete')}" style="margin-left:6px;color:#dc2626;font-size:.85rem;"></span>`}</td>
     <td style="max-width:150px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${r.doctype}</td>
     <td>${r.purpose}</td>
     <td style="text-align:center;">${r.copies}</td>
     <td><span class="mono" style="font-size:.75rem;">${fmtShort(r.date)}</span></td>
-    <td>${r.walkin?`<span class="walkin-tag">🚶</span>`:`<span style="font-size:.72rem;color:var(--muted);">${t('online_tag')}</span>`}</td>
+    <td>${r.walkin?`<span class="walkin-tag">Walk-in</span>`:`<span style="font-size:.72rem;color:var(--muted);">${t('online_tag')}</span>`}</td>
     <td>
       ${r.status==='Cancelled'
         ? badge('Cancelled')
@@ -935,31 +935,31 @@ function renderTable(){
 
 async function updateStatus(id,newStatus){
   const {error}=await sb.from('requests').update({status:newStatus}).eq('id',id);
-  if(error){console.error(error);toast('❌ Failed to update status.');return;}
+  if(error){console.error(error);toast('Failed to update status.');return;}
   const r=db.find(x=>x.id===id);
   if(r)r.status=newStatus;
   renderStats();updateBadge();
-  toast(`✅ ${id} → ${newStatus}`);
+  toast(` ${id} → ${newStatus}`);
 
   // Notify requestor by email — fire-and-forget, only fires for
   // "Ready for Pickup" (the Edge Function itself filters other statuses)
   if(newStatus==='Ready for Pickup'){
     sb.functions.invoke('send-status-update',{body:{requestId:id,newStatus,lang:r?.lang||'en'}})
-      .then(({data})=>{ if(data?.sent) toast('📧 Email sent to requestor'); })
+      .then(({data})=>{ if(data?.sent) toast('Email sent to requestor'); })
       .catch(e=>console.warn('Status email failed (non-blocking):',e));
   }
 }
 
-/* ══════════════════════════════════════
+/* 
    DETAIL MODAL
-══════════════════════════════════════ */
+ */
 async function openDetail(id){
   const r=db.find(x=>x.id===id);
   if(!r)return;
   detailReq=r;
   document.getElementById('dm-rid').textContent=r.id;
   document.getElementById('dm-date').textContent=t('lbl_date_filed')+': '+fmtDate(r.date);
-  document.getElementById('dm-badge').innerHTML=badge(r.status)+(r.walkin?`<span class="walkin-tag" style="margin-left:6px;">🚶 ${t('walkin_tag_lbl')}</span>`:'');
+  document.getElementById('dm-badge').innerHTML=badge(r.status)+(r.walkin?`<span class="walkin-tag" style="margin-left:6px;">${t('walkin_tag_lbl')}</span>`:'');
 
   // Generate signed URLs for photos (expire in 10 minutes)
   // Signed URLs ensure only authenticated staff viewing the modal can access photos
@@ -990,15 +990,15 @@ async function openDetail(id){
       </div>
     </div>
     <div class="detail-section">
-      <div class="detail-section-title" style="display:flex;align-items:center;">🪪 ${t('dm_verify')}${(r.idPhoto&&r.selfiePhoto)?'<span class="verify-badge-ok">✓ '+t('verified_uploaded')+'</span>':'<span class="verify-badge-missing">⚠ '+t('verify_incomplete')+'</span>'}</div>
+      <div class="detail-section-title" style="display:flex;align-items:center;">${t('dm_verify')} ${(r.idPhoto&&r.selfiePhoto)?'<span class="verify-badge-ok">'+t('verified_uploaded')+'</span>':'<span class="verify-badge-missing">'+t('verify_incomplete')+'</span>'}</div>
       <div class="verify-photo-grid">
         <div class="verify-photo-card">
-          <div class="vp-label">🪪 ${t('upload_id')}</div>
-          ${idPhotoUrl?`<img src="${idPhotoUrl}" onclick="openLightbox('${idPhotoUrl}')">`:`<div class="verify-missing">⚠ ${t('no_photo')}</div>`}
+          <div class="vp-label">${t('upload_id')}</div>
+          ${idPhotoUrl?`<img src="${idPhotoUrl}" onclick="openLightbox('${idPhotoUrl}')">`:`<div class="verify-missing">${t('no_photo')}</div>`}
         </div>
         <div class="verify-photo-card">
-          <div class="vp-label">🤳 ${t('upload_selfie')}</div>
-          ${selfiePhotoUrl?`<img src="${selfiePhotoUrl}" onclick="openLightbox('${selfiePhotoUrl}')">`:`<div class="verify-missing">⚠ ${t('no_photo')}</div>`}
+          <div class="vp-label">${t('upload_selfie')}</div>
+          ${selfiePhotoUrl?`<img src="${selfiePhotoUrl}" onclick="openLightbox('${selfiePhotoUrl}')">`:`<div class="verify-missing">${t('no_photo')}</div>`}
         </div>
       </div>
       <p style="font-size:.7rem;color:var(--muted);margin-top:8px;">Photo links expire after 10 minutes. Close and reopen to refresh.</p>
@@ -1038,9 +1038,9 @@ async function openDetail(id){
   document.getElementById('detail-modal').classList.add('show');
 }
 
-/* ══════════════════════════════════════
+/* 
    PRINT SLIP
-══════════════════════════════════════ */
+ */
 function buildSlipHTML(r){
   const dt=new Date(r.date);
   const cancelled=r.status==='Cancelled'?`\n    <div class="slip-row"><span class="slip-key">Status</span><span class="slip-val" style="color:#dc2626;">CANCELLED</span></div>${r.cancelReason?`\n    <div class="slip-row"><span class="slip-key">Cancel Reason</span><span class="slip-val">${r.cancelReason}</span></div>`:''}`:'' ;
@@ -1068,9 +1068,9 @@ function buildSlipHTML(r){
 function printDetailSlip(){if(detailReq){document.getElementById('print-area').innerHTML=buildSlipHTML(detailReq);window.print();}}
 function printWalkin(){if(lastWalkin){document.getElementById('print-area').innerHTML=buildSlipHTML(lastWalkin);window.print();}}
 
-/* ══════════════════════════════════════
+/* 
    LIGHTBOX (enlarge ID/selfie photos)
-══════════════════════════════════════ */
+ */
 function openLightbox(src){
   document.getElementById('lightbox-img').src=src;
   document.getElementById('lightbox').classList.add('show');
@@ -1079,16 +1079,16 @@ function closeLightbox(){
   document.getElementById('lightbox').classList.remove('show');
 }
 
-/* ══════════════════════════════════════
+/* 
    WALK-IN SUBMIT
-══════════════════════════════════════ */
+ */
 async function submitWalkin(){
   const name=sanitize(document.getElementById('w-name').value);
   const contact=sanitize(document.getElementById('w-contact').value);
   const doctype=document.getElementById('w-doctype').value;
   const purpose=document.getElementById('w-purpose').value;
   const copies=document.getElementById('w-copies').value;
-  if(!name||!contact||!doctype||!purpose){toast('⚠️ Please fill in all required fields.');return;}
+  if(!name||!contact||!doctype||!purpose){toast('Please fill in all required fields.');return;}
 
   const submitBtn=document.querySelector('.btn-walkin-submit');
   const origLabel=submitBtn.innerHTML;
@@ -1119,7 +1119,7 @@ async function submitWalkin(){
     const succ=document.getElementById('walkin-success');
     succ.style.display='flex';
     document.getElementById('btn-walkin-print').style.display='flex';
-    toast('✅ '+t('walkin_registered')+' '+req.id);
+    toast(' '+t('walkin_registered')+' '+req.id);
     updateBadge();
     ['w-name','w-dob','w-pob','w-contact','w-email','w-address','w-remarks'].forEach(x=>document.getElementById(x).value='');
     document.getElementById('w-doctype').value='';
@@ -1128,16 +1128,16 @@ async function submitWalkin(){
     document.getElementById('w-status').value='Pending';
   }catch(err){
     console.error(err);
-    toast('❌ '+(lang==='fil'?'Nabigo ang pagrehistro.':'Registration failed. Please try again.'));
+    toast(' '+(lang==='fil'?'Nabigo ang pagrehistro.':'Registration failed. Please try again.'));
   }finally{
     submitBtn.disabled=false;
     submitBtn.innerHTML=origLabel;
   }
 }
 
-/* ══════════════════════════════════════
+/* 
    BADGE
-══════════════════════════════════════ */
+ */
 function badge(s){
   const m={'Pending':'b-pending','Processing':'b-processing','Ready for Pickup':'b-ready','Completed':'b-completed','Cancelled':'b-cancelled'};
   const labels={
@@ -1153,12 +1153,12 @@ function toast(msg){
   setTimeout(()=>{el.style.opacity='0';el.style.transition='opacity .3s';setTimeout(()=>el.remove(),300);},3200);
 }
 
-/* ══════════════════════════════════════
+/* 
    REAL-TIME SYNC (Supabase Realtime)
    Updates the dashboard live when requests change —
    from this browser, a different staff member's browser,
    or a new request coming in from the public portal.
-══════════════════════════════════════ */
+ */
 let realtimeStarted=false;
 function startRealtimeSync(){
   if(realtimeStarted)return;
