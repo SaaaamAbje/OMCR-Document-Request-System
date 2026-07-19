@@ -1,0 +1,10 @@
+{
+  "builds": [
+    { "src": "omcr-portal.html", "use": "@vercel/static" },
+    { "src": "omcr-admin.html", "use": "@vercel/static" }
+  ],
+  "routes": [
+    { "src": "/admin", "dest": "omcr-admin.html" },
+    { "src": "/(.*)", "dest": "omcr-portal.html" }
+  ]
+}
